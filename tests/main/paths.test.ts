@@ -5,7 +5,7 @@ import path from 'path';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 import {
-    LEAF_HOME,
+    PHYLLA_HOME,
     DEFAULT_MODELS_DIR,
     PROMPTS_DIR,
     STATE_FILE,
@@ -14,6 +14,7 @@ import {
     getBundledThemesDir,
     getBundledLocalesDir,
     migrateLegacyPaths,
+    migrateLegacyUserData,
 } from '@/main/lib/paths';
 
 vi.mock('electron', () => ({
@@ -44,31 +45,31 @@ vi.mock('fs', async () => {
 });
 
 describe('paths', () => {
-    describe('LEAF_HOME', () => {
-        it('is ~/.leaf', () => {
-            expect(LEAF_HOME).toBe(path.join(os.homedir(), '.leaf'));
+    describe('PHYLLA_HOME', () => {
+        it('is ~/.phylla', () => {
+            expect(PHYLLA_HOME).toBe(path.join(os.homedir(), '.phylla'));
         });
     });
 
     describe('DEFAULT_MODELS_DIR', () => {
-        it('is under LEAF_HOME', () => {
-            expect(DEFAULT_MODELS_DIR.startsWith(LEAF_HOME)).toBe(true);
+        it('is under PHYLLA_HOME', () => {
+            expect(DEFAULT_MODELS_DIR.startsWith(PHYLLA_HOME)).toBe(true);
         });
 
-        it('equals ~/.leaf/models', () => {
-            expect(DEFAULT_MODELS_DIR).toBe(path.join(os.homedir(), '.leaf', 'models'));
+        it('equals ~/.phylla/models', () => {
+            expect(DEFAULT_MODELS_DIR).toBe(path.join(os.homedir(), '.phylla', 'models'));
         });
     });
 
     describe('PROMPTS_DIR', () => {
-        it('equals ~/.leaf/prompts', () => {
-            expect(PROMPTS_DIR).toBe(path.join(os.homedir(), '.leaf', 'prompts'));
+        it('equals ~/.phylla/prompts', () => {
+            expect(PROMPTS_DIR).toBe(path.join(os.homedir(), '.phylla', 'prompts'));
         });
     });
 
     describe('STATE_FILE', () => {
-        it('equals ~/.leaf/state.json', () => {
-            expect(STATE_FILE).toBe(path.join(os.homedir(), '.leaf', 'state.json'));
+        it('equals ~/.phylla/state.json', () => {
+            expect(STATE_FILE).toBe(path.join(os.homedir(), '.phylla', 'state.json'));
         });
     });
 
@@ -103,8 +104,17 @@ describe('paths', () => {
             vi.mocked(fs.mkdirSync).mockImplementation(() => undefined);
             vi.mocked(fs.renameSync).mockImplementation(() => undefined);
             migrateLegacyPaths();
-            expect(fs.mkdirSync).toHaveBeenCalledWith(LEAF_HOME, { recursive: true });
+            expect(fs.mkdirSync).toHaveBeenCalledWith(PHYLLA_HOME, { recursive: true });
             expect(fs.renameSync).toHaveBeenCalledWith(legacyDir, DEFAULT_MODELS_DIR);
+        });
+
+        it('renames ~/.leaf → ~/.phylla when only the legacy home exists', () => {
+            const legacyHome = path.join(os.homedir(), '.leaf');
+            vi.mocked(fs.existsSync).mockImplementation((p) => p === legacyHome);
+            vi.mocked(fs.mkdirSync).mockImplementation(() => undefined);
+            vi.mocked(fs.renameSync).mockImplementation(() => undefined);
+            migrateLegacyPaths();
+            expect(fs.renameSync).toHaveBeenCalledWith(legacyHome, PHYLLA_HOME);
         });
 
         it('swallows errors instead of throwing', () => {
@@ -113,6 +123,49 @@ describe('paths', () => {
                 throw new Error('boom');
             });
             expect(() => migrateLegacyPaths()).not.toThrow();
+        });
+    });
+
+    describe('migrateLegacyUserData', () => {
+        let root: string;
+
+        beforeEach(() => {
+            vi.mocked(fs.existsSync).mockReset();
+            vi.mocked(fs.mkdirSync).mockReset();
+            vi.mocked(fs.renameSync).mockReset();
+            root = fs.mkdtempSync(path.join(os.tmpdir(), 'phylla-userdata-test-'));
+        });
+
+        afterEach(() => {
+            fs.rmSync(root, { recursive: true, force: true });
+        });
+
+        it('moves legacy entries and the session partition into the new dir', () => {
+            const legacy = path.join(root, 'Leaf');
+            const current = path.join(root, 'Phylla');
+            fs.mkdirSync(path.join(legacy, 'conversations'), { recursive: true });
+            fs.mkdirSync(path.join(legacy, 'Partitions', 'leaf'), { recursive: true });
+            migrateLegacyUserData(legacy, current);
+            expect(fs.existsSync(path.join(current, 'conversations'))).toBe(true);
+            expect(fs.existsSync(path.join(current, 'Partitions', 'phylla'))).toBe(true);
+            expect(fs.existsSync(path.join(current, 'Partitions', 'leaf'))).toBe(false);
+        });
+
+        it('keeps entries the new dir already has', () => {
+            const legacy = path.join(root, 'Leaf');
+            const current = path.join(root, 'Phylla');
+            fs.mkdirSync(path.join(legacy, 'Crashpad'), { recursive: true });
+            fs.mkdirSync(path.join(legacy, 'conversations'), { recursive: true });
+            fs.mkdirSync(path.join(current, 'Crashpad'), { recursive: true });
+            migrateLegacyUserData(legacy, current);
+            expect(fs.existsSync(path.join(legacy, 'Crashpad'))).toBe(true);
+            expect(fs.existsSync(path.join(current, 'conversations'))).toBe(true);
+        });
+
+        it('is a no-op when there is no legacy dir', () => {
+            const current = path.join(root, 'Phylla');
+            migrateLegacyUserData(path.join(root, 'Leaf'), current);
+            expect(fs.existsSync(current)).toBe(false);
         });
     });
 

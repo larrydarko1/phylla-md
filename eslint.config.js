@@ -1,7 +1,7 @@
 /**
- * Leaf's ESLint config. The shared base — JS/TS/Vue presets, globals, strict type
+ * Phylla's ESLint config. The shared base — JS/TS/Vue presets, globals, strict type
  * rules, naming, test relaxations — comes from @larrydarko/lint-config. What stays
- * here is the wiring that is genuinely about Leaf's folders: which selectors apply
+ * here is the wiring that is genuinely about Phylla's folders: which selectors apply
  * to main, preload, renderer and schemas.
  */
 import { larry } from '@larrydarko/lint-config/eslint';
@@ -47,7 +47,7 @@ export default larry({
         },
         i18n: {
             // A brand name reads the same in every locale.
-            ignoreText: ['Leaf'],
+            ignoreText: ['Phylla'],
             // The usage scan only follows `t()` under src/renderer. `meta.name` is the locale's
             // endonym, read as a plain property by src/main/services/language.ts to label the
             // language picker.

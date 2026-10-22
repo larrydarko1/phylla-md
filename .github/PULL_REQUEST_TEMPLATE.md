@@ -56,7 +56,7 @@ anyway — the point of ticking it is that you thought about it before CI did.
 - [ ] Process boundary (new IPC channel, or main↔renderer contract changed)
 - [ ] Filesystem (vault reads/writes, path handling, anything that can lose a note)
 - [ ] Local AI (model loading, inference, download, or the Whisper weights the release build packs)
-- [ ] Privacy (any new network call — Leaf makes none)
+- [ ] Privacy (any new network call — Phylla makes none)
 - [ ] Frontend (a11y checked, i18n strings added to every locale in `assets/locales/`)
 - [ ] Packaging (electron-builder config, entitlements, per-platform installer behaviour)
 - [ ] Pipeline (workflow, composite action, or a `ci:check` gate)

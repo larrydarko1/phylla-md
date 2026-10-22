@@ -2,7 +2,7 @@
 /**
  * Electron security gate — the process-model invariants: webPreferences on every
  * window, navigation containment, permission handlers that deny by default, the
- * leaf:// boundary, HTML sinks, RegExp inputs, certificate overrides. The rules
+ * phylla:// boundary, HTML sinks, RegExp inputs, certificate overrides. The rules
  * live in @larrydarko/lint-config/gates/electron-security.
  *
  * What stays here is what only this repo can vouch for.

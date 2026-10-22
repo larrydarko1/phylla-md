@@ -47,7 +47,7 @@ const reload = async (id: string): Promise<Conversation | null> => (await loadCo
 register(serviceIpc);
 
 beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'leaf-conv-'));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'phylla-conv-'));
     init(tmpDir);
 });
 

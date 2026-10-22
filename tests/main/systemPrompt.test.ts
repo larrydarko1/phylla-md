@@ -9,14 +9,14 @@ import { createFakeIpc, readReply } from './test-utils';
 const PATHS = vi.hoisted(() => {
     const { join } = process.getBuiltinModule('path');
     const { tmpdir } = process.getBuiltinModule('os');
-    const tmpRoot = join(tmpdir(), `leaf-prompt-test-${process.pid}-${Date.now()}`);
-    const leafHome = join(tmpRoot, '.leaf');
+    const tmpRoot = join(tmpdir(), `phylla-prompt-test-${process.pid}-${Date.now()}`);
+    const phyllaHome = join(tmpRoot, '.phylla');
     return {
         TMP_ROOT: tmpRoot,
-        LEAF_HOME: leafHome,
-        DEFAULT_MODELS_DIR: join(leafHome, 'models'),
-        PROMPTS_DIR: join(leafHome, 'prompts'),
-        STATE_FILE: join(leafHome, 'state.json'),
+        PHYLLA_HOME: phyllaHome,
+        DEFAULT_MODELS_DIR: join(phyllaHome, 'models'),
+        PROMPTS_DIR: join(phyllaHome, 'prompts'),
+        STATE_FILE: join(phyllaHome, 'state.json'),
         BUNDLED_DIR: join(tmpRoot, 'bundled-prompts'),
     };
 });
@@ -30,7 +30,7 @@ vi.mock('@/main/lib/logger', () => ({
 }));
 
 vi.mock('@/main/lib/paths', () => ({
-    LEAF_HOME: PATHS.LEAF_HOME,
+    PHYLLA_HOME: PATHS.PHYLLA_HOME,
     DEFAULT_MODELS_DIR: PATHS.DEFAULT_MODELS_DIR,
     PROMPTS_DIR: PATHS.PROMPTS_DIR,
     STATE_FILE: PATHS.STATE_FILE,
@@ -39,10 +39,10 @@ vi.mock('@/main/lib/paths', () => ({
     migrateLegacyPaths: () => undefined,
 }));
 
-const { LEAF_HOME, PROMPTS_DIR, STATE_FILE, BUNDLED_DIR } = PATHS;
+const { PHYLLA_HOME, PROMPTS_DIR, STATE_FILE, BUNDLED_DIR } = PATHS;
 
 function resetTmp() {
-    fs.rmSync(LEAF_HOME, { recursive: true, force: true });
+    fs.rmSync(PHYLLA_HOME, { recursive: true, force: true });
     fs.rmSync(BUNDLED_DIR, { recursive: true, force: true });
     fs.mkdirSync(BUNDLED_DIR, { recursive: true });
 }
@@ -197,7 +197,7 @@ describe('seeding, via getActiveSystemPrompt', () => {
 
     it('returns empty string when active prompt file is missing', async () => {
         const mod = await import('@/main/services/systemPrompt');
-        fs.mkdirSync(LEAF_HOME, { recursive: true });
+        fs.mkdirSync(PHYLLA_HOME, { recursive: true });
         fs.writeFileSync(STATE_FILE, JSON.stringify({ activePrompt: 'nonexistent' }), 'utf-8');
 
         const body = await mod.getActiveSystemPrompt();
@@ -206,7 +206,7 @@ describe('seeding, via getActiveSystemPrompt', () => {
 
     it('rejects prompt ids with invalid characters in state', async () => {
         const mod = await import('@/main/services/systemPrompt');
-        fs.mkdirSync(LEAF_HOME, { recursive: true });
+        fs.mkdirSync(PHYLLA_HOME, { recursive: true });
         fs.writeFileSync(STATE_FILE, JSON.stringify({ activePrompt: '../etc/passwd' }), 'utf-8');
 
         const body = await mod.getActiveSystemPrompt();
@@ -229,7 +229,7 @@ describe('systemPrompt:list', () => {
         fs.writeFileSync(path.join(PROMPTS_DIR, 'zebra.md'), '---\nname: Zebra\n---\nbody');
         fs.writeFileSync(path.join(PROMPTS_DIR, 'alpha.md'), '---\nname: Alpha\n---\nbody');
         fs.writeFileSync(path.join(PROMPTS_DIR, 'default.md'), '---\nname: Default\n---\nbody');
-        fs.mkdirSync(LEAF_HOME, { recursive: true });
+        fs.mkdirSync(PHYLLA_HOME, { recursive: true });
         fs.writeFileSync(STATE_FILE, JSON.stringify({ activePrompt: 'default' }));
 
         const handlers = await makeHandlers();
@@ -250,7 +250,7 @@ describe('systemPrompt:list', () => {
         fs.mkdirSync(PROMPTS_DIR, { recursive: true });
         fs.writeFileSync(path.join(PROMPTS_DIR, 'valid.md'), 'body');
         fs.writeFileSync(path.join(PROMPTS_DIR, 'invalid name.md'), 'body'); // space in name
-        fs.mkdirSync(LEAF_HOME, { recursive: true });
+        fs.mkdirSync(PHYLLA_HOME, { recursive: true });
         fs.writeFileSync(STATE_FILE, JSON.stringify({ activePrompt: 'valid' }));
 
         const handlers = await makeHandlers();
@@ -283,7 +283,7 @@ describe('systemPrompt:setActive', () => {
     it('sets the active prompt and updates the state file', async () => {
         fs.mkdirSync(PROMPTS_DIR, { recursive: true });
         fs.writeFileSync(path.join(PROMPTS_DIR, 'custom.md'), 'body');
-        fs.mkdirSync(LEAF_HOME, { recursive: true });
+        fs.mkdirSync(PHYLLA_HOME, { recursive: true });
         fs.writeFileSync(STATE_FILE, JSON.stringify({ activePrompt: 'default' }));
 
         const handlers = await makeHandlers();

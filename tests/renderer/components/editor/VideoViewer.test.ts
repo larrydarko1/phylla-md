@@ -29,12 +29,12 @@ describe('VideoViewer', () => {
         wrapper.unmount();
     });
 
-    it('constructs a leaf:// URL for the video source', async () => {
+    it('constructs a phylla:// URL for the video source', async () => {
         const wrapper = mountWithI18n(VideoViewer, {
             props: { filePath: '/vault/clip.mp4' },
         });
         await wrapper.vm.$nextTick();
-        expect(wrapper.html()).toContain('leaf://');
+        expect(wrapper.html()).toContain('phylla://');
         wrapper.unmount();
     });
 

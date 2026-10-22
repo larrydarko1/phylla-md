@@ -18,7 +18,7 @@ import {
     interactiveExtension,
 } from '@/renderer/composables/editor/codemirror/cm-markdown-widgets';
 import { taskFoldExtension } from '@/renderer/composables/editor/codemirror/cm-task-fold';
-import { leafEditorTheme } from '@/renderer/composables/editor/codemirror/cm-theme';
+import { phyllaEditorTheme } from '@/renderer/composables/editor/codemirror/cm-theme';
 import { useCodemirrorToolbar, markdownKeymap } from '@/renderer/composables/editor/codemirror/cm-toolbar';
 import { useCodeEditor } from '@/renderer/composables/editor/codemirror/useCodeEditor';
 import { useCodemirror } from '@/renderer/composables/editor/codemirror/useCodemirror';
@@ -130,7 +130,7 @@ const cmExtensions = [
     interactiveExtension,
     listContinuationKeymap,
     taskFoldExtension(),
-    leafEditorTheme,
+    phyllaEditorTheme,
     keymap.of(markdownKeymap(cmViewRef)),
     keymap.of([
         {
@@ -453,10 +453,10 @@ if (typeof window !== 'undefined') {
                     <img
                         draggable="false"
                         src="@/renderer/assets/icons/icon.png"
-                        :alt="t('editor.leaf_logo')"
+                        :alt="t('editor.phylla_logo')"
                         class="empty-logo-icon hero-brand-icon" />
                     <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -- brand name, not translated -->
-                    <span class="empty-logo-text hero-brand-text">leaf.</span>
+                    <span class="empty-logo-text hero-brand-text">phylla.</span>
                 </div>
                 <h2 class="hero-title">{{ t('editor.select_note_to_start_editing') }}</h2>
                 <p class="hint">{{ t('editor.or_create_new_note') }}</p>

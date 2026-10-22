@@ -20,7 +20,7 @@ const elements: CanvasElement[] = [makeRect('a'), makeRect('b')];
 const baseProps = {
     visible: true,
     hasSelection: false,
-    filePath: '/vault/sketch.leaf',
+    filePath: '/vault/sketch.drawing',
     elements,
     selectedIds: new Set<string>(),
     exportToBlob: mockExportToBlob,

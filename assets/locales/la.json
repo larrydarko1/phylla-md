@@ -65,7 +65,7 @@
     "open_models_folder": "Fasciculum Exemplarium Aperire",
     "system_prompt": "Mandatum Systematis",
     "no_prompts_found": "Nulla mandata inventa sunt",
-    "refresh_models_folder": "Fasciculum .leaf Renovare",
+    "refresh_models_folder": "Fasciculum .phylla Renovare",
     "new_conversation": "Novus Sermo",
     "close": "Claudere",
     "copied": "Exemplatum!",
@@ -119,7 +119,7 @@
     "footer_hint_intro": "Pone",
     "footer_hint_file_type": ".json",
     "footer_hint_files_in": "tabellas in",
-    "footer_hint_path": "~/.leaf/themes/",
+    "footer_hint_path": "~/.phylla/themes/",
     "footer_hint_action": "ut exemplaria addas. Unum muta ut id propria facias."
   },
   "language": {
@@ -134,7 +134,7 @@
     "open_folder": "Fasciculum Linguarum Aperire",
     "footer_hint_intro": "Pone",
     "footer_hint_file_type": ".json",
-    "footer_hint_path": "~/.leaf/languages/",
+    "footer_hint_path": "~/.phylla/locales/",
     "footer_hint_action": "ut linguas addas. Unam muta ut eam propriam facias."
   },
   "search": {
@@ -162,7 +162,7 @@
     "stop_dictation": "Dictationem Sistere",
     "start_dictation": "Dictationem e Voce in Textum Incipere",
     "loading_whisper_model": "Exemplar Whisper oneratur...",
-    "leaf_logo": "Insigne Leaf",
+    "phylla_logo": "Insigne Phylla",
     "select_note_to_start_editing": "Notam elige ut mutare incipias",
     "or_create_new_note": "vel novam crea ex fasciculo notarum tuo",
     "video_player": "Lusorium Visifici",

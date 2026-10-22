@@ -7,7 +7,7 @@
  *
  * What stays here is the scope, which is the only thing this project knows:
  *   - src/ and tests/ are the whole of it.
- *   - No workspace scope: Leaf is a single package, so imports get three groups,
+ *   - No workspace scope: Phylla is a single package, so imports get three groups,
  *     not four — builtin → external → local.
  *   - `@test-utils` is a tsconfig path into this repo, not an npm package, so it
  *     sorts as local.

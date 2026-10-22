@@ -20,7 +20,7 @@ const mockElectronAPI = {
     aiStopChat: vi.fn().mockResolvedValue({ success: true }),
     aiResetChat: vi.fn().mockResolvedValue({ success: true }),
     aiRestoreChatHistory: vi.fn().mockResolvedValue({ success: true }),
-    aiOpenLeafDir: vi.fn().mockResolvedValue({ success: true }),
+    aiOpenPhyllaDir: vi.fn().mockResolvedValue({ success: true }),
     onAiToken: vi.fn(),
     removeAiTokenListener: vi.fn(),
     onAiThinkingToken: vi.fn(),

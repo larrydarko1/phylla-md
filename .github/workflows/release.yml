@@ -99,14 +99,14 @@ jobs:
               uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
               with:
                   tag_name: ${{ needs.version.outputs.tag }}
-                  name: Leaf ${{ needs.version.outputs.tag }}
+                  name: Phylla ${{ needs.version.outputs.tag }}
                   draft: true
                   prerelease: false
                   generate_release_notes: true
                   body: |
-                      ## Leaf does not update itself
+                      ## Phylla does not update itself
 
-                      Nothing phones home and nothing installs behind your back — which also means Leaf
+                      Nothing phones home and nothing installs behind your back — which also means Phylla
                       will never tell you a new version exists. To upgrade, download from this page and
                       replace your copy. Watch this repository if you want to hear about new releases.
 
@@ -116,7 +116,7 @@ jobs:
 
                       - **AppImage** — `chmod +x` the file, then run it.
                       - **deb / rpm** — install with your package manager.
-                      - **tar.gz** — extract anywhere and run the `leaf` binary inside.
+                      - **tar.gz** — extract anywhere and run the `phylla` binary inside.
 
                       ## macOS and Windows
 
@@ -124,7 +124,7 @@ jobs:
                       warned about or blocked by the OS. Both build fine from source with no
                       signature needed — `npm ci && npm run build:mac` or `npm run build:win` —
                       but are untested. Proper support is planned as the project grows. See the
-                      [README](https://github.com/larrydarko1/leaf#other-platforms).
+                      [README](https://github.com/larrydarko1/phylla-md#other-platforms).
 
     # ── Installers ────────────────────────────────────────
     # Linux only: macOS and Windows need paid signing certificates to ship without OS warnings. Their

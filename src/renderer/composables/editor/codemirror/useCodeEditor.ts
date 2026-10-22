@@ -19,8 +19,8 @@ import {
 } from '@codemirror/view';
 import { onUnmounted, watch, type Ref, shallowRef, nextTick, type ShallowRef } from 'vue';
 
-import { leafCodeEditorTheme } from '@/renderer/composables/editor/codemirror/cm-theme';
-import { leafHighlightStyle } from '@/renderer/composables/editor/codemirror/useCodemirror';
+import { phyllaCodeEditorTheme } from '@/renderer/composables/editor/codemirror/cm-theme';
+import { phyllaHighlightStyle } from '@/renderer/composables/editor/codemirror/useCodemirror';
 
 /**
  * Map file extensions to CodeMirror language names for lookup in @codemirror/language-data.
@@ -91,7 +91,7 @@ export function useCodeEditor(
         return [
             // Language support (loaded asynchronously)
             ...(langExtension !== null && langExtension !== undefined ? [langExtension] : []),
-            syntaxHighlighting(leafHighlightStyle),
+            syntaxHighlighting(phyllaHighlightStyle),
             indentOnInput(),
             bracketMatching(),
             foldGutter(),
@@ -120,7 +120,7 @@ export function useCodeEditor(
             }),
 
             // Theme
-            leafCodeEditorTheme,
+            phyllaCodeEditorTheme,
 
             // Save keybinding (provided by caller via NoteEditor)
         ];

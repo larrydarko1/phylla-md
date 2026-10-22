@@ -1,5 +1,5 @@
 /**
- * useBookmarks — persists per-vault file bookmarks in <vault>/.leaf/bookmarks.json.
+ * useBookmarks — persists per-vault file bookmarks in <vault>/.phylla/bookmarks.json.
  */
 
 import { ref, type Ref } from 'vue';

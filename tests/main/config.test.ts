@@ -39,7 +39,7 @@ describe('config', () => {
     describe('shape', () => {
         it('exposes only the declared keys, dropping the rest of process.env', async () => {
             vi.stubEnv('ELECTRON_RENDERER_URL', 'http://localhost:5173');
-            vi.stubEnv('LEAF_NOT_IN_THE_SCHEMA', 'ignored');
+            vi.stubEnv('PHYLLA_NOT_IN_THE_SCHEMA', 'ignored');
 
             const config = await loadConfig();
 

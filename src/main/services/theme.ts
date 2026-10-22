@@ -1,10 +1,10 @@
 /**
  * Theme Service — manages user-editable theme presets stored as JSON
- * files under ~/.leaf/themes/.
+ * files under ~/.phylla/themes/.
  *
  * Architecture mirrors systemPrompt.ts:
- *   - Each *.json file in ~/.leaf/themes/ is a theme preset.
- *   - ~/.leaf/state.json records which theme id is active.
+ *   - Each *.json file in ~/.phylla/themes/ is a theme preset.
+ *   - ~/.phylla/state.json records which theme id is active.
  *   - Bundled defaults from <app>/assets/themes/ are copied in once on
  *     first launch; user edits are never overwritten.
  *
@@ -86,19 +86,19 @@ export function register(ipc: IpcMain): void {
         }
     });
 
-    ipc.handle('theme:openLeafDir', async (): Promise<AiSimpleResult> => {
+    ipc.handle('theme:openPhyllaDir', async (): Promise<AiSimpleResult> => {
         try {
             await fs.mkdir(THEMES_DIR, { recursive: true });
             await shell.openPath(THEMES_DIR);
             return { success: true };
         } catch (err) {
-            return ipcFailure('theme theme:openLeafDir', err);
+            return ipcFailure('theme theme:openPhyllaDir', err);
         }
     });
 }
 
 /**
- * Idempotent: copy bundled theme files into ~/.leaf/themes/ if absent.
+ * Idempotent: copy bundled theme files into ~/.phylla/themes/ if absent.
  *
  * Memoised on the in-flight promise (not a boolean flag) so concurrent callers
  * all await the same run instead of racing through the copy loop. The "start

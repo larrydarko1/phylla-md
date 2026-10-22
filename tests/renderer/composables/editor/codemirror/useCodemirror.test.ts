@@ -5,7 +5,7 @@ import { mount } from '@vue/test-utils';
 import { assert, describe, it, expect, vi, afterEach } from 'vitest';
 import { ref, nextTick, defineComponent, h } from 'vue';
 
-import { useCodemirror, leafHighlightStyle } from '@/renderer/composables/editor/codemirror/useCodemirror';
+import { useCodemirror, phyllaHighlightStyle } from '@/renderer/composables/editor/codemirror/useCodemirror';
 
 class FakeResizeObserver {
     observe() {}
@@ -55,14 +55,14 @@ function mountComposable(options: {
 
 vi.stubGlobal('ResizeObserver', FakeResizeObserver);
 
-describe('leafHighlightStyle', () => {
+describe('phyllaHighlightStyle', () => {
     it('is exported as a HighlightStyle object', () => {
-        expect(leafHighlightStyle).toBeDefined();
-        expect(typeof leafHighlightStyle).toBe('object');
+        expect(phyllaHighlightStyle).toBeDefined();
+        expect(typeof phyllaHighlightStyle).toBe('object');
     });
 
     it('has a module property (as all HighlightStyle instances do)', () => {
-        expect(leafHighlightStyle).toHaveProperty('module');
+        expect(phyllaHighlightStyle).toHaveProperty('module');
     });
 });
 

@@ -5,7 +5,7 @@ import { useTheme } from '@/renderer/composables/ui/useTheme';
 const mockAPI = {
     themeList: vi.fn(),
     themeSetActive: vi.fn(),
-    themeOpenLeafDir: vi.fn(),
+    themeOpenPhyllaDir: vi.fn(),
     log: { error: vi.fn(), warn: vi.fn() },
 };
 
@@ -128,7 +128,7 @@ describe('useTheme', () => {
         it('persists the active theme id to localStorage', async () => {
             mockAPI.themeSetActive.mockResolvedValue({ success: true });
             await theme.setActive('light');
-            expect(localStorageMock.setItem).toHaveBeenCalledWith('leaf-theme-id', 'light');
+            expect(localStorageMock.setItem).toHaveBeenCalledWith('phylla-theme-id', 'light');
         });
 
         it('returns false when the requested theme id is not in the themes list', async () => {
@@ -152,13 +152,13 @@ describe('useTheme', () => {
 
     describe('openThemesFolder', () => {
         it('calls the IPC handler', async () => {
-            mockAPI.themeOpenLeafDir.mockResolvedValue(undefined);
+            mockAPI.themeOpenPhyllaDir.mockResolvedValue(undefined);
             await theme.openThemesFolder();
-            expect(mockAPI.themeOpenLeafDir).toHaveBeenCalled();
+            expect(mockAPI.themeOpenPhyllaDir).toHaveBeenCalled();
         });
 
         it('does not throw when the IPC call rejects', async () => {
-            mockAPI.themeOpenLeafDir.mockRejectedValue(new Error('shell error'));
+            mockAPI.themeOpenPhyllaDir.mockRejectedValue(new Error('shell error'));
             await expect(theme.openThemesFolder()).resolves.not.toThrow();
         });
     });

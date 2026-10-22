@@ -17,7 +17,7 @@ watch(
     () => props.filePath,
     (path) => {
         hasError.value = false;
-        pdfUrl.value = `leaf://localhost${path}`;
+        pdfUrl.value = `phylla://localhost${path}`;
     },
     { immediate: true },
 );

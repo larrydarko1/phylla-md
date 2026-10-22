@@ -1,12 +1,12 @@
 /**
- * cm-theme — CodeMirror theme for Leaf's live-preview markdown editor.
+ * cm-theme — CodeMirror theme for Phylla's live-preview markdown editor.
  * Uses the same CSS custom properties as the rest of the app,
  * so it automatically applies dark/light themes.
  */
 
 import { EditorView } from '@codemirror/view';
 
-export const leafEditorTheme = EditorView.theme({
+export const phyllaEditorTheme = EditorView.theme({
     // ── Root editor ───────────────────────────────────────────────────────
     '&': {
         flex: '1',
@@ -373,7 +373,7 @@ export const leafEditorTheme = EditorView.theme({
  * CodeMirror theme for standalone code files (non-markdown).
  * Shows line numbers and a monospace font throughout.
  */
-export const leafCodeEditorTheme = EditorView.theme({
+export const phyllaCodeEditorTheme = EditorView.theme({
     '&': {
         flex: '1',
         height: '100%',

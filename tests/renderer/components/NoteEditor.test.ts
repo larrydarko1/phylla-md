@@ -30,7 +30,7 @@ vi.mock('@/renderer/composables/editor/codemirror/cm-task-fold', () => ({
 }));
 
 vi.mock('@/renderer/composables/editor/codemirror/cm-theme', () => ({
-    leafEditorTheme: [],
+    phyllaEditorTheme: [],
 }));
 
 vi.mock('@/renderer/composables/editor/codemirror/cm-toolbar', () => ({

@@ -9,13 +9,13 @@ import { createFakeIpc } from './test-utils';
 const PATHS = vi.hoisted(() => {
     const { join } = process.getBuiltinModule('path');
     const { tmpdir } = process.getBuiltinModule('os');
-    const tmpRoot = join(tmpdir(), `leaf-language-test-${process.pid}-${Date.now()}`);
-    const leafHome = join(tmpRoot, '.leaf');
+    const tmpRoot = join(tmpdir(), `phylla-language-test-${process.pid}-${Date.now()}`);
+    const phyllaHome = join(tmpRoot, '.phylla');
     return {
         TMP_ROOT: tmpRoot,
-        LEAF_HOME: leafHome,
-        LOCALES_DIR: join(leafHome, 'locales'),
-        STATE_FILE: join(leafHome, 'state.json'),
+        PHYLLA_HOME: phyllaHome,
+        LOCALES_DIR: join(phyllaHome, 'locales'),
+        STATE_FILE: join(phyllaHome, 'state.json'),
         BUNDLED_DIR: join(tmpRoot, 'bundled-locales'),
     };
 });
@@ -29,16 +29,16 @@ vi.mock('@/main/lib/logger', () => ({
 }));
 
 vi.mock('@/main/lib/paths', () => ({
-    LEAF_HOME: PATHS.LEAF_HOME,
+    PHYLLA_HOME: PATHS.PHYLLA_HOME,
     LOCALES_DIR: PATHS.LOCALES_DIR,
     STATE_FILE: PATHS.STATE_FILE,
     getBundledLocalesDir: () => PATHS.BUNDLED_DIR,
 }));
 
-const { LEAF_HOME, LOCALES_DIR, STATE_FILE, BUNDLED_DIR } = PATHS;
+const { PHYLLA_HOME, LOCALES_DIR, STATE_FILE, BUNDLED_DIR } = PATHS;
 
 function resetTmp() {
-    fs.rmSync(LEAF_HOME, { recursive: true, force: true });
+    fs.rmSync(PHYLLA_HOME, { recursive: true, force: true });
     fs.rmSync(BUNDLED_DIR, { recursive: true, force: true });
     fs.mkdirSync(BUNDLED_DIR, { recursive: true });
 }
@@ -48,7 +48,7 @@ function writeBundledLocale(id: string, content: Record<string, unknown>) {
 }
 
 function writeState(state: Record<string, unknown>) {
-    fs.mkdirSync(LEAF_HOME, { recursive: true });
+    fs.mkdirSync(PHYLLA_HOME, { recursive: true });
     fs.writeFileSync(STATE_FILE, JSON.stringify(state));
 }
 
@@ -103,7 +103,7 @@ describe('language service', () => {
         expect(fs.existsSync(LOCALES_DIR)).toBe(true);
     });
 
-    it('copies bundled locale files to ~/.leaf/locales/ on first seed', async () => {
+    it('copies bundled locale files to ~/.phylla/locales/ on first seed', async () => {
         writeBundledLocale('en', { common: { save: 'Save' } });
         writeBundledLocale('it', { common: { save: 'Salva' } });
         const svc = await freshService();
@@ -135,7 +135,7 @@ describe('language service', () => {
     });
 
     describe('language:list', () => {
-        it('returns all language files from ~/.leaf/locales/', async () => {
+        it('returns all language files from ~/.phylla/locales/', async () => {
             fs.mkdirSync(LOCALES_DIR, { recursive: true });
             fs.writeFileSync(path.join(LOCALES_DIR, 'en.json'), JSON.stringify({ common: {} }));
             fs.writeFileSync(path.join(LOCALES_DIR, 'it.json'), JSON.stringify({ common: {} }));
@@ -316,7 +316,7 @@ describe('language service', () => {
             expect(handles).toContain('language:list');
             expect(handles).toContain('language:setActive');
             expect(handles).toContain('language:load');
-            expect(handles).toContain('language:openLeafDir');
+            expect(handles).toContain('language:openPhyllaDir');
         });
     });
 });

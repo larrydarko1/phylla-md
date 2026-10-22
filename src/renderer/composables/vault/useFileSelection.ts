@@ -57,7 +57,7 @@ export function useFileSelection(): UseFileSelectionReturn {
         }
 
         if (activeFile.value !== null) {
-            localStorage.setItem('leaf-last-selected-file', activeFile.value.path);
+            localStorage.setItem('phylla-last-selected-file', activeFile.value.path);
         }
     }
 
@@ -71,7 +71,7 @@ export function useFileSelection(): UseFileSelectionReturn {
         selectedFiles.value = [file];
         activeFile.value = file;
         selectedFolder.value = null;
-        localStorage.setItem('leaf-last-selected-file', file.path);
+        localStorage.setItem('phylla-last-selected-file', file.path);
     }
 
     function clearSelection(): void {
@@ -110,7 +110,7 @@ export function useFileSelection(): UseFileSelectionReturn {
      * If not found, selects first file.
      */
     function restoreFromStorage(availableFiles: FileInfo[]): void {
-        const lastPath = localStorage.getItem('leaf-last-selected-file');
+        const lastPath = localStorage.getItem('phylla-last-selected-file');
         if (lastPath !== null) {
             const lastFile = availableFiles.find((f): boolean => f.path === lastPath);
             if (lastFile !== undefined) {
@@ -123,7 +123,7 @@ export function useFileSelection(): UseFileSelectionReturn {
         if (firstAvailable !== undefined) {
             selectedFiles.value = [firstAvailable];
             activeFile.value = firstAvailable;
-            localStorage.setItem('leaf-last-selected-file', firstAvailable.path);
+            localStorage.setItem('phylla-last-selected-file', firstAvailable.path);
         }
     }
 

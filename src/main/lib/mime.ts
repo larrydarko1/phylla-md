@@ -1,6 +1,6 @@
 /**
  * MIME type maps — pure data, no dependencies.
- * Used by fs-service (file:readImage, file:readAudio); leaf:// lets net.fetch set its own Content-Type.
+ * Used by fs-service (file:readImage, file:readAudio); phylla:// lets net.fetch set its own Content-Type.
  */
 
 export const IMAGE_MIMETYPES: Record<string, string> = {

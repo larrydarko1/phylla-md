@@ -77,7 +77,7 @@ export type ElectronAPI = {
     aiResetChat: () => Promise<AiSimpleResult>;
     aiRestoreChatHistory: (messages: { role: string; content: string }[]) => Promise<AiSimpleResult>;
     aiGetStatus: () => Promise<AiStatus>;
-    aiOpenLeafDir: () => Promise<AiSimpleResult>;
+    aiOpenPhyllaDir: () => Promise<AiSimpleResult>;
     systemPromptList: () => Promise<{
         success: boolean;
         prompts: { id: string; name: string; description: string; path: string }[];
@@ -87,7 +87,7 @@ export type ElectronAPI = {
     }>;
     systemPromptSetActive: (id: string) => Promise<AiSimpleResult>;
 
-    // Theme presets (~/.leaf/themes/*.json)
+    // Theme presets (~/.phylla/themes/*.json)
     themeList: () => Promise<{
         success: boolean;
         themes: {
@@ -102,9 +102,9 @@ export type ElectronAPI = {
         error?: IpcErrorCode;
     }>;
     themeSetActive: (id: string) => Promise<AiSimpleResult>;
-    themeOpenLeafDir: () => Promise<AiSimpleResult>;
+    themeOpenPhyllaDir: () => Promise<AiSimpleResult>;
 
-    // Language files (~/.leaf/locales/*.json)
+    // Language files (~/.phylla/locales/*.json)
     languageList: () => Promise<{
         success: boolean;
         languages: {
@@ -122,7 +122,7 @@ export type ElectronAPI = {
         content?: Record<string, unknown>;
         error?: IpcErrorCode;
     }>;
-    languageOpenLeafDir: () => Promise<AiSimpleResult>;
+    languageOpenPhyllaDir: () => Promise<AiSimpleResult>;
 
     onAiToken: (callback: (token: string) => void) => void;
     removeAiTokenListener: () => void;

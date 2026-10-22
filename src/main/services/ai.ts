@@ -16,7 +16,7 @@ import { z } from 'zod';
 import { IpcError, toIpcErrorCode, ipcFailure } from '@/main/lib/errors';
 import type { IpcMain } from '@/main/lib/ipc';
 import { log } from '@/main/lib/logger';
-import { DEFAULT_MODELS_DIR, LEAF_HOME } from '@/main/lib/paths';
+import { DEFAULT_MODELS_DIR, PHYLLA_HOME } from '@/main/lib/paths';
 import { getActiveSystemPrompt } from '@/main/services/systemPrompt';
 import {
     type AiModelInfo,
@@ -90,7 +90,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
     });
 
     ipc.handle('ai:getStatus', (): AiStatus => getStatus());
-    ipc.handle('ai:openLeafDir', async (): Promise<AiSimpleResult> => await openLeafDir());
+    ipc.handle('ai:openPhyllaDir', async (): Promise<AiSimpleResult> => await openPhyllaDir());
 }
 
 /** Graceful shutdown: unload the model and free resources. */
@@ -466,8 +466,8 @@ function getStatus(): AiStatus {
     };
 }
 
-async function openLeafDir(): Promise<{ success: boolean }> {
-    await fs.mkdir(LEAF_HOME, { recursive: true });
-    await shell.openPath(LEAF_HOME);
+async function openPhyllaDir(): Promise<{ success: boolean }> {
+    await fs.mkdir(PHYLLA_HOME, { recursive: true });
+    await shell.openPath(PHYLLA_HOME);
     return { success: true };
 }

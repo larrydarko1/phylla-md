@@ -1,5 +1,5 @@
 /**
- * Shared owner of ~/.leaf/state.json.
+ * Shared owner of ~/.phylla/state.json.
  *
  * Three services (systemPrompt, theme, language) each persist a single key
  * into the same state file. Left to themselves they each did an independent
@@ -16,7 +16,7 @@
 
 import fs from 'fs/promises';
 
-import { LEAF_HOME, STATE_FILE } from '@/main/lib/paths';
+import { PHYLLA_HOME, STATE_FILE } from '@/main/lib/paths';
 import { JsonObjectSchema } from '@/schemas/json';
 
 type State = Record<string, unknown>;
@@ -61,7 +61,7 @@ async function readRaw(): Promise<State> {
 }
 
 async function writeRaw(state: State): Promise<void> {
-    await fs.mkdir(LEAF_HOME, { recursive: true });
+    await fs.mkdir(PHYLLA_HOME, { recursive: true });
     const tmp = `${STATE_FILE}.${process.pid}.tmp`;
     await fs.writeFile(tmp, JSON.stringify(state, null, 2), 'utf-8');
     await fs.rename(tmp, STATE_FILE);

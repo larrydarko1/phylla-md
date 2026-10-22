@@ -30,7 +30,7 @@ type UseEditorTabsReturn = {
 };
 
 const MAX_TABS = 10;
-const STORAGE_KEY_PREFIX = 'leaf-tabs-';
+const STORAGE_KEY_PREFIX = 'phylla-tabs-';
 
 export function useEditorTabs(): UseEditorTabsReturn {
     const tabs = ref<TabState[]>([]);

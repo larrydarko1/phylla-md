@@ -65,7 +65,7 @@
     "open_models_folder": "Malfermi Dosierujon de Modeloj",
     "system_prompt": "Sistema Instigilo",
     "no_prompts_found": "Neniuj instigiloj troviĝis",
-    "refresh_models_folder": "Aktualigi .leaf-Dosierujon",
+    "refresh_models_folder": "Aktualigi .phylla-Dosierujon",
     "new_conversation": "Nova Konversacio",
     "close": "Fermi",
     "copied": "Kopiita!",
@@ -119,7 +119,7 @@
     "footer_hint_intro": "Metu",
     "footer_hint_file_type": ".json",
     "footer_hint_files_in": "dosierojn en",
-    "footer_hint_path": "~/.leaf/themes/",
+    "footer_hint_path": "~/.phylla/themes/",
     "footer_hint_action": "por aldoni antaŭagordojn. Redaktu unu por personecigi."
   },
   "language": {
@@ -134,7 +134,7 @@
     "open_folder": "Malfermi Lingvan Dosierujon",
     "footer_hint_intro": "Metu",
     "footer_hint_file_type": ".json",
-    "footer_hint_path": "~/.leaf/languages/",
+    "footer_hint_path": "~/.phylla/locales/",
     "footer_hint_action": "por aldoni lingvojn. Redaktu unu por personecigi."
   },
   "search": {
@@ -162,7 +162,7 @@
     "stop_dictation": "Halti Diktadon",
     "start_dictation": "Komenci Voĉ-al-Teksto Diktadon",
     "loading_whisper_model": "Ŝargante Whisper-Modelon...",
-    "leaf_logo": "Emblemo de Leaf",
+    "phylla_logo": "Emblemo de Phylla",
     "select_note_to_start_editing": "Elektu noton por komenci redaktadon",
     "or_create_new_note": "aŭ kreu novan el via notdosierujo",
     "video_player": "Videoludilo",

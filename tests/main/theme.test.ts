@@ -9,12 +9,12 @@ import { createFakeIpc, readReply } from './test-utils';
 const PATHS = vi.hoisted(() => {
     const { join } = process.getBuiltinModule('path');
     const { tmpdir } = process.getBuiltinModule('os');
-    const tmpRoot = join(tmpdir(), `leaf-theme-test-${process.pid}-${Date.now()}`);
-    const leafHome = join(tmpRoot, '.leaf');
+    const tmpRoot = join(tmpdir(), `phylla-theme-test-${process.pid}-${Date.now()}`);
+    const phyllaHome = join(tmpRoot, '.phylla');
     return {
-        LEAF_HOME: leafHome,
-        THEMES_DIR: join(leafHome, 'themes'),
-        STATE_FILE: join(leafHome, 'state.json'),
+        PHYLLA_HOME: phyllaHome,
+        THEMES_DIR: join(phyllaHome, 'themes'),
+        STATE_FILE: join(phyllaHome, 'state.json'),
         BUNDLED_DIR: join(tmpRoot, 'bundled-themes'),
     };
 });
@@ -28,16 +28,16 @@ vi.mock('@/main/lib/logger', () => ({
 }));
 
 vi.mock('@/main/lib/paths', () => ({
-    LEAF_HOME: PATHS.LEAF_HOME,
+    PHYLLA_HOME: PATHS.PHYLLA_HOME,
     THEMES_DIR: PATHS.THEMES_DIR,
     STATE_FILE: PATHS.STATE_FILE,
     getBundledThemesDir: () => PATHS.BUNDLED_DIR,
 }));
 
-const { LEAF_HOME, THEMES_DIR, STATE_FILE, BUNDLED_DIR } = PATHS;
+const { PHYLLA_HOME, THEMES_DIR, STATE_FILE, BUNDLED_DIR } = PATHS;
 
 function resetDirs() {
-    fs.rmSync(LEAF_HOME, { recursive: true, force: true });
+    fs.rmSync(PHYLLA_HOME, { recursive: true, force: true });
     fs.rmSync(BUNDLED_DIR, { recursive: true, force: true });
     fs.mkdirSync(BUNDLED_DIR, { recursive: true });
 }
@@ -47,7 +47,7 @@ function writeBundledTheme(id: string, content: Record<string, unknown>) {
 }
 
 function writeState(state: Record<string, unknown>) {
-    fs.mkdirSync(LEAF_HOME, { recursive: true });
+    fs.mkdirSync(PHYLLA_HOME, { recursive: true });
     fs.writeFileSync(STATE_FILE, JSON.stringify(state));
 }
 
@@ -73,7 +73,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-    fs.rmSync(LEAF_HOME, { recursive: true, force: true });
+    fs.rmSync(PHYLLA_HOME, { recursive: true, force: true });
     fs.rmSync(BUNDLED_DIR, { recursive: true, force: true });
 });
 

@@ -1,15 +1,15 @@
 /**
  * Language Service — manages user-editable language files stored as JSON
- * files under ~/.leaf/locales/.
+ * files under ~/.phylla/locales/.
  *
  * Architecture mirrors theme.ts:
- *   - Each *.json file in ~/.leaf/locales/ is a language preset.
- *   - ~/.leaf/state.json records which language id is active.
+ *   - Each *.json file in ~/.phylla/locales/ is a language preset.
+ *   - ~/.phylla/state.json records which language id is active.
  *   - Bundled defaults from <app>/assets/locales/ are copied in on first
  *     launch. On later launches, existing users get new keys backfilled from
  *     the bundle without losing their own values; files that still match the
  *     hash recorded for the last bundled copy (i.e. untouched) are fully
- *     re-synced. A hidden manifest (~/.leaf/locales/.manifest.json) tracks
+ *     re-synced. A hidden manifest (~/.phylla/locales/.manifest.json) tracks
  *     that hash per locale id. User-created locales have no bundled twin and
  *     are never visited at all.
  *
@@ -66,13 +66,13 @@ export function register(ipc: IpcMain): void {
         },
     );
 
-    ipc.handle('language:openLeafDir', async (): Promise<AiSimpleResult> => {
+    ipc.handle('language:openPhyllaDir', async (): Promise<AiSimpleResult> => {
         try {
             await fs.mkdir(LOCALES_DIR, { recursive: true });
             await shell.openPath(LOCALES_DIR);
             return { success: true };
         } catch (err) {
-            return ipcFailure('language language:openLeafDir', err);
+            return ipcFailure('language language:openPhyllaDir', err);
         }
     });
 }
@@ -93,7 +93,7 @@ export async function findActiveDictationLanguage(): Promise<string | null> {
 }
 
 /**
- * Idempotent: reconcile bundled language files into ~/.leaf/locales/.
+ * Idempotent: reconcile bundled language files into ~/.phylla/locales/.
  *
  * Memoised on the in-flight promise (not a boolean flag) so concurrent callers
  * all await the same reconciliation instead of racing through the manifest

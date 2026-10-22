@@ -129,7 +129,7 @@ export function useVault(): UseVaultReturn {
         currentFolder.value = null;
         files.value = [];
         folders.value = [];
-        localStorage.removeItem('leaf-last-selected-file');
+        localStorage.removeItem('phylla-last-selected-file');
     }
 
     // --- File CRUD ---

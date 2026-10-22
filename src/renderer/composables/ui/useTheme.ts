@@ -1,7 +1,7 @@
 /**
  * useTheme — manages the active theme preset.
  *
- * The library of themes lives at ~/.leaf/themes/*.json and is hand-edited
+ * The library of themes lives at ~/.phylla/themes/*.json and is hand-edited
  * by the user. This composable lists them, applies the active one to
  * <html> by setting CSS custom properties + data-theme, and switches active.
  *
@@ -21,7 +21,7 @@ type UseThemeReturn = {
     openThemesFolder: () => Promise<void>;
 };
 
-const ACTIVE_ID_LS_KEY = 'leaf-theme-id';
+const ACTIVE_ID_LS_KEY = 'phylla-theme-id';
 
 // Singleton state — one theme applies app-wide.
 const themes = ref<ThemeInfo[]>([]);
@@ -72,9 +72,9 @@ export function useTheme(): UseThemeReturn {
 
     async function openThemesFolder(): Promise<void> {
         try {
-            await window.electronAPI.themeOpenLeafDir();
+            await window.electronAPI.themeOpenPhyllaDir();
         } catch (err) {
-            window.electronAPI.log.error('themeOpenLeafDir error:', err);
+            window.electronAPI.log.error('themeOpenPhyllaDir error:', err);
         }
     }
 

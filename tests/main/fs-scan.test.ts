@@ -42,7 +42,7 @@ let tmpVault: string;
 let ipc: ReturnType<typeof createFakeIpc>;
 
 function newTmpVault(): string {
-    const dir = path.join(os.tmpdir(), `leaf-scan-test-${process.pid}-${Date.now()}`);
+    const dir = path.join(os.tmpdir(), `phylla-scan-test-${process.pid}-${Date.now()}`);
     fs.mkdirSync(dir, { recursive: true });
     return dir;
 }
@@ -97,24 +97,24 @@ describe('files:scan IPC handler', () => {
         expect(result.files.map((f) => f.relativePath)).toContain('notes/hello.md');
     });
 
-    it('excludes the .leaf directory from the folders list', async () => {
-        fs.mkdirSync(path.join(tmpVault, '.leaf'));
+    it('excludes the .phylla directory from the folders list', async () => {
+        fs.mkdirSync(path.join(tmpVault, '.phylla'));
         const result = ScanReplySchema.parse(await ipc.invoke('files:scan'));
-        expect(result.folders.map((f) => f.relativePath)).not.toContain('.leaf');
+        expect(result.folders.map((f) => f.relativePath)).not.toContain('.phylla');
     });
 
-    it('excludes files inside .leaf from the file list', async () => {
-        const leafDir = path.join(tmpVault, '.leaf');
-        fs.mkdirSync(leafDir);
-        fs.writeFileSync(path.join(leafDir, 'bookmarks.json'), '[]');
+    it('excludes files inside .phylla from the file list', async () => {
+        const phyllaDir = path.join(tmpVault, '.phylla');
+        fs.mkdirSync(phyllaDir);
+        fs.writeFileSync(path.join(phyllaDir, 'bookmarks.json'), '[]');
         const result = ScanReplySchema.parse(await ipc.invoke('files:scan'));
         const filePaths = result.files.map((f) => f.relativePath);
-        expect(filePaths.every((p) => !p.startsWith('.leaf'))).toBe(true);
+        expect(filePaths.every((p) => !p.startsWith('.phylla'))).toBe(true);
     });
 
-    it('excludes .leaf while still returning sibling folders and files', async () => {
-        fs.mkdirSync(path.join(tmpVault, '.leaf'));
-        fs.writeFileSync(path.join(tmpVault, '.leaf', 'bookmarks.json'), '[]');
+    it('excludes .phylla while still returning sibling folders and files', async () => {
+        fs.mkdirSync(path.join(tmpVault, '.phylla'));
+        fs.writeFileSync(path.join(tmpVault, '.phylla', 'bookmarks.json'), '[]');
         fs.mkdirSync(path.join(tmpVault, 'notes'));
         fs.writeFileSync(path.join(tmpVault, 'notes', 'hello.md'), '# hi');
         fs.writeFileSync(path.join(tmpVault, 'readme.md'), 'readme');
@@ -123,8 +123,8 @@ describe('files:scan IPC handler', () => {
         const folderPaths = result.folders.map((f) => f.relativePath);
         const filePaths = result.files.map((f) => f.relativePath);
 
-        expect(folderPaths).not.toContain('.leaf');
-        expect(filePaths.every((p) => !p.startsWith('.leaf'))).toBe(true);
+        expect(folderPaths).not.toContain('.phylla');
+        expect(filePaths.every((p) => !p.startsWith('.phylla'))).toBe(true);
         expect(folderPaths).toContain('notes');
         expect(filePaths).toContain('readme.md');
         expect(filePaths).toContain('notes/hello.md');
@@ -136,7 +136,7 @@ describe('files:scan IPC handler', () => {
         expect(result.folders.map((f) => f.relativePath)).toContain('.git');
     });
 
-    it('still includes dotfiles that are not inside .leaf', async () => {
+    it('still includes dotfiles that are not inside .phylla', async () => {
         fs.writeFileSync(path.join(tmpVault, '.gitignore'), '');
         const result = ScanReplySchema.parse(await ipc.invoke('files:scan'));
         expect(result.success).toBe(true);

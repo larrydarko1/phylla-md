@@ -66,22 +66,22 @@ const api: ElectronAPI = {
     aiResetChat: () => ipcRenderer.invoke('ai:resetChat'),
     aiRestoreChatHistory: (messages: object[]) => ipcRenderer.invoke('ai:restoreChatHistory', messages),
     aiGetStatus: () => ipcRenderer.invoke('ai:getStatus'),
-    aiOpenLeafDir: () => ipcRenderer.invoke('ai:openLeafDir'),
+    aiOpenPhyllaDir: () => ipcRenderer.invoke('ai:openPhyllaDir'),
 
-    // System prompt templates (~/.leaf/prompts/*.md)
+    // System prompt templates (~/.phylla/prompts/*.md)
     systemPromptList: () => ipcRenderer.invoke('systemPrompt:list'),
     systemPromptSetActive: (id: string) => ipcRenderer.invoke('systemPrompt:setActive', id),
 
-    // Theme presets (~/.leaf/themes/*.json)
+    // Theme presets (~/.phylla/themes/*.json)
     themeList: () => ipcRenderer.invoke('theme:list'),
     themeSetActive: (id: string) => ipcRenderer.invoke('theme:setActive', id),
-    themeOpenLeafDir: () => ipcRenderer.invoke('theme:openLeafDir'),
+    themeOpenPhyllaDir: () => ipcRenderer.invoke('theme:openPhyllaDir'),
 
-    // Language files (~/.leaf/locales/*.json)
+    // Language files (~/.phylla/locales/*.json)
     languageList: () => ipcRenderer.invoke('language:list'),
     languageSetActive: (id: string) => ipcRenderer.invoke('language:setActive', id),
     languageLoad: (id: string) => ipcRenderer.invoke('language:load', id),
-    languageOpenLeafDir: () => ipcRenderer.invoke('language:openLeafDir'),
+    languageOpenPhyllaDir: () => ipcRenderer.invoke('language:openPhyllaDir'),
 
     // AI streaming token listener
     onAiToken: (callback: (token: string) => void) => {
@@ -120,7 +120,7 @@ const api: ElectronAPI = {
     // Clipboard
     writeClipboard: (text: string) => ipcRenderer.invoke('clipboard:write', text),
 
-    // Bookmarks persistence (<vault>/.leaf/bookmarks.json)
+    // Bookmarks persistence (<vault>/.phylla/bookmarks.json)
     bookmarksLoad: () => ipcRenderer.invoke('bookmarks:load'),
     bookmarksSave: (bookmarks: string[]) => ipcRenderer.invoke('bookmarks:save', bookmarks),
 

@@ -1,9 +1,9 @@
 /**
- * Electron Main Process — Leaf note-taking app.
+ * Electron Main Process — Phylla note-taking app.
  *
  * Responsibilities:
  *   1. Create and manage the BrowserWindow
- *   2. Register a custom local-file protocol (leaf://) so the renderer can
+ *   2. Register a custom local-file protocol (phylla://) so the renderer can
  *      load images/audio/video without disabling webSecurity
  *   3. Grant microphone permission for audio recording
  *   4. Register IPC handlers by delegating to each service module
@@ -28,7 +28,7 @@ import { app, BrowserWindow, ipcMain, shell, Menu, screen, protocol, net, sessio
 
 import { config } from '@/main/lib/config';
 import { log } from '@/main/lib/logger';
-import { migrateLegacyPaths } from '@/main/lib/paths';
+import { migrateLegacyPaths, migrateLegacyUserData } from '@/main/lib/paths';
 import { isInsideBoundary } from '@/main/lib/validation';
 import * as aiService from '@/main/services/ai';
 import * as conversationService from '@/main/services/conversation';
@@ -65,9 +65,9 @@ function createWindow(): void {
             sandbox: true, // requires the CommonJS preload built by electron.vite.config.ts
             // webSecurity stays at its default (true).
             // Local files (images, audio, video) are served through the
-            // leaf:// custom protocol registered below — no need to disable
+            // phylla:// custom protocol registered below — no need to disable
             // webSecurity for that.
-            partition: 'persist:leaf',
+            partition: 'persist:phylla',
             spellcheck: true,
         },
         backgroundColor: '#1a1a1a',
@@ -122,7 +122,7 @@ function createWindow(): void {
     mainWindow.webContents.on('will-navigate', (event, url): void => {
         const isDevServer = config.rendererUrl !== '';
         const appOrigin = isDevServer ? config.rendererUrl : 'file://';
-        if (!url.startsWith(appOrigin) && !url.startsWith('leaf://')) {
+        if (!url.startsWith(appOrigin) && !url.startsWith('phylla://')) {
             event.preventDefault();
             if (url.startsWith('http://') || url.startsWith('https://')) void shell.openExternal(url);
         }
@@ -136,20 +136,20 @@ function createWindow(): void {
 }
 
 /**
- * ─── Custom protocol: leaf:// ─────────────────────────────────────────────────
+ * ─── Custom protocol: phylla:// ───────────────────────────────────────────────
  */
-function registerLeafProtocol(ses: Electron.Session): void {
-    ses.protocol.handle('leaf', (request): Response | Promise<Response> => {
-        // leaf://localhost/path/to/file  →  /path/to/file
+function registerPhyllaProtocol(ses: Electron.Session): void {
+    ses.protocol.handle('phylla', (request): Response | Promise<Response> => {
+        // phylla://localhost/path/to/file  →  /path/to/file
         const filePath = decodeURIComponent(new URL(request.url).pathname);
 
         const root = fsService.findVaultRoot();
         if (root === null) {
-            log.warn('[leaf://] Denied — no vault is open:', filePath);
+            log.warn('[phylla://] Denied — no vault is open:', filePath);
             return new Response('No vault is open', { status: 403 });
         }
         if (!isInsideBoundary(filePath, root)) {
-            log.warn('[leaf://] Denied — path is outside the vault:', filePath);
+            log.warn('[phylla://] Denied — path is outside the vault:', filePath);
             return new Response('Forbidden', { status: 403 });
         }
 
@@ -162,15 +162,19 @@ function registerLeafProtocol(ses: Electron.Session): void {
     });
 }
 
+// Carry pre-rename (Leaf) data over before anything reads it; dev userData never held release data.
+migrateLegacyPaths();
+if (app.isPackaged) migrateLegacyUserData(path.join(app.getPath('appData'), 'Leaf'), app.getPath('userData'));
+
 /**
  * ─── Scheme privileges ───────────────────────────────────────────────────────
- * Must be called before app.whenReady(). Tells Chromium the leaf:// scheme
+ * Must be called before app.whenReady(). Tells Chromium the phylla:// scheme
  * supports streaming (needed for video/audio playback with range requests),
  * is secure (needed for iframe PDF viewing), and supports fetch.
  * */
 protocol.registerSchemesAsPrivileged([
     {
-        scheme: 'leaf',
+        scheme: 'phylla',
         privileges: {
             standard: true,
             secure: true,
@@ -183,10 +187,10 @@ protocol.registerSchemesAsPrivileged([
 // ─── App lifecycle ────────────────────────────────────────────────────────────
 
 void app.whenReady().then(async (): Promise<void> => {
-    const leafSession = session.fromPartition('persist:leaf');
+    const phyllaSession = session.fromPartition('persist:phylla');
     await fsService.initVaultRoot();
 
-    registerLeafProtocol(leafSession);
+    registerPhyllaProtocol(phyllaSession);
     createWindow();
 
     /**
@@ -196,7 +200,7 @@ void app.whenReady().then(async (): Promise<void> => {
      * Must target the partition session used by the BrowserWindow.
      * 'media' covers the camera too, so both handlers grant audio only.
      */
-    leafSession.setPermissionRequestHandler((_webContents, permission, callback, details): void => {
+    phyllaSession.setPermissionRequestHandler((_webContents, permission, callback, details): void => {
         if (permission !== 'media') {
             callback(false);
             return;
@@ -209,14 +213,11 @@ void app.whenReady().then(async (): Promise<void> => {
         const mediaTypes = details.mediaTypes ?? [];
         callback(mediaTypes.length > 0 && mediaTypes.every((type): type is 'audio' => type === 'audio'));
     });
-    leafSession.setPermissionCheckHandler((_webContents, permission, _origin, details): boolean => {
+    phyllaSession.setPermissionCheckHandler((_webContents, permission, _origin, details): boolean => {
         if (permission !== 'media') return false;
         // 'unknown' is what a generic navigator.permissions query reports, so it stays allowed.
         return details.mediaType !== 'video';
     });
-
-    // ── One-time path migration (legacy ~/leaf-models → ~/.leaf/models) ────
-    migrateLegacyPaths();
 
     // ── Register IPC handlers ────────────────────────────────────────────────
     conversationService.init(app.getPath('userData'));

@@ -10,8 +10,8 @@ import { register, cleanup } from '@/main/services/ai';
 const PATHS = vi.hoisted(() => {
     const { join } = process.getBuiltinModule('path');
     const { tmpdir } = process.getBuiltinModule('os');
-    const root = join(tmpdir(), `leaf-ai-model-test-${process.pid}-${Date.now()}`);
-    return { root, leafHome: join(root, '.leaf') };
+    const root = join(tmpdir(), `phylla-ai-model-test-${process.pid}-${Date.now()}`);
+    return { root, phyllaHome: join(root, '.phylla') };
 });
 
 const mockPrompt = vi.hoisted(() =>
@@ -85,7 +85,7 @@ vi.mock('@/main/lib/logger', () => ({
 
 vi.mock('@/main/lib/paths', () => ({
     DEFAULT_MODELS_DIR: PATHS.root,
-    LEAF_HOME: PATHS.leafHome,
+    PHYLLA_HOME: PATHS.phyllaHome,
 }));
 
 vi.mock('@/main/services/systemPrompt', () => ({

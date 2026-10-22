@@ -165,7 +165,7 @@ export function useFolderTree(
         getCurrentFolder,
         (newFolder): void => {
             if (newFolder !== null && newFolder !== '') {
-                const saved = localStorage.getItem(`leaf-expanded-folders-${newFolder}`);
+                const saved = localStorage.getItem(`phylla-expanded-folders-${newFolder}`);
                 if (saved !== null && saved !== '') {
                     try {
                         const result = z.array(z.string()).safeParse(JSON.parse(saved));
@@ -187,7 +187,10 @@ export function useFolderTree(
         (newExpanded): void => {
             const currentFolder = getCurrentFolder();
             if (currentFolder !== null && currentFolder !== '') {
-                localStorage.setItem(`leaf-expanded-folders-${currentFolder}`, JSON.stringify(Array.from(newExpanded)));
+                localStorage.setItem(
+                    `phylla-expanded-folders-${currentFolder}`,
+                    JSON.stringify(Array.from(newExpanded)),
+                );
             }
         },
         { deep: true },

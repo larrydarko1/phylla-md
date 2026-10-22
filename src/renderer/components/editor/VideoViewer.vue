@@ -54,7 +54,7 @@ watch(
     () => props.filePath,
     (path) => {
         reset();
-        videoUrl.value = `leaf://localhost${path}`;
+        videoUrl.value = `phylla://localhost${path}`;
     },
     { immediate: true },
 );

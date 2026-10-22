@@ -19,7 +19,7 @@ let vaultRoot: string | null;
 let ipc: ReturnType<typeof createFakeIpc>;
 
 beforeEach(() => {
-    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'leaf-media-'));
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'phylla-media-'));
     vaultRoot = tmpDir;
 
     ipc = createFakeIpc();

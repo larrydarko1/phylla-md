@@ -9,9 +9,9 @@
     Allowances beyond 'self':
       - script-src blob:            → dictation AudioWorklet module loaded from a Blob URL
       - style-src 'unsafe-inline'   → Vue :style bindings + Vite dev style injection
-      - img-src/media-src leaf: blob: data: → vault embeds via leaf://, drawing/export previews,
+      - img-src/media-src phylla: blob: data: → vault embeds via phylla://, drawing/export previews,
         inline data URIs, and AudioViewer playback (readAudio IPC returns a data: URL)
-      - frame-src leaf:             → PDF preview iframe
+      - frame-src phylla:             → PDF preview iframe
       - connect-src ws://localhost:3000 ws://127.0.0.1:3000 → Vite HMR websocket (dev only; unused in production)
     No 'unsafe-eval': Vue SFCs are precompiled and vue-i18n v10+ uses the CSP-safe JIT message compiler.
   -->
@@ -19,10 +19,10 @@
     default-src 'self';
     script-src 'self' blob:;
     style-src 'self' 'unsafe-inline';
-    img-src 'self' leaf: blob: data:;
-    media-src 'self' leaf: blob: data:;
-    frame-src 'self' leaf:;
-    connect-src 'self' leaf: ws://localhost:3000 ws://127.0.0.1:3000;
+    img-src 'self' phylla: blob: data:;
+    media-src 'self' phylla: blob: data:;
+    frame-src 'self' phylla:;
+    connect-src 'self' phylla: ws://localhost:3000 ws://127.0.0.1:3000;
     font-src 'self' data:;
     worker-src 'self' blob:;
     object-src 'none';

@@ -12,7 +12,7 @@ vi.mock('vue-i18n', () => ({
 const mockAPI = {
     languageList: vi.fn(),
     languageSetActive: vi.fn(),
-    languageOpenLeafDir: vi.fn(),
+    languageOpenPhyllaDir: vi.fn(),
     log: { error: vi.fn(), warn: vi.fn() },
 };
 
@@ -139,14 +139,14 @@ describe('useLanguage', () => {
 
     describe('openLocalesFolder', () => {
         it('calls the IPC handler', async () => {
-            mockAPI.languageOpenLeafDir.mockResolvedValue({ success: true });
+            mockAPI.languageOpenPhyllaDir.mockResolvedValue({ success: true });
             await language.openLocalesFolder();
-            expect(mockAPI.languageOpenLeafDir).toHaveBeenCalled();
+            expect(mockAPI.languageOpenPhyllaDir).toHaveBeenCalled();
         });
 
         it('logs error when IPC call fails', async () => {
             const error = new Error('Could not open folder');
-            mockAPI.languageOpenLeafDir.mockRejectedValue(error);
+            mockAPI.languageOpenPhyllaDir.mockRejectedValue(error);
             await language.openLocalesFolder();
             expect(mockAPI.log.error).toHaveBeenCalled();
         });

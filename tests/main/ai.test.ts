@@ -24,7 +24,7 @@ vi.mock('@/main/lib/logger', () => ({
 
 vi.mock('@/main/lib/paths', () => ({
     DEFAULT_MODELS_DIR: '/fake/models',
-    LEAF_HOME: '/fake/leaf-home',
+    PHYLLA_HOME: '/fake/phylla-home',
 }));
 
 vi.mock('@/main/services/systemPrompt', () => ({
@@ -132,10 +132,10 @@ describe('ai:loadModel (file not found)', () => {
     });
 });
 
-describe('ai:openLeafDir', () => {
-    it('calls shell.openPath with LEAF_HOME and returns success', async () => {
+describe('ai:openPhyllaDir', () => {
+    it('calls shell.openPath with PHYLLA_HOME and returns success', async () => {
         const { shell } = await import('electron');
-        const result = readReply(await ipc.invoke('ai:openLeafDir'));
+        const result = readReply(await ipc.invoke('ai:openPhyllaDir'));
         expect(result.success).toBe(true);
         expect(shell.openPath).toHaveBeenCalled();
     });

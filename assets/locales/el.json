@@ -65,7 +65,7 @@
     "open_models_folder": "Άνοιγμα Φακέλου Μοντέλων",
     "system_prompt": "Προτροπή Συστήματος",
     "no_prompts_found": "Δεν βρέθηκαν προτροπές",
-    "refresh_models_folder": "Ανανέωση Φακέλου .leaf",
+    "refresh_models_folder": "Ανανέωση Φακέλου .phylla",
     "new_conversation": "Νέα Συνομιλία",
     "close": "Κλείσιμο",
     "copied": "Αντιγράφηκε!",
@@ -119,7 +119,7 @@
     "footer_hint_intro": "Τοποθετήστε",
     "footer_hint_file_type": ".json",
     "footer_hint_files_in": "αρχεία στον",
-    "footer_hint_path": "~/.leaf/themes/",
+    "footer_hint_path": "~/.phylla/themes/",
     "footer_hint_action": "για να προσθέσετε προεπιλογές. Επεξεργαστείτε μία για προσαρμογή."
   },
   "language": {
@@ -134,7 +134,7 @@
     "open_folder": "Άνοιγμα Φακέλου Γλωσσών",
     "footer_hint_intro": "Τοποθετήστε",
     "footer_hint_file_type": ".json",
-    "footer_hint_path": "~/.leaf/languages/",
+    "footer_hint_path": "~/.phylla/locales/",
     "footer_hint_action": "για να προσθέσετε γλώσσες. Επεξεργαστείτε μία για προσαρμογή."
   },
   "search": {
@@ -162,7 +162,7 @@
     "stop_dictation": "Διακοπή Υπαγόρευσης",
     "start_dictation": "Έναρξη Υπαγόρευσης Ομιλίας σε Κείμενο",
     "loading_whisper_model": "Φόρτωση μοντέλου Whisper...",
-    "leaf_logo": "Λογότυπο Leaf",
+    "phylla_logo": "Λογότυπο Phylla",
     "select_note_to_start_editing": "Επιλέξτε μια σημείωση για να ξεκινήσετε την επεξεργασία",
     "or_create_new_note": "ή δημιουργήστε νέα από τον φάκελο σημειώσεών σας",
     "video_player": "Συσκευή Αναπαραγωγής Βίντεο",

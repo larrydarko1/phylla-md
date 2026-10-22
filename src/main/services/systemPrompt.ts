@@ -1,12 +1,12 @@
 /**
  * System Prompt Service — manages user-editable system-prompt templates
- * stored as markdown files under ~/.leaf/prompts/.
+ * stored as markdown files under ~/.phylla/prompts/.
  *
  * Architecture:
- *   - Each *.md file in ~/.leaf/prompts/ is a template.
+ *   - Each *.md file in ~/.phylla/prompts/ is a template.
  *   - Optional YAML-ish frontmatter (`name`, `description`) is parsed for
  *     the picker UI; the body (after `---`) is the actual system prompt.
- *   - ~/.leaf/state.json records which template id is active.
+ *   - ~/.phylla/state.json records which template id is active.
  *   - Bundled defaults from <app>/assets/prompts/ are copied in once on
  *     first launch; user edits are never overwritten.
  *   - The active prompt is read fresh on every model load / chat reset,
@@ -102,7 +102,7 @@ export async function getActiveSystemPrompt(): Promise<string> {
 }
 
 /**
- * Idempotent: copy bundled prompt files into ~/.leaf/prompts/ if absent.
+ * Idempotent: copy bundled prompt files into ~/.phylla/prompts/ if absent.
  *
  * Memoised on the in-flight promise (not a boolean flag) so that concurrent
  * callers all await the same run instead of racing through the copy loop and

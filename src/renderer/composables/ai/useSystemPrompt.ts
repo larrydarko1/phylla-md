@@ -1,7 +1,7 @@
 /**
  * useSystemPrompt — manages the active system-prompt template selection.
  *
- * The library of templates lives at ~/.leaf/prompts/*.md and is hand-edited
+ * The library of templates lives at ~/.phylla/prompts/*.md and is hand-edited
  * by the user in their preferred editor. This composable only handles
  * listing them, displaying the active one, and switching active.
  */

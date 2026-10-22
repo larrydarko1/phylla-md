@@ -67,7 +67,7 @@ describe('useFileSelection', () => {
 
         it('stores the active file path in localStorage', () => {
             sel.selectFile(fileA);
-            expect(localStorageMock.setItem).toHaveBeenCalledWith('leaf-last-selected-file', fileA.path);
+            expect(localStorageMock.setItem).toHaveBeenCalledWith('phylla-last-selected-file', fileA.path);
         });
 
         it('clears the selected folder', () => {
@@ -152,7 +152,7 @@ describe('useFileSelection', () => {
 
         it('stores the path in localStorage', () => {
             sel.openFile(fileA);
-            expect(localStorageMock.setItem).toHaveBeenCalledWith('leaf-last-selected-file', fileA.path);
+            expect(localStorageMock.setItem).toHaveBeenCalledWith('phylla-last-selected-file', fileA.path);
         });
 
         it('clears the selected folder', () => {

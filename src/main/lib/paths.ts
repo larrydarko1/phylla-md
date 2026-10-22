@@ -9,52 +9,64 @@ import path from 'path';
 
 import { log } from '@/main/lib/logger';
 
-// ─── Leaf user directory: ~/.leaf/ ───────────────────────────────────────────
-// All user-owned, user-editable Leaf data lives under here.
-//   ~/.leaf/models/      → GGUF model files
-//   ~/.leaf/prompts/     → markdown system prompts (one per template)
-//   ~/.leaf/themes/      → JSON theme presets
-//   ~/.leaf/locales/     → JSON language files
-//   ~/.leaf/state.json   → small key/value file (active prompt id, etc.)
-export const LEAF_HOME: string = path.join(os.homedir(), '.leaf');
+// ─── Phylla user directory: ~/.phylla/ ───────────────────────────────────────
+// All user-owned, user-editable Phylla data lives under here.
+//   ~/.phylla/models/      → GGUF model files
+//   ~/.phylla/prompts/     → markdown system prompts (one per template)
+//   ~/.phylla/themes/      → JSON theme presets
+//   ~/.phylla/locales/     → JSON language files
+//   ~/.phylla/state.json   → small key/value file (active prompt id, etc.)
+export const PHYLLA_HOME: string = path.join(os.homedir(), '.phylla');
 
-// Directory where the user stores their GGUF models: ~/.leaf/models/
-export const DEFAULT_MODELS_DIR: string = path.join(LEAF_HOME, 'models');
+// Directory where the user stores their GGUF models: ~/.phylla/models/
+export const DEFAULT_MODELS_DIR: string = path.join(PHYLLA_HOME, 'models');
 
-// Directory where system-prompt templates live: ~/.leaf/prompts/
-export const PROMPTS_DIR: string = path.join(LEAF_HOME, 'prompts');
+// Directory where system-prompt templates live: ~/.phylla/prompts/
+export const PROMPTS_DIR: string = path.join(PHYLLA_HOME, 'prompts');
 
-// Directory where user-editable theme presets live: ~/.leaf/themes/
-export const THEMES_DIR: string = path.join(LEAF_HOME, 'themes');
+// Directory where user-editable theme presets live: ~/.phylla/themes/
+export const THEMES_DIR: string = path.join(PHYLLA_HOME, 'themes');
 
-// Directory where user-editable language files live: ~/.leaf/locales/
-export const LOCALES_DIR: string = path.join(LEAF_HOME, 'locales');
+// Directory where user-editable language files live: ~/.phylla/locales/
+export const LOCALES_DIR: string = path.join(PHYLLA_HOME, 'locales');
 
-// Persistent app state (active prompt id, active theme id, etc.): ~/.leaf/state.json
-export const STATE_FILE: string = path.join(LEAF_HOME, 'state.json');
+// Persistent app state (active prompt id, active theme id, etc.): ~/.phylla/state.json
+export const STATE_FILE: string = path.join(PHYLLA_HOME, 'state.json');
 
-// Legacy location used before the ~/.leaf/ consolidation.
+// Legacy locations from before the rename (Leaf → Phylla) and the ~/.phylla/ consolidation.
+const LEGACY_HOME: string = path.join(os.homedir(), '.leaf');
 const LEGACY_MODELS_DIR: string = path.join(os.homedir(), 'leaf-models');
 
-/**
- * Migrate legacy `~/leaf-models/` → `~/.leaf/models/` on first launch.
- * Idempotent: no-op if the legacy dir doesn't exist or the new path is
- * already populated. Runs synchronously at startup before any service
- * touches the models dir.
- */
+// Per-vault metadata folder (bookmarks), under its current and pre-rename names.
+export const VAULT_META_DIRS: ReadonlySet<string> = new Set(['.phylla', '.leaf']);
+
+/** Migrate `~/.leaf/` → `~/.phylla/` and `~/leaf-models/` → `~/.phylla/models/`; runs before any service touches PHYLLA_HOME. */
 export function migrateLegacyPaths(): void {
+    moveIfAbsent(LEGACY_HOME, PHYLLA_HOME);
+    moveIfAbsent(LEGACY_MODELS_DIR, DEFAULT_MODELS_DIR);
+}
+
+/** Move a pre-rename userData dir's entries into the current one — per entry, as Chromium may have created it already. */
+export function migrateLegacyUserData(legacyDir: string, userDataDir: string): void {
     try {
-        if (!fs.existsSync(LEGACY_MODELS_DIR)) return;
-        if (fs.existsSync(DEFAULT_MODELS_DIR)) {
-            log.info('[paths] Both legacy and new model dirs exist — leaving legacy alone.');
-            return;
+        if (fs.existsSync(legacyDir)) {
+            fs.mkdirSync(userDataDir, { recursive: true });
+            for (const entry of fs.readdirSync(legacyDir)) {
+                moveIfAbsent(path.join(legacyDir, entry), path.join(userDataDir, entry));
+            }
         }
-        fs.mkdirSync(LEAF_HOME, { recursive: true });
-        fs.renameSync(LEGACY_MODELS_DIR, DEFAULT_MODELS_DIR);
-        log.info('[paths] Migrated legacy models directory', { from: LEGACY_MODELS_DIR, to: DEFAULT_MODELS_DIR });
     } catch (err) {
-        log.error('[paths] Legacy path migration failed:', err);
+        log.error('[paths] Legacy userData migration failed:', err);
     }
+    const partitions = path.join(userDataDir, 'Partitions');
+    moveIfAbsent(path.join(partitions, 'leaf'), path.join(partitions, 'phylla'));
+}
+
+/** `<vault>/.phylla/`, moving a pre-rename `<vault>/.leaf/` into place first. */
+export function vaultMetaDir(root: string): string {
+    const dir = path.join(root, '.phylla');
+    moveIfAbsent(path.join(root, '.leaf'), dir);
+    return dir;
 }
 
 /**
@@ -139,4 +151,20 @@ export function getWhisperModelDir(): string {
  */
 function resourcesPath(): string | undefined {
     return process.resourcesPath;
+}
+
+/** Rename `from` → `to` unless `to` exists; logs instead of throwing so startup is never blocked. */
+function moveIfAbsent(from: string, to: string): void {
+    try {
+        if (!fs.existsSync(from)) return;
+        if (fs.existsSync(to)) {
+            log.info('[paths] Both legacy and new paths exist — leaving legacy alone.', { from, to });
+            return;
+        }
+        fs.mkdirSync(path.dirname(to), { recursive: true });
+        fs.renameSync(from, to);
+        log.info('[paths] Migrated legacy path', { from, to });
+    } catch (err) {
+        log.error('[paths] Legacy path migration failed:', err);
+    }
 }

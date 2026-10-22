@@ -6,9 +6,9 @@
  * Renderer:      window.electronAPI.log.*
  *
  * Logs are written to rotating files in the OS-standard location:
- *   macOS  — ~/Library/Logs/Leaf/main.log
- *   Win    — %USERPROFILE%\AppData\Roaming\Leaf\logs\main.log
- *   Linux  — ~/.config/Leaf/logs/main.log
+ *   macOS  — ~/Library/Logs/Phylla/main.log
+ *   Win    — %USERPROFILE%\AppData\Roaming\Phylla\logs\main.log
+ *   Linux  — ~/.config/Phylla/logs/main.log
  */
 
 import baseLog from 'electron-log/main';

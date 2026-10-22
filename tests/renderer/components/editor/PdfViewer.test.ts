@@ -4,14 +4,14 @@ import PdfViewer from '@/renderer/components/editor/PdfViewer.vue';
 import { mountWithI18n } from '@test-utils';
 
 describe('PdfViewer', () => {
-    it('renders an iframe with the correct leaf:// URL', async () => {
+    it('renders an iframe with the correct phylla:// URL', async () => {
         const wrapper = mountWithI18n(PdfViewer, {
             props: { filePath: '/vault/document.pdf' },
         });
         await wrapper.vm.$nextTick();
         const iframe = wrapper.find('iframe.pdf-preview');
         expect(iframe.exists()).toBe(true);
-        expect(iframe.attributes('src')).toBe('leaf://localhost/vault/document.pdf');
+        expect(iframe.attributes('src')).toBe('phylla://localhost/vault/document.pdf');
         wrapper.unmount();
     });
 

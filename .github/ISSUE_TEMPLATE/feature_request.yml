@@ -1,13 +1,13 @@
 name: Feature request
-description: Suggest something Leaf should do
+description: Suggest something Phylla should do
 labels: ['enhancement']
 body:
     - type: markdown
       attributes:
           value: |
-              Leaf is local-first and offline by default. Anything that would send note content off the
+              Phylla is local-first and offline by default. Anything that would send note content off the
               device, add telemetry, or require an account is out of scope no matter how well argued —
-              see [SECURITY.md](https://github.com/larrydarko1/leaf/blob/main/.github/SECURITY.md).
+              see [SECURITY.md](https://github.com/larrydarko1/phylla-md/blob/main/.github/SECURITY.md).
 
     - type: textarea
       id: problem

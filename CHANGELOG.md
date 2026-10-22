@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Leaf are documented here.
+All notable changes to Phylla (formerly Leaf) are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Renamed the app from Leaf to Phylla. Existing `~/.leaf/` data, conversations, app state and vault bookmarks are moved over automatically on first launch.
 - Formatting and lint rules now come from the shared `@larrydarko/lint-config` package.
 - removed Brainrot as an interface language.
 
@@ -371,21 +372,21 @@ Before 1.5.0, the version was bumped on almost every commit, so earlier versions
 
 - `.rtf` support (1.0.3).
 
-[Unreleased]: https://github.com/larrydarko1/leaf/compare/v3.1.0...HEAD
-[3.1.0]: https://github.com/larrydarko1/leaf/compare/v3.0.1...v3.1.0
-[3.0.1]: https://github.com/larrydarko1/leaf/compare/v2.6.6...v3.0.1
-[2.6.6]: https://github.com/larrydarko1/leaf/compare/v2.6.2...v2.6.6
-[2.6.2]: https://github.com/larrydarko1/leaf/compare/v2.4.1...v2.6.2
-[2.4.1]: https://github.com/larrydarko1/leaf/compare/v2.1.0...v2.4.1
-[2.1.0]: https://github.com/larrydarko1/leaf/compare/v2.0.1...v2.1.0
-[2.0.1]: https://github.com/larrydarko1/leaf/compare/v2.0.0...v2.0.1
-[2.0.0]: https://github.com/larrydarko1/leaf/compare/v1.5.8...v2.0.0
-[1.5.8]: https://github.com/larrydarko1/leaf/compare/v1.5.7...v1.5.8
-[1.5.7]: https://github.com/larrydarko1/leaf/compare/v1.5.6...v1.5.7
-[1.5.6]: https://github.com/larrydarko1/leaf/compare/v1.5.5...v1.5.6
-[1.5.5]: https://github.com/larrydarko1/leaf/compare/v1.5.4...v1.5.5
-[1.5.4]: https://github.com/larrydarko1/leaf/compare/v1.5.3...v1.5.4
-[1.5.3]: https://github.com/larrydarko1/leaf/compare/v1.5.2...v1.5.3
-[1.5.2]: https://github.com/larrydarko1/leaf/compare/v1.5.1...v1.5.2
-[1.5.1]: https://github.com/larrydarko1/leaf/compare/v1.5.0...v1.5.1
-[1.5.0]: https://github.com/larrydarko1/leaf/compare/v1.4.9...v1.5.0
+[Unreleased]: https://github.com/larrydarko1/phylla-md/compare/v3.1.0...HEAD
+[3.1.0]: https://github.com/larrydarko1/phylla-md/compare/v3.0.1...v3.1.0
+[3.0.1]: https://github.com/larrydarko1/phylla-md/compare/v2.6.6...v3.0.1
+[2.6.6]: https://github.com/larrydarko1/phylla-md/compare/v2.6.2...v2.6.6
+[2.6.2]: https://github.com/larrydarko1/phylla-md/compare/v2.4.1...v2.6.2
+[2.4.1]: https://github.com/larrydarko1/phylla-md/compare/v2.1.0...v2.4.1
+[2.1.0]: https://github.com/larrydarko1/phylla-md/compare/v2.0.1...v2.1.0
+[2.0.1]: https://github.com/larrydarko1/phylla-md/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/larrydarko1/phylla-md/compare/v1.5.8...v2.0.0
+[1.5.8]: https://github.com/larrydarko1/phylla-md/compare/v1.5.7...v1.5.8
+[1.5.7]: https://github.com/larrydarko1/phylla-md/compare/v1.5.6...v1.5.7
+[1.5.6]: https://github.com/larrydarko1/phylla-md/compare/v1.5.5...v1.5.6
+[1.5.5]: https://github.com/larrydarko1/phylla-md/compare/v1.5.4...v1.5.5
+[1.5.4]: https://github.com/larrydarko1/phylla-md/compare/v1.5.3...v1.5.4
+[1.5.3]: https://github.com/larrydarko1/phylla-md/compare/v1.5.2...v1.5.3
+[1.5.2]: https://github.com/larrydarko1/phylla-md/compare/v1.5.1...v1.5.2
+[1.5.1]: https://github.com/larrydarko1/phylla-md/compare/v1.5.0...v1.5.1
+[1.5.0]: https://github.com/larrydarko1/phylla-md/compare/v1.4.9...v1.5.0

@@ -1,5 +1,5 @@
 {
-    "name": "leaf",
+    "name": "phylla-md",
     "version": "3.1.0",
     "description": "A local-first, privacy-focused note-taking app for desktop with built-in AI assistance. Simple interface for reading and editing txt and md files, plus support for loading local LLMs (GGUF format) for private, on-device chat and assistance. All notes and AI interactions stay on your device.",
     "keywords": [
@@ -10,9 +10,9 @@
         "llm",
         "privacy"
     ],
-    "homepage": "https://github.com/larrydarko1/leaf#readme",
+    "homepage": "https://github.com/larrydarko1/phylla-md#readme",
     "bugs": {
-        "url": "https://github.com/larrydarko1/leaf/issues"
+        "url": "https://github.com/larrydarko1/phylla-md/issues"
     },
     "license": "AGPL-3.0-only",
     "author": {
@@ -21,10 +21,10 @@
     },
     "type": "module",
     "main": "out/main/index.js",
-    "desktopName": "leaf.desktop",
+    "desktopName": "phylla.desktop",
     "repository": {
         "type": "git",
-        "url": "https://github.com/larrydarko1/leaf.git"
+        "url": "https://github.com/larrydarko1/phylla-md.git"
     },
     "scripts": {
         "predev": "install-electron",
@@ -117,8 +117,8 @@
     ],
     "private": true,
     "build": {
-        "appId": "com.leaf.app",
-        "productName": "Leaf",
+        "appId": "com.phylla.app",
+        "productName": "Phylla",
         "directories": {
             "output": "dist-electron"
         },
@@ -179,6 +179,7 @@
             ]
         },
         "linux": {
+            "executableName": "phylla",
             "target": [
                 "AppImage",
                 "deb",

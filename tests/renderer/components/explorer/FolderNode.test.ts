@@ -8,7 +8,7 @@ const noteFile = makeFile('notes.md', '/vault/notes.md');
 const imageFile = makeFile('photo.png', '/vault/photo.png', 'png');
 const videoFile = makeFile('clip.mp4', '/vault/clip.mp4', 'mp4');
 const audioFile = makeFile('song.mp3', '/vault/song.mp3', 'mp3');
-const drawingFile = makeFile('sketch.leaf', '/vault/sketch.leaf', 'leaf');
+const drawingFile = makeFile('sketch.drawing', '/vault/sketch.drawing', 'drawing');
 
 const baseProps = {
     depth: 0,
