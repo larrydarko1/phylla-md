@@ -164,7 +164,7 @@ function registerPhyllaProtocol(ses: Electron.Session): void {
 
 // Carry pre-rename (Leaf) data over before anything reads it; dev userData never held release data.
 migrateLegacyPaths();
-if (app.isPackaged) migrateLegacyUserData(path.join(app.getPath('appData'), 'Leaf'), app.getPath('userData'));
+if (app.isPackaged) migrateLegacyUserData(path.join(app.getPath('appData'), 'leaf'), app.getPath('userData'));
 
 /**
  * ─── Scheme privileges ───────────────────────────────────────────────────────
