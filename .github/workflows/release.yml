@@ -118,6 +118,12 @@ jobs:
                       - **deb / rpm** — install with your package manager.
                       - **tar.gz** — extract anywhere and run the `phylla` binary inside.
 
+                      ## Coming from Leaf?
+
+                      Phylla was called Leaf up to v3.1.0. Uninstall Leaf first — the package is now
+                      `phylla-md`, so your package manager won't replace it. Your notes, models and
+                      settings move over automatically on first launch.
+
                       ## macOS and Windows
 
                       Not shipped: signed binaries need paid certificates, and unsigned ones get

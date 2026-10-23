@@ -7,11 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.0] - 2026-10-23
+
+Leaf is now Phylla. Your notes, models, conversations and settings move over automatically on first launch.
+
+### Upgrading
+
+- Uninstall Leaf before installing Phylla. Linux packages are now named `phylla-md` and the binary is `phylla`, so your package manager won't replace the old `leaf` package.
+- Migration is one-way: after running 4.0.0, going back to 3.x won't find your data.
+
 ### Changed
 
-- Renamed the app from Leaf to Phylla. Existing `~/.leaf/` data, conversations, app state and vault bookmarks are moved over automatically on first launch.
+- Renamed the app from Leaf to Phylla. `~/.leaf/` moves to `~/.phylla/`, and each vault's `.leaf/` folder becomes `.phylla/` when opened.
 - Formatting and lint rules now come from the shared `@larrydarko/lint-config` package.
-- removed Brainrot as an interface language.
+
+### Removed
+
+- Brainrot as an interface language.
+
+### Security
+
+- Updated dependencies.
 
 ## [3.1.0] - 2026-09-22
 
@@ -372,7 +388,8 @@ Before 1.5.0, the version was bumped on almost every commit, so earlier versions
 
 - `.rtf` support (1.0.3).
 
-[Unreleased]: https://github.com/larrydarko1/phylla-md/compare/v3.1.0...HEAD
+[Unreleased]: https://github.com/larrydarko1/phylla-md/compare/v4.0.0...HEAD
+[4.0.0]: https://github.com/larrydarko1/phylla-md/compare/v3.1.0...v4.0.0
 [3.1.0]: https://github.com/larrydarko1/phylla-md/compare/v3.0.1...v3.1.0
 [3.0.1]: https://github.com/larrydarko1/phylla-md/compare/v2.6.6...v3.0.1
 [2.6.6]: https://github.com/larrydarko1/phylla-md/compare/v2.6.2...v2.6.6
