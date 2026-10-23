@@ -105,7 +105,7 @@ export function createMarkdownWidgetsPlugin(
 
                     return Decoration.set(uniqueDecos, true);
                 } catch (e) {
-                    window.electronAPI.log.error('[Leaf] Widget plugin build error:', e);
+                    window.electronAPI.log.error('[Phylla] Widget plugin build error:', e);
                     return Decoration.none;
                 }
             }

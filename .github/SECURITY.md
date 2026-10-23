@@ -2,7 +2,7 @@
 
 ## Security Architecture
 
-Leaf is a **desktop-only application** with local-first architecture, which provides enhanced security:
+Phylla is a **desktop-only application** with local-first architecture, which provides enhanced security:
 
 - ✅ **No server-side code** - No backend vulnerabilities
 - ✅ **Local-only storage** - Notes stored as plain text files on user's computer
@@ -15,15 +15,15 @@ Leaf is a **desktop-only application** with local-first architecture, which prov
 
 Your notes are stored in the vault folder you choose. App settings are stored locally at:
 
-- **macOS:** `~/Library/Application Support/leaf/`
-- **Windows:** `%APPDATA%/leaf/`
-- **Linux:** `~/.config/leaf/`
+- **macOS:** `~/Library/Application Support/Phylla/`
+- **Windows:** `%APPDATA%/Phylla/`
+- **Linux:** `~/.config/Phylla/`
 
 Your notes (.txt, .md, .rtf files) never leave your device.
 
 ## Reporting a Vulnerability
 
-**Do not open a public issue.** Leaf has no auto-update — installed copies stay on whatever version
+**Do not open a public issue.** Phylla has no auto-update — installed copies stay on whatever version
 the user downloaded until they choose to replace it. A public report is therefore a working
 disclosure against every existing install, and unlike a web app there is no way to push the fix out.
 
@@ -37,7 +37,7 @@ Please include:
 - Potential impact
 - Suggested fix (if applicable)
 
-Expect an acknowledgement within a week. Leaf is maintained by one person, so a fix timeline depends
+Expect an acknowledgement within a week. Phylla is maintained by one person, so a fix timeline depends
 on severity; you will be told which release carries the fix, and credited in it unless you ask not to
 be.
 
@@ -51,7 +51,7 @@ Out of scope: findings that require an attacker to already have the user's files
 Notes are plain files with the user's own permissions by design, so "another local process can read
 the vault" is the threat model working as intended, not a vulnerability.
 
-Dependency advisories with no reachable path in Leaf's code are tracked in the audit gate's
+Dependency advisories with no reachable path in Phylla's code are tracked in the audit gate's
 allowlist ([scripts/check/check-audit.ts](../scripts/check/check-audit.ts)) rather than reported
 as vulnerabilities. Each entry carries the reason it cannot be fixed here, and CI fails once the
 advisory stops being reported — upstream shipped a fix, so the waiver has to go.

@@ -306,7 +306,7 @@ describe('useEditorTabs', () => {
         it('persists tabs to localStorage when a tab is opened', () => {
             tabs.setFolderPath(FOLDER);
             tabs.openTab(makeFile('a.md'));
-            const stored = localStorage.getItem(`leaf-tabs-${FOLDER}`);
+            const stored = localStorage.getItem(`phylla-tabs-${FOLDER}`);
             expect(stored).toBeTruthy();
             const data = PersistedTabStateSchema.parse(JSON.parse(stored!));
             expect(data.tabs).toHaveLength(1);
@@ -319,7 +319,7 @@ describe('useEditorTabs', () => {
             tabs.openTab(makeFile('a.md'));
             tabs.openTab(makeFile('b.md'));
             tabs.closeTab(0);
-            const data = PersistedTabStateSchema.parse(JSON.parse(localStorage.getItem(`leaf-tabs-${FOLDER}`)!));
+            const data = PersistedTabStateSchema.parse(JSON.parse(localStorage.getItem(`phylla-tabs-${FOLDER}`)!));
             expect(data.tabs).toHaveLength(1);
             expect(data.tabs[0]?.path).toBe('/b.md');
         });
@@ -329,7 +329,7 @@ describe('useEditorTabs', () => {
             tabs.openTab(makeFile('a.md'));
             tabs.openTab(makeFile('b.md'));
             tabs.switchTab(0);
-            const data = PersistedTabStateSchema.parse(JSON.parse(localStorage.getItem(`leaf-tabs-${FOLDER}`)!));
+            const data = PersistedTabStateSchema.parse(JSON.parse(localStorage.getItem(`phylla-tabs-${FOLDER}`)!));
             expect(data.activeIndex).toBe(0);
         });
 
@@ -337,7 +337,7 @@ describe('useEditorTabs', () => {
             tabs.setFolderPath(FOLDER);
             tabs.openTab(makeFile('a.md'));
             tabs.saveScrollPosition('/a.md', 250);
-            const data = PersistedTabStateSchema.parse(JSON.parse(localStorage.getItem(`leaf-tabs-${FOLDER}`)!));
+            const data = PersistedTabStateSchema.parse(JSON.parse(localStorage.getItem(`phylla-tabs-${FOLDER}`)!));
             expect(data.tabs[0]?.scrollTop).toBe(250);
         });
 
@@ -345,7 +345,7 @@ describe('useEditorTabs', () => {
             const files = [makeFile('a.md'), makeFile('b.md'), makeFile('c.md')];
 
             localStorage.setItem(
-                `leaf-tabs-${FOLDER}`,
+                `phylla-tabs-${FOLDER}`,
                 JSON.stringify({
                     tabs: [
                         { path: '/a.md', scrollTop: 100 },
@@ -369,7 +369,7 @@ describe('useEditorTabs', () => {
             const files = [makeFile('a.md')]; // b.md is gone
 
             localStorage.setItem(
-                `leaf-tabs-${FOLDER}`,
+                `phylla-tabs-${FOLDER}`,
                 JSON.stringify({
                     tabs: [
                         { path: '/a.md', scrollTop: 0 },
@@ -395,7 +395,7 @@ describe('useEditorTabs', () => {
 
         it('returns false when all persisted files are gone', () => {
             localStorage.setItem(
-                `leaf-tabs-${FOLDER}`,
+                `phylla-tabs-${FOLDER}`,
                 JSON.stringify({
                     tabs: [{ path: '/gone.md', scrollTop: 0 }],
                     activeIndex: 0,
@@ -413,7 +413,7 @@ describe('useEditorTabs', () => {
         });
 
         it('handles corrupted localStorage data gracefully', () => {
-            localStorage.setItem(`leaf-tabs-${FOLDER}`, 'not-json');
+            localStorage.setItem(`phylla-tabs-${FOLDER}`, 'not-json');
             const restored = tabs.restoreTabs(FOLDER, [makeFile('a.md')]);
             expect(restored).toBe(false);
         });
@@ -422,7 +422,7 @@ describe('useEditorTabs', () => {
             tabs.setFolderPath(FOLDER);
             tabs.openTab(makeFile('old.md', '/old.md'));
             tabs.renameTabFile('/old.md', makeFile('new.md', '/new.md'));
-            const data = PersistedTabStateSchema.parse(JSON.parse(localStorage.getItem(`leaf-tabs-${FOLDER}`)!));
+            const data = PersistedTabStateSchema.parse(JSON.parse(localStorage.getItem(`phylla-tabs-${FOLDER}`)!));
             expect(data.tabs[0]?.path).toBe('/new.md');
         });
 
@@ -433,7 +433,7 @@ describe('useEditorTabs', () => {
             vi.clearAllMocks();
             tabs.syncTabFiles([makeFile('a.md')]); // b.md removed
             expect(localStorageMock.setItem).toHaveBeenCalled();
-            const data = PersistedTabStateSchema.parse(JSON.parse(localStorage.getItem(`leaf-tabs-${FOLDER}`)!));
+            const data = PersistedTabStateSchema.parse(JSON.parse(localStorage.getItem(`phylla-tabs-${FOLDER}`)!));
             expect(data.tabs).toHaveLength(1);
         });
 
@@ -441,7 +441,7 @@ describe('useEditorTabs', () => {
             tabs.setFolderPath(FOLDER);
             tabs.openTab(makeFile('a.md'));
             tabs.clearTabs();
-            const data = PersistedTabStateSchema.parse(JSON.parse(localStorage.getItem(`leaf-tabs-${FOLDER}`)!));
+            const data = PersistedTabStateSchema.parse(JSON.parse(localStorage.getItem(`phylla-tabs-${FOLDER}`)!));
             expect(data.tabs).toHaveLength(0);
             expect(data.activeIndex).toBe(-1);
         });

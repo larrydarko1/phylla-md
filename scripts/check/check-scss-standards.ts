@@ -15,15 +15,15 @@
  * emits nothing until it is included. The gate fixes both names.
  *
  * `themes.source: 'json-presets'` is the one real switch, and it is a product
- * decision rather than a style preference: Leaf's themes are JSON files seeded
- * into ~/.leaf/themes/ where users hand-edit them, so the palettes cannot live in
+ * decision rather than a style preference: Phylla's themes are JSON files seeded
+ * into ~/.phylla/themes/ where users hand-edit them, so the palettes cannot live in
  * a Sass map. The parity rule is the same one every other project gets — a
  * reference preset, every other preset carrying exactly its key set, a fallback
  * layer that matches, and no `var()` naming something nothing declares. Only
  * where the key sets are READ FROM differs.
  *
  * `fallbackFile` is _theme.scss's `:root` block. It matters more here than
- * elsewhere: a user's hand-edited preset in ~/.leaf/themes/ can predate a token,
+ * elsewhere: a user's hand-edited preset in ~/.phylla/themes/ can predate a token,
  * and then this layer is the only thing standing between them and an element
  * that renders with no colour at all.
  *

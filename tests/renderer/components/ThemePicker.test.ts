@@ -6,7 +6,7 @@ import { mountWithI18n } from '@test-utils';
 const mockElectronAPI = {
     themeList: vi.fn(),
     themeSetActive: vi.fn(),
-    themeOpenLeafDir: vi.fn(),
+    themeOpenPhyllaDir: vi.fn(),
     log: { error: vi.fn(), warn: vi.fn(), info: vi.fn() },
 };
 
@@ -51,7 +51,7 @@ beforeEach(() => {
         activeId: 'dark',
     });
     mockElectronAPI.themeSetActive.mockResolvedValue({ success: true });
-    mockElectronAPI.themeOpenLeafDir.mockResolvedValue({ success: true });
+    mockElectronAPI.themeOpenPhyllaDir.mockResolvedValue({ success: true });
 });
 
 describe('ThemePicker', () => {

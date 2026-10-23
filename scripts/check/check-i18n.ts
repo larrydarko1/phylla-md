@@ -6,7 +6,7 @@
  * that are specific to it are here.
  *
  * assets/locales/*.json are not build artefacts: language.ts seeds them into
- * ~/.leaf/locales/ where users edit them, so `en` is both reference and fallback.
+ * ~/.phylla/locales/ where users edit them, so `en` is both reference and fallback.
  */
 import { checkI18n } from '@larrydarko/lint-config/gates/i18n';
 
@@ -15,11 +15,11 @@ checkI18n({
     configFile: 'src/renderer/i18n.ts',
     configNotes: {
         escapeParameter:
-            'The messages themselves are user-editable under ~/.leaf/locales/, and the renderer already has ' +
+            'The messages themselves are user-editable under ~/.phylla/locales/, and the renderer already has ' +
             'v-html sites (ai/AiMessageList.vue, drawing/DrawingToolbar.vue), so an unescaped param is one ' +
             'refactor away from an XSS sink.',
         fallbackLocale:
-            'Locales are hand-edited in ~/.leaf/locales/, so missing keys are a runtime reality here, not only ' +
+            'Locales are hand-edited in ~/.phylla/locales/, so missing keys are a runtime reality here, not only ' +
             'a build-time one.',
     },
 });

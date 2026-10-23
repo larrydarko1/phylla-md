@@ -39,7 +39,7 @@ let ipc: ReturnType<typeof createFakeIpc>;
 const fakeWindow = new BrowserWindow();
 
 function newTmpVault(): string {
-    const dir = path.join(os.tmpdir(), `leaf-fs-test-${process.pid}-${Date.now()}`);
+    const dir = path.join(os.tmpdir(), `phylla-fs-test-${process.pid}-${Date.now()}`);
     fs.mkdirSync(dir, { recursive: true });
     return dir;
 }
@@ -526,7 +526,7 @@ describe('file:writeBuffer', () => {
     });
 
     it('allows an authorised path outside the vault (exports go anywhere)', async () => {
-        const outside = path.join(os.tmpdir(), `leaf-export-${Date.now()}.png`);
+        const outside = path.join(os.tmpdir(), `phylla-export-${Date.now()}.png`);
         await authorize(outside);
         const result = readReply(await ipc.invoke('file:writeBuffer', outside, Buffer.from('x').toString('base64')));
         expect(result.success).toBe(true);
@@ -580,10 +580,10 @@ describe('bookmarks:load', () => {
     });
 
     it('loads previously saved bookmarks', async () => {
-        const leafDir = path.join(tmpVault, '.leaf');
-        fs.mkdirSync(leafDir, { recursive: true });
+        const phyllaDir = path.join(tmpVault, '.phylla');
+        fs.mkdirSync(phyllaDir, { recursive: true });
         const bookmarks = [path.join(tmpVault, 'note.md')];
-        fs.writeFileSync(path.join(leafDir, 'bookmarks.json'), JSON.stringify(bookmarks));
+        fs.writeFileSync(path.join(phyllaDir, 'bookmarks.json'), JSON.stringify(bookmarks));
 
         const result = readReply(await ipc.invoke('bookmarks:load'));
         expect(result.success).toBe(true);
@@ -591,10 +591,10 @@ describe('bookmarks:load', () => {
     });
 
     it('filters out bookmarks outside the vault', async () => {
-        const leafDir = path.join(tmpVault, '.leaf');
-        fs.mkdirSync(leafDir, { recursive: true });
+        const phyllaDir = path.join(tmpVault, '.phylla');
+        fs.mkdirSync(phyllaDir, { recursive: true });
         const bookmarks = [path.join(tmpVault, 'note.md'), '/etc/passwd'];
-        fs.writeFileSync(path.join(leafDir, 'bookmarks.json'), JSON.stringify(bookmarks));
+        fs.writeFileSync(path.join(phyllaDir, 'bookmarks.json'), JSON.stringify(bookmarks));
 
         const result = readReply(await ipc.invoke('bookmarks:load'));
         expect(result.success).toBe(true);
@@ -602,9 +602,9 @@ describe('bookmarks:load', () => {
     });
 
     it('returns empty list when bookmarks.json contains non-array', async () => {
-        const leafDir = path.join(tmpVault, '.leaf');
-        fs.mkdirSync(leafDir, { recursive: true });
-        fs.writeFileSync(path.join(leafDir, 'bookmarks.json'), '"not an array"');
+        const phyllaDir = path.join(tmpVault, '.phylla');
+        fs.mkdirSync(phyllaDir, { recursive: true });
+        fs.writeFileSync(path.join(phyllaDir, 'bookmarks.json'), '"not an array"');
 
         const result = readReply(await ipc.invoke('bookmarks:load'));
         expect(result.success).toBe(true);
@@ -612,9 +612,9 @@ describe('bookmarks:load', () => {
     });
 
     it('returns empty list when bookmarks.json is invalid JSON', async () => {
-        const leafDir = path.join(tmpVault, '.leaf');
-        fs.mkdirSync(leafDir, { recursive: true });
-        fs.writeFileSync(path.join(leafDir, 'bookmarks.json'), 'not-json');
+        const phyllaDir = path.join(tmpVault, '.phylla');
+        fs.mkdirSync(phyllaDir, { recursive: true });
+        fs.writeFileSync(path.join(phyllaDir, 'bookmarks.json'), 'not-json');
 
         const result = readReply(await ipc.invoke('bookmarks:load'));
         expect(result.success).toBe(true);
@@ -630,7 +630,7 @@ describe('bookmarks:save', () => {
 
         const saved = z
             .array(z.string())
-            .parse(JSON.parse(fs.readFileSync(path.join(tmpVault, '.leaf', 'bookmarks.json'), 'utf-8')));
+            .parse(JSON.parse(fs.readFileSync(path.join(tmpVault, '.phylla', 'bookmarks.json'), 'utf-8')));
         expect(saved).toEqual(bookmarks);
     });
 

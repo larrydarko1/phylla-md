@@ -1,7 +1,7 @@
 /**
  * useLanguage — manages the active language / locale.
  *
- * The library of languages lives at ~/.leaf/locales/*.json and is hand-edited
+ * The library of languages lives at ~/.phylla/locales/*.json and is hand-edited
  * or added by the user. This composable lists them and switches the active one.
  *
  * Architecture mirrors useTheme.
@@ -23,7 +23,7 @@ type UseLanguageReturn = {
     openLocalesFolder: () => Promise<void>;
 };
 
-const ACTIVE_LANGUAGE_LS_KEY = 'leaf-language-id';
+const ACTIVE_LANGUAGE_LS_KEY = 'phylla-language-id';
 
 // Singleton state — one language applies app-wide.
 const languages: Ref<LanguageInfo[]> = ref<LanguageInfo[]>([]);
@@ -90,9 +90,9 @@ export function useLanguage(): UseLanguageReturn {
 
     async function openLocalesFolder(): Promise<void> {
         try {
-            await window.electronAPI.languageOpenLeafDir();
+            await window.electronAPI.languageOpenPhyllaDir();
         } catch (err) {
-            window.electronAPI.log.error('languageOpenLeafDir error:', err);
+            window.electronAPI.log.error('languageOpenPhyllaDir error:', err);
         }
     }
 

@@ -5,24 +5,24 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 const PATHS = vi.hoisted(() => {
     const { join } = process.getBuiltinModule('path');
     const { tmpdir } = process.getBuiltinModule('os');
-    const tmpRoot = join(tmpdir(), `leaf-appstate-test-${process.pid}-${Date.now()}`);
-    const leafHome = join(tmpRoot, '.leaf');
+    const tmpRoot = join(tmpdir(), `phylla-appstate-test-${process.pid}-${Date.now()}`);
+    const phyllaHome = join(tmpRoot, '.phylla');
     return {
         TMP_ROOT: tmpRoot,
-        LEAF_HOME: leafHome,
-        STATE_FILE: join(leafHome, 'state.json'),
+        PHYLLA_HOME: phyllaHome,
+        STATE_FILE: join(phyllaHome, 'state.json'),
     };
 });
 
 vi.mock('@/main/lib/paths', () => ({
-    LEAF_HOME: PATHS.LEAF_HOME,
+    PHYLLA_HOME: PATHS.PHYLLA_HOME,
     STATE_FILE: PATHS.STATE_FILE,
 }));
 
-const { LEAF_HOME, STATE_FILE } = PATHS;
+const { PHYLLA_HOME, STATE_FILE } = PATHS;
 
 function resetTmp() {
-    fs.rmSync(LEAF_HOME, { recursive: true, force: true });
+    fs.rmSync(PHYLLA_HOME, { recursive: true, force: true });
 }
 
 beforeEach(() => {
@@ -78,7 +78,7 @@ describe('appState', () => {
     });
 
     it('recovers from an unparseable state file by treating it as empty', async () => {
-        fs.mkdirSync(LEAF_HOME, { recursive: true });
+        fs.mkdirSync(PHYLLA_HOME, { recursive: true });
         fs.writeFileSync(STATE_FILE, '{ this is not json');
         const { readState, updateState } = await import('@/main/lib/appState');
 
@@ -91,7 +91,7 @@ describe('appState', () => {
         const { updateState } = await import('@/main/lib/appState');
         await updateState((s) => ({ ...s, activeTheme: 'dark' }));
 
-        const leftovers = fs.readdirSync(LEAF_HOME).filter((f) => f.includes('.tmp'));
+        const leftovers = fs.readdirSync(PHYLLA_HOME).filter((f) => f.includes('.tmp'));
         expect(leftovers).toEqual([]);
     });
 });

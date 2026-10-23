@@ -34,7 +34,7 @@ let tmpVault: string;
 let ipc: ReturnType<typeof createFakeIpc>;
 
 function newTmpVault(): string {
-    const dir = path.join(os.tmpdir(), `leaf-bm-test-${process.pid}-${Date.now()}`);
+    const dir = path.join(os.tmpdir(), `phylla-bm-test-${process.pid}-${Date.now()}`);
     fs.mkdirSync(dir, { recursive: true });
     return dir;
 }
@@ -56,7 +56,7 @@ describe('bookmarks IPC handlers', () => {
     });
 
     describe('bookmarks:load', () => {
-        it('returns empty array when .leaf/bookmarks.json does not exist', async () => {
+        it('returns empty array when .phylla/bookmarks.json does not exist', async () => {
             const result = readReply(await ipc.invoke('bookmarks:load'));
             expect(result.success).toBe(true);
             expect(result.bookmarks).toEqual([]);
@@ -71,10 +71,10 @@ describe('bookmarks IPC handlers', () => {
         });
 
         it('filters out paths that have escaped the vault (tampered file)', async () => {
-            const leafDir = path.join(tmpVault, '.leaf');
-            fs.mkdirSync(leafDir, { recursive: true });
+            const phyllaDir = path.join(tmpVault, '.phylla');
+            fs.mkdirSync(phyllaDir, { recursive: true });
             fs.writeFileSync(
-                path.join(leafDir, 'bookmarks.json'),
+                path.join(phyllaDir, 'bookmarks.json'),
                 JSON.stringify([`${tmpVault}/valid.md`, '/etc/passwd']),
             );
             const result = readReply(await ipc.invoke('bookmarks:load'));
@@ -83,19 +83,29 @@ describe('bookmarks IPC handlers', () => {
             expect(result.bookmarks).not.toContain('/etc/passwd');
         });
 
+        it('moves a pre-rename .leaf folder to .phylla and loads its bookmarks', async () => {
+            const legacyDir = path.join(tmpVault, '.leaf');
+            fs.mkdirSync(legacyDir, { recursive: true });
+            fs.writeFileSync(path.join(legacyDir, 'bookmarks.json'), JSON.stringify([`${tmpVault}/a.md`]));
+            const result = readReply(await ipc.invoke('bookmarks:load'));
+            expect(result.bookmarks).toEqual([`${tmpVault}/a.md`]);
+            expect(fs.existsSync(legacyDir)).toBe(false);
+            expect(fs.existsSync(path.join(tmpVault, '.phylla', 'bookmarks.json'))).toBe(true);
+        });
+
         it('returns empty array when bookmarks.json contains non-array JSON', async () => {
-            const leafDir = path.join(tmpVault, '.leaf');
-            fs.mkdirSync(leafDir, { recursive: true });
-            fs.writeFileSync(path.join(leafDir, 'bookmarks.json'), JSON.stringify({ oops: true }));
+            const phyllaDir = path.join(tmpVault, '.phylla');
+            fs.mkdirSync(phyllaDir, { recursive: true });
+            fs.writeFileSync(path.join(phyllaDir, 'bookmarks.json'), JSON.stringify({ oops: true }));
             const result = readReply(await ipc.invoke('bookmarks:load'));
             expect(result.success).toBe(true);
             expect(result.bookmarks).toEqual([]);
         });
 
         it('returns empty array when bookmarks.json contains malformed JSON', async () => {
-            const leafDir = path.join(tmpVault, '.leaf');
-            fs.mkdirSync(leafDir, { recursive: true });
-            fs.writeFileSync(path.join(leafDir, 'bookmarks.json'), 'NOT JSON {{{}}}');
+            const phyllaDir = path.join(tmpVault, '.phylla');
+            fs.mkdirSync(phyllaDir, { recursive: true });
+            fs.writeFileSync(path.join(phyllaDir, 'bookmarks.json'), 'NOT JSON {{{}}}');
             const result = readReply(await ipc.invoke('bookmarks:load'));
             expect(result.success).toBe(true);
             expect(result.bookmarks).toEqual([]);
@@ -108,17 +118,17 @@ describe('bookmarks IPC handlers', () => {
             expect(result.success).toBe(true);
         });
 
-        it('creates .leaf/bookmarks.json inside the vault', async () => {
+        it('creates .phylla/bookmarks.json inside the vault', async () => {
             await ipc.invoke('bookmarks:save', [`${tmpVault}/note.md`]);
-            const bookmarksFile = path.join(tmpVault, '.leaf', 'bookmarks.json');
+            const bookmarksFile = path.join(tmpVault, '.phylla', 'bookmarks.json');
             expect(fs.existsSync(bookmarksFile)).toBe(true);
         });
 
-        it('creates the .leaf directory if it does not exist', async () => {
-            const leafDir = path.join(tmpVault, '.leaf');
-            expect(fs.existsSync(leafDir)).toBe(false);
+        it('creates the .phylla directory if it does not exist', async () => {
+            const phyllaDir = path.join(tmpVault, '.phylla');
+            expect(fs.existsSync(phyllaDir)).toBe(false);
             await ipc.invoke('bookmarks:save', [`${tmpVault}/note.md`]);
-            expect(fs.existsSync(leafDir)).toBe(true);
+            expect(fs.existsSync(phyllaDir)).toBe(true);
         });
 
         it('rejects a path that escapes the vault via traversal', async () => {

@@ -185,7 +185,7 @@ describe('useVault', () => {
             mockAPI.scanFolder.mockResolvedValue({ success: true, root: '/vault', files: [], folders: [] });
             await vault.loadVault();
             vault.closeVault();
-            expect(localStorageMock.removeItem).toHaveBeenCalledWith('leaf-last-selected-file');
+            expect(localStorageMock.removeItem).toHaveBeenCalledWith('phylla-last-selected-file');
         });
     });
 

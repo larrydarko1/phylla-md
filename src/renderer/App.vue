@@ -342,7 +342,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div class="leaf-app stack">
+    <div class="phylla-app stack">
         <!-- Welcome screen when no folder is selected -->
         <div
             v-if="!currentFolder"
@@ -352,10 +352,10 @@ onBeforeUnmount(() => {
                     <img
                         draggable="false"
                         src="./assets/icons/icon.png"
-                        alt="Leaf logo"
+                        alt="Phylla logo"
                         class="welcome-logo-icon hero-brand-icon" />
                     <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -- brand name, not translated -->
-                    <span class="welcome-logo-text hero-brand-text">leaf.</span>
+                    <span class="welcome-logo-text hero-brand-text">phylla.</span>
                 </div>
 
                 <button
@@ -565,7 +565,7 @@ onBeforeUnmount(() => {
 <style scoped lang="scss">
 // –– Shell ––––––––––––––––––––
 
-.leaf-app {
+.phylla-app {
     height: 100%;
     background: $base1;
     color: $text1;

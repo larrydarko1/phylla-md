@@ -1,6 +1,6 @@
 /**
  * Conversation Service — persists LLM chat conversations as JSON files.
- * Stored in the app's userData directory (e.g. ~/Library/Application Support/Leaf/conversations/).
+ * Stored in the app's userData directory (e.g. ~/Library/Application Support/Phylla/conversations/).
  */
 
 import { randomUUID } from 'crypto';

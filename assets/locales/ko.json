@@ -65,7 +65,7 @@
     "open_models_folder": "모델 폴더 열기",
     "system_prompt": "시스템 프롬프트",
     "no_prompts_found": "프롬프트를 찾을 수 없습니다",
-    "refresh_models_folder": ".leaf 폴더 새로고침",
+    "refresh_models_folder": ".phylla 폴더 새로고침",
     "new_conversation": "새 대화",
     "close": "닫기",
     "copied": "복사됨!",
@@ -119,7 +119,7 @@
     "footer_hint_intro": "프리셋을 추가하려면",
     "footer_hint_file_type": ".json",
     "footer_hint_files_in": "파일을",
-    "footer_hint_path": "~/.leaf/themes/",
+    "footer_hint_path": "~/.phylla/themes/",
     "footer_hint_action": "파일을 넣으세요. 편집하여 사용자 지정할 수 있습니다."
   },
   "language": {
@@ -134,7 +134,7 @@
     "open_folder": "언어 폴더 열기",
     "footer_hint_intro": "언어를 추가하려면",
     "footer_hint_file_type": ".json",
-    "footer_hint_path": "~/.leaf/languages/",
+    "footer_hint_path": "~/.phylla/locales/",
     "footer_hint_action": "파일을 넣으세요. 편집하여 사용자 지정할 수 있습니다."
   },
   "search": {
@@ -162,7 +162,7 @@
     "stop_dictation": "받아쓰기 중지",
     "start_dictation": "음성을 텍스트로 변환하는 받아쓰기 시작",
     "loading_whisper_model": "Whisper 모델 불러오는 중...",
-    "leaf_logo": "Leaf 로고",
+    "phylla_logo": "Phylla 로고",
     "select_note_to_start_editing": "편집을 시작할 노트를 선택하세요",
     "or_create_new_note": "또는 노트 폴더에서 새로 만들기",
     "video_player": "동영상 플레이어",

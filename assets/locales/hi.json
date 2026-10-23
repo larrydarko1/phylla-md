@@ -65,7 +65,7 @@
     "open_models_folder": "मॉडल फ़ोल्डर खोलें",
     "system_prompt": "सिस्टम प्रॉम्प्ट",
     "no_prompts_found": "कोई प्रॉम्प्ट नहीं मिला",
-    "refresh_models_folder": ".leaf फ़ोल्डर रीफ़्रेश करें",
+    "refresh_models_folder": ".phylla फ़ोल्डर रीफ़्रेश करें",
     "new_conversation": "नई बातचीत",
     "close": "बंद करें",
     "copied": "कॉपी हो गया!",
@@ -119,7 +119,7 @@
     "footer_hint_intro": "प्रीसेट जोड़ने के लिए",
     "footer_hint_file_type": ".json",
     "footer_hint_files_in": "फ़ाइलें",
-    "footer_hint_path": "~/.leaf/themes/",
+    "footer_hint_path": "~/.phylla/themes/",
     "footer_hint_action": "फ़ाइल यहां डालें। अनुकूलित करने के लिए उसे संपादित करें।"
   },
   "language": {
@@ -134,7 +134,7 @@
     "open_folder": "भाषा फ़ोल्डर खोलें",
     "footer_hint_intro": "भाषाएं जोड़ने के लिए",
     "footer_hint_file_type": ".json",
-    "footer_hint_path": "~/.leaf/languages/",
+    "footer_hint_path": "~/.phylla/locales/",
     "footer_hint_action": "फ़ाइल यहां डालें। अनुकूलित करने के लिए उसे संपादित करें।"
   },
   "search": {
@@ -162,7 +162,7 @@
     "stop_dictation": "डिक्टेशन रोकें",
     "start_dictation": "स्पीच-टू-टेक्स्ट डिक्टेशन शुरू करें",
     "loading_whisper_model": "Whisper मॉडल लोड हो रहा है...",
-    "leaf_logo": "Leaf लोगो",
+    "phylla_logo": "Phylla लोगो",
     "select_note_to_start_editing": "संपादन शुरू करने के लिए एक नोट चुनें",
     "or_create_new_note": "या अपने नोट्स फ़ोल्डर से नया बनाएं",
     "video_player": "वीडियो प्लेयर",

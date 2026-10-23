@@ -195,7 +195,7 @@ export function useAIModel(): UseAIModelReturn {
 
     async function openModelsFolder(): Promise<void> {
         try {
-            await window.electronAPI.aiOpenLeafDir();
+            await window.electronAPI.aiOpenPhyllaDir();
         } catch (error) {
             window.electronAPI.log.error('Failed to open models dir:', error);
         }

@@ -157,7 +157,7 @@ $z-extreme: 10000;
 // –– Maps CSS custom properties to SCSS variables for use in components. ––––––––––––––––––––
 
 // These custom property names are the app's public theme contract — the `colors` keys of every
-// preset in assets/themes/ and of the copies users hand-edit in ~/.leaf/themes/ — so they cannot be
+// preset in assets/themes/ and of the copies users hand-edit in ~/.phylla/themes/ — so they cannot be
 // renamed.
 
 $text1: var(--text1);

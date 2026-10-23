@@ -1,6 +1,6 @@
-# Contributing to Leaf
+# Contributing to Phylla
 
-Thank you for considering contributing to Leaf! This is a desktop note-taking application built with Electron and Vue 3.
+Thank you for considering contributing to Phylla! This is a desktop note-taking application built with Electron and Vue 3.
 
 ## Platform support
 
@@ -18,8 +18,8 @@ once the project has the resources for it.
 1. **Fork the repository**
 2. **Clone your fork**
     ```sh
-    git clone https://github.com/larrydarko1/leaf.git
-    cd leaf
+    git clone https://github.com/larrydarko1/phylla-md.git
+    cd phylla-md
     ```
 3. **Install dependencies**
     ```sh
@@ -47,7 +47,7 @@ Key conventions:
 
 ### Branching
 
-Leaf is trunk-based: `main` is the only long-lived branch, and everything else is a short-lived
+Phylla is trunk-based: `main` is the only long-lived branch, and everything else is a short-lived
 branch off it that gets squash-merged and deleted. Branch names carry the same type prefix as the
 commits — `feat/`, `fix/` or `chore/`:
 
@@ -226,20 +226,20 @@ checked by hand, because nothing else will check it.
 
 Linting, formatting and the CI gates all come from one shared package,
 [`@larrydarko/lint-config`](https://www.npmjs.com/package/@larrydarko/lint-config). The config files
-in this repo are thin: they call the package and pass only what is specific to Leaf. A change to a
+in this repo are thin: they call the package and pass only what is specific to Phylla. A change to a
 shared rule belongs in the package, not here.
 
 - **Prettier** (`prettier.config.js`): re-exports the shared config — single quotes, 4-space indent, 120 char line width, trailing commas, LF line endings
-- **ESLint** (`eslint.config.js`): the shared TypeScript + Vue base, plus Leaf's own rules for what main, preload, renderer and schemas may import and use
+- **ESLint** (`eslint.config.js`): the shared TypeScript + Vue base, plus Phylla's own rules for what main, preload, renderer and schemas may import and use
 - **stylelint** (`.stylelintrc.mjs`), **lint-staged** (`lint-staged.config.js`), **commitlint** (`commitlint.config.js`) and **knip** (`knip.config.js`) follow the same pattern
-- **Gate scripts** (`scripts/check/`): each one runs a gate from the package with Leaf's paths and allowlists
+- **Gate scripts** (`scripts/check/`): each one runs a gate from the package with Phylla's paths and allowlists
 - Follow existing patterns in the codebase — look at similar files before writing new code
 - Keep components small and focused — extract sub-components and composables when a file grows beyond ~300 lines
 - Write clear, descriptive comments only where the logic isn't self-evident
 
 ## Releases
 
-Leaf uses [semantic versioning](https://semver.org/) — `vMAJOR.MINOR.PATCH`. The split is that
+Phylla uses [semantic versioning](https://semver.org/) — `vMAJOR.MINOR.PATCH`. The split is that
 **humans decide, CI executes**.
 
 | Bump      | When                                                              | Example           |
@@ -286,7 +286,7 @@ version.
 
 ## Reporting Issues
 
-Use the [issue templates](https://github.com/larrydarko1/leaf/issues/new/choose) — they ask for the
+Use the [issue templates](https://github.com/larrydarko1/phylla-md/issues/new/choose) — they ask for the
 version, OS and log location up front, which is most of what a bug report needs. Screenshots help.
 
 **Security vulnerabilities do not go in issues.** Email the maintainer at <hello@larrydarko.dev>

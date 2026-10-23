@@ -1,15 +1,15 @@
 <img src="public/banner.png">
 
-If you find Leaf useful, consider [giving it a star ⭐](https://github.com/larrydarko1/leaf) — it helps others discover the project!
+If you find Phylla useful, consider [giving it a star ⭐](https://github.com/larrydarko1/phylla-md) — it helps others discover the project!
 
-Leaf is a **local-first, privacy-focused note-taking app** for desktop built with **Electron**, **Vue 3**, and TypeScript. Inspired by [Obsidian](https://obsidian.md) and [LM Studio](https://lmstudio.ai), Leaf provides a clean, distraction-free environment for managing your notes with local AI capabilities. All your data stays on your device - no cloud, no database, no tracking.
+Phylla (formerly "Leaf") is a **local-first, privacy-focused note-taking app** for desktop built with **Electron**, **Vue 3**, and TypeScript. Inspired by [Obsidian](https://obsidian.md) and [LM Studio](https://lmstudio.ai), Phylla provides a clean, distraction-free environment for managing your notes with local AI capabilities. All your data stays on your device - no cloud, no database, no tracking.
 
 > **Prebuilt binaries are published for Linux only.** macOS and Windows build fine from source —
 > see [Other platforms](#other-platforms) for why they aren't shipped and how to build your own.
 
 # Demo
 
-![Leaf Demo](./public/demo.gif)
+![Phylla Demo](./public/demo.gif)
 
 ## Features
 
@@ -36,8 +36,8 @@ Leaf is a **local-first, privacy-focused note-taking app** for desktop built wit
 - **Conversation history** - All chats are automatically saved as JSON and can be browsed, loaded, renamed, or deleted
 - **Conversation restore** - Reloading a model or switching conversations automatically restores context so the AI remembers what you discussed
 - **Note-aware context** - Toggle to include the current note as context for AI queries
-- **Editable system prompts** - Pick from bundled templates or hand-edit Markdown files in `~/.leaf/prompts/` to customise the AI’s personality and behaviour
-- **Model management** - Load and unload GGUF models from a dedicated models folder (`~/.leaf/models/`)
+- **Editable system prompts** - Pick from bundled templates or hand-edit Markdown files in `~/.phylla/prompts/` to customise the AI’s personality and behaviour
+- **Model management** - Load and unload GGUF models from a dedicated models folder (`~/.phylla/models/`)
 - **GPU accelerated** - Automatically uses Metal (macOS), CUDA (NVIDIA), or Vulkan for fast inference
 - **Powered by llama.cpp** - Uses [node-llama-cpp](https://github.com/withcatai/node-llama-cpp) bindings to [llama.cpp](https://github.com/ggml-org/llama.cpp) (both MIT licensed)
 
@@ -57,7 +57,7 @@ Leaf is a **local-first, privacy-focused note-taking app** for desktop built wit
 
 ## Security & Privacy
 
-Leaf is built with privacy and security as core principles:
+Phylla is built with privacy and security as core principles:
 
 ### Privacy Guarantees
 
@@ -91,29 +91,29 @@ Your notes are stored exactly where you choose - simply select any folder on you
 
 ### AI Models
 
-Leaf stores AI models in `~/.leaf/models/`. To get started with the AI assistant:
+Phylla stores AI models in `~/.phylla/models/`. To get started with the AI assistant:
 
 1. Download a `.gguf` model from wherever you like — [Hugging Face](https://huggingface.co/models?library=gguf) is the usual source, and downloading with your own account credentials is faster and works with gated repos
-2. Place the file in `~/.leaf/models/` (any `.gguf` file in that folder is picked up, including in subfolders)
+2. Place the file in `~/.phylla/models/` (any `.gguf` file in that folder is picked up, including in subfolders)
 3. Open the AI panel by clicking the lightbulb icon in the sidebar
 4. Click the **folder** icon to open the models directory, or the **refresh** icon if you added a file while the app was running
 5. Select and load the model from the dropdown in the AI panel
 
 > **Tip:** Pick a quantization that fits your RAM — a rough guide is that a `Q4_K_M` file needs about its own file size in free memory, plus room for the context window.
 
-> **Migrating from older versions:** If you previously stored models in `~/leaf-models/`, Leaf automatically moves them to `~/.leaf/models/` on first launch. No action required.
+> **Migrating from older versions:** Phylla was previously called Leaf. On first launch it moves `~/.leaf/` to `~/.phylla/` (and older `~/leaf-models/` to `~/.phylla/models/`), carries conversations and app state over from the old `Leaf` app-data folder, and renames each vault's `.leaf/` folder to `.phylla/` when you open it. No action required.
 
 ### Themes
 
-Leaf ships with 4 built-in color themes. All themes are stored in `~/.leaf/themes/`:
+Phylla ships with 4 built-in color themes. All themes are stored in `~/.phylla/themes/`:
 
 1. Open the app and click the **palette icon** in the sidebar (or use the theme menu)
 2. Select a theme from the built-in list to apply it instantly
 3. To add custom themes:
-    - Create a new `.json` file in `~/.leaf/themes/` with your color definitions
+    - Create a new `.json` file in `~/.phylla/themes/` with your color definitions
     - Restart the app — your custom theme appears automatically in the picker
 
-Theme file format (see `~/.leaf/themes/dark.json` for examples):
+Theme file format (see `~/.phylla/themes/dark.json` for examples):
 
 ```json
 {
@@ -132,7 +132,7 @@ Bundled defaults (`dark.json`, `light.json`, etc.) are seeded on first launch an
 
 ### Languages & Localization
 
-Leaf supports multiple languages. Currently available:
+Phylla supports multiple languages. Currently available:
 
 - **Chinese (simplified)**
 - **English** (default)
@@ -156,8 +156,8 @@ To switch languages:
 1. Click the **language menu** in the settings (top-right or settings panel)
 2. Select your preferred language — the UI updates instantly
 3. To add your own language translations:
-    - Create a new `.json` file in `~/.leaf/locales/` (e.g. `fr.json` for French)
-    - Use the format from `~/.leaf/locales/en.json` as a template
+    - Create a new `.json` file in `~/.phylla/locales/` (e.g. `fr.json` for French)
+    - Use the format from `~/.phylla/locales/en.json` as a template
     - Restart the app — your new language appears in the language picker
 
 Language file format — translation keys are grouped, and a `meta` block describes the language itself:
@@ -182,17 +182,17 @@ The two `meta` fields:
 | `name`              | How the language is labelled in the picker, written in itself (e.g. `Français`). Falls back to the file name if omitted.                                                                                                                                                                          |
 | `dictationLanguage` | The language [dictation](#using-dictation-speech-to-text) transcribes in — a [Whisper language code](https://github.com/openai/whisper#available-models-and-languages) such as `fr`. Leave it `""` if there is no sensible match, and dictation will detect the language from your voice instead. |
 
-For a complete list of translation keys, check `~/.leaf/locales/en.json`.
+For a complete list of translation keys, check `~/.phylla/locales/en.json`.
 
 ### Customising the System Prompt
 
-Leaf ships a small library of system-prompt templates as Markdown files. The active prompt is sent to the model on every load / chat reset, shaping its tone and behaviour.
+Phylla ships a small library of system-prompt templates as Markdown files. The active prompt is sent to the model on every load / chat reset, shaping its tone and behaviour.
 
-1. Open the AI panel and click the **chat-bubble icon** in the toolbar — the dropdown lists every template in `~/.leaf/prompts/` with its name and description, and a checkmark on the active one.
+1. Open the AI panel and click the **chat-bubble icon** in the toolbar — the dropdown lists every template in `~/.phylla/prompts/` with its name and description, and a checkmark on the active one.
 2. Click any template to make it active.
 3. Click the folder icon to edit templates in your preferred editor.
 
-The templates folder lives at `~/.leaf/prompts/`. Each `*.md` file is one template:
+The templates folder lives at `~/.phylla/prompts/`. Each `*.md` file is one template:
 
 ```markdown
 ---
@@ -210,7 +210,7 @@ You are a senior software engineer assisting inside a note-taking app.
 
 ### Using Dictation (Speech-to-Text)
 
-Leaf includes a built-in speech-to-text feature powered by [Whisper](https://github.com/openai/whisper) running 100% locally via ONNX:
+Phylla includes a built-in speech-to-text feature powered by [Whisper](https://github.com/openai/whisper) running 100% locally via ONNX:
 
 1. Open any `.txt` or `.md` file in the editor
 2. Click the **microphone icon** in the bottom-right corner of the editor
@@ -220,7 +220,7 @@ Leaf includes a built-in speech-to-text feature powered by [Whisper](https://git
 
 **Which language it transcribes in.** Dictation follows the language the app is set to, so if the UI is Italian it transcribes Italian. Each locale file declares this via `meta.dictationLanguage` (see [Languages & Localization](#languages--localization)). Guessing the language from a few seconds of audio is unreliable — a bad guess produces gibberish — so it is only used as a fallback, for locales that declare no usable language (custom ones you have written yourself, or languages Whisper does not support, such as Esperanto).
 
-If you speak a different language than your UI is set to, set `meta.dictationLanguage` in that locale file to the language you actually dictate in. For example, keep the app in English but transcribe Italian by putting `"dictationLanguage": "it"` in `~/.leaf/locales/en.json`.
+If you speak a different language than your UI is set to, set `meta.dictationLanguage` in that locale file to the language you actually dictate in. For example, keep the app in English but transcribe Italian by putting `"dictationLanguage": "it"` in `~/.phylla/locales/en.json`.
 
 > **The Whisper ONNX model files are not included in this repository.** Before using dictation you need to download them manually — see the [setup step](#speech-to-text-model-setup) below.
 
@@ -267,15 +267,15 @@ Recommended models for getting started:
 
 ### App Settings
 
-Leaf stores minimal app preferences (like your last opened folder path) automatically. No configuration needed.
+Phylla stores minimal app preferences (like your last opened folder path) automatically. No configuration needed.
 
 ### Conversation History
 
 AI conversations are automatically saved as JSON files in Electron's standard `userData` directory:
 
-- **macOS:** `~/Library/Application Support/Leaf/conversations/`
-- **Windows:** `%APPDATA%\Leaf\conversations\`
-- **Linux:** `~/.config/Leaf/conversations/`
+- **macOS:** `~/Library/Application Support/Phylla/conversations/`
+- **Windows:** `%APPDATA%\Phylla\conversations\`
+- **Linux:** `~/.config/Phylla/conversations/`
 
 Each conversation is stored as a separate `.json` file containing the model used, timestamps, and the full message history. Conversations are auto-titled from the first message and can be renamed or deleted from the history panel.
 
@@ -291,8 +291,8 @@ Each conversation is stored as a separate `.json` file containing the model used
 1. **Clone the repository**
 
 ```sh
-git clone https://github.com/larrydarko1/leaf.git
-cd leaf
+git clone https://github.com/larrydarko1/phylla-md.git
+cd phylla-md
 ```
 
 2. **Install dependencies**
@@ -367,7 +367,7 @@ After building:
 1. Navigate to `dist-electron/`
 2. Double-click the installer for your platform
 3. Follow installation prompts
-4. Launch "Leaf" from your applications menu
+4. Launch "Phylla" from your applications menu
 
 ## Other platforms
 
@@ -382,14 +382,14 @@ Building it yourself sidesteps all of that: an app you compiled on your own mach
 download, so neither OS quarantines it and no signature is needed.
 
 ```sh
-git clone https://github.com/larrydarko1/leaf.git
-cd leaf && npm ci
+git clone https://github.com/larrydarko1/phylla-md.git
+cd phylla-md && npm ci
 
 npm run build:mac   # on a Mac — .dmg in dist-electron/
 npm run build:win   # on Windows — .exe in dist-electron/
 ```
 
-This is a solo project, and it's a matter of resources rather than intent — as Leaf grows, proper
+This is a solo project, and it's a matter of resources rather than intent — as Phylla grows, proper
 signed macOS and Windows releases are on the list.
 
 ## Tech Stack
@@ -409,15 +409,15 @@ signed macOS and Windows releases are on the list.
 ## Project Structure
 
 ```
-leaf/
+phylla-md/
 ├── src/
 │   ├── main/                       # Electron main process
-│   │   ├── index.ts                # App entry, BrowserWindow, leaf:// protocol, IPC wiring
+│   │   ├── index.ts                # App entry, BrowserWindow, phylla:// protocol, IPC wiring
 │   │   ├── lib/
 │   │   │   ├── extensions.ts       # Allowed file extension sets for vault scanning
 │   │   │   ├── logger.ts           # electron-log wrapper; rotating file logger
 │   │   │   ├── mime.ts             # MIME type maps for images, audio, video, PDF
-│   │   │   ├── paths.ts            # App path constants: LEAF_HOME, models, prompts, themes, locales
+│   │   │   ├── paths.ts            # App path constants: PHYLLA_HOME, models, prompts, themes, locales
 │   │   │   └── validation.ts       # Path-traversal & filename safety checks for IPC
 │   │   └── services/
 │   │       ├── ai.ts               # Local LLM inference via node-llama-cpp with streaming
@@ -533,7 +533,7 @@ leaf/
 │   │   └── ... (mirrors src/renderer/)
 │   └── schemas/
 │       └── ... (mirrors src/schemas/)
-├── assets/                         # Bundled app assets seeded to LEAF_HOME on first launch
+├── assets/                         # Bundled app assets seeded to PHYLLA_HOME on first launch
 │   ├── locales/                    # Default language translations (JSON)
 │   │   ├── en.json
 │   │   ├── it.json
@@ -571,7 +571,7 @@ leaf/
 │       └── release.yml             # Build & GitHub Release
 ├── electron.vite.config.ts         # electron-vite config (main, preload, renderer)
 ├── vitest.config.ts                # Test runner config (jsdom environment)
-├── eslint.config.js                # Shared ESLint base + Leaf's per-process import/syntax rules
+├── eslint.config.js                # Shared ESLint base + Phylla's per-process import/syntax rules
 ├── commitlint.config.js            # Conventional Commits linting (shared config)
 ├── prettier.config.js              # Prettier formatting rules (shared config)
 ├── .stylelintrc.mjs                # stylelint rules (shared config)
@@ -595,7 +595,7 @@ See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for guidelines. Security issues g
 
 Versions prior to v2.0.0 are licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
-From v2.0.0 onward, this project is licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](LICENSE). You are free to use, modify, and distribute this software under the terms of the AGPL-3.0. If you wish to use Leaf in a proprietary or commercial product without complying with the AGPL, please contact the author for a commercial license.
+From v2.0.0 onward, this project is licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](LICENSE). You are free to use, modify, and distribute this software under the terms of the AGPL-3.0. If you wish to use Phylla in a proprietary or commercial product without complying with the AGPL, please contact the author for a commercial license.
 
 ## Acknowledgments
 

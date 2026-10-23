@@ -19,6 +19,7 @@ import { ALLOWED_EXTENSIONS } from '@/main/lib/extensions';
 import type { IpcMain } from '@/main/lib/ipc';
 import { log } from '@/main/lib/logger';
 import { IMAGE_MIMETYPES, AUDIO_MIMETYPES } from '@/main/lib/mime';
+import { VAULT_META_DIRS, vaultMetaDir } from '@/main/lib/paths';
 import { resolveInsideBoundary } from '@/main/lib/validation';
 import type { AiSimpleResult } from '@/schemas/ai';
 import type { IpcErrorCode } from '@/schemas/errors';
@@ -551,7 +552,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
         },
     );
 
-    // Bookmarks — persisted in <vault>/.leaf/bookmarks.json
+    // Bookmarks — persisted in <vault>/.phylla/bookmarks.json
     ipc.handle(
         'bookmarks:load',
         async (): Promise<
@@ -560,7 +561,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
         > => {
             try {
                 const root = getVaultRoot();
-                const bookmarksPath = path.join(root, '.leaf', 'bookmarks.json');
+                const bookmarksPath = path.join(vaultMetaDir(root), 'bookmarks.json');
                 try {
                     const raw = await fs.readFile(bookmarksPath, 'utf-8');
                     const parsed: unknown = JSON.parse(raw);
@@ -589,9 +590,8 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
             if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
             try {
                 const root = getVaultRoot();
-                const leafDir = path.join(root, '.leaf');
-                await fs.mkdir(leafDir, { recursive: true });
-                const bookmarksPath = path.join(leafDir, 'bookmarks.json');
+                const bookmarksPath = path.join(vaultMetaDir(root), 'bookmarks.json');
+                await fs.mkdir(path.dirname(bookmarksPath), { recursive: true });
                 // Validate every path is inside the vault before persisting
                 for (const bookmarkPath of parsed.data) {
                     resolveInsideBoundary(bookmarkPath, root);
@@ -615,7 +615,7 @@ function resolveInsideVault(p: string): string {
     return resolveInsideBoundary(p, getVaultRoot());
 }
 
-/** Describe one scanned file, or `null` when its extension is not one Leaf opens. */
+/** Describe one scanned file, or `null` when its extension is not one Phylla opens. */
 async function findScannedFile(fullPath: string, relativePath: string, name: string): Promise<FileInfo | null> {
     const extension = path.extname(name).toLowerCase();
     if (!ALLOWED_EXTENSIONS.has(extension)) return null;
@@ -637,7 +637,7 @@ async function scanFolder(folderPath: string, basePath = folderPath): Promise<Sc
     try {
         const entries = await fs.readdir(folderPath, { withFileTypes: true });
         for (const entry of entries) {
-            if (entry.name === '.leaf') continue; // hide Leaf's internal metadata folder
+            if (VAULT_META_DIRS.has(entry.name)) continue; // hide Phylla's internal metadata folder
             const fullPath = path.join(folderPath, entry.name);
             const relativePath = path.relative(basePath, fullPath);
             if (entry.isDirectory()) {

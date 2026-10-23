@@ -10,7 +10,7 @@ import { cleanup, register } from '@/main/services/speech';
 const PATHS = vi.hoisted(() => {
     const { join } = process.getBuiltinModule('path');
     const { tmpdir } = process.getBuiltinModule('os');
-    const modelRoot = join(tmpdir(), `leaf-speech-test-${process.pid}-${Date.now()}`);
+    const modelRoot = join(tmpdir(), `phylla-speech-test-${process.pid}-${Date.now()}`);
     return { modelRoot };
 });
 

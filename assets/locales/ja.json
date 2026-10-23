@@ -65,7 +65,7 @@
     "open_models_folder": "モデルフォルダを開く",
     "system_prompt": "システムプロンプト",
     "no_prompts_found": "プロンプトが見つかりません",
-    "refresh_models_folder": ".leafフォルダを更新",
+    "refresh_models_folder": ".phyllaフォルダを更新",
     "new_conversation": "新しい会話",
     "close": "閉じる",
     "copied": "コピーしました！",
@@ -119,7 +119,7 @@
     "footer_hint_intro": "プリセットを追加するには",
     "footer_hint_file_type": ".json",
     "footer_hint_files_in": "ファイルを",
-    "footer_hint_path": "~/.leaf/themes/",
+    "footer_hint_path": "~/.phylla/themes/",
     "footer_hint_action": "を配置してください。編集してカスタマイズできます。"
   },
   "language": {
@@ -134,7 +134,7 @@
     "open_folder": "言語フォルダを開く",
     "footer_hint_intro": "言語を追加するには",
     "footer_hint_file_type": ".json",
-    "footer_hint_path": "~/.leaf/languages/",
+    "footer_hint_path": "~/.phylla/locales/",
     "footer_hint_action": "を配置してください。編集してカスタマイズできます。"
   },
   "search": {
@@ -162,7 +162,7 @@
     "stop_dictation": "音声入力を停止",
     "start_dictation": "音声テキスト変換を開始",
     "loading_whisper_model": "Whisperモデルを読み込み中...",
-    "leaf_logo": "Leafロゴ",
+    "phylla_logo": "Phyllaロゴ",
     "select_note_to_start_editing": "編集を始めるノートを選択してください",
     "or_create_new_note": "またはノートフォルダから新規作成",
     "video_player": "動画プレーヤー",

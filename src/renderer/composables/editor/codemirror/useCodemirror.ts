@@ -19,7 +19,7 @@ import { onUnmounted, watch, type Ref, shallowRef, nextTick, type ShallowRef } f
  * instead of the browser-default blue/purple. Also ensures raw markdown
  * tokens (visible on the active line) look consistent with the theme.
  */
-export const leafHighlightStyle = HighlightStyle.define([
+export const phyllaHighlightStyle = HighlightStyle.define([
     // Markdown
     { tag: tags.link, color: 'var(--accent-color, #3eb489)' },
     { tag: tags.url, color: 'var(--accent-color, #3eb489)' },
@@ -113,7 +113,7 @@ export function useCodemirror(
         return [
             // Markdown language support (with code block language highlighting)
             markdown({ base: markdownLanguage, codeLanguages: languages }),
-            syntaxHighlighting(leafHighlightStyle),
+            syntaxHighlighting(phyllaHighlightStyle),
             indentOnInput(),
 
             // Editing helpers

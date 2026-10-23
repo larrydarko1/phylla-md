@@ -6,7 +6,7 @@ import { mountWithI18n } from '@test-utils';
 const mockElectronAPI = {
     languageList: vi.fn(),
     languageSetActive: vi.fn(),
-    languageOpenLeafDir: vi.fn(),
+    languageOpenPhyllaDir: vi.fn(),
     languageLoad: vi.fn(),
     log: { error: vi.fn(), warn: vi.fn(), info: vi.fn() },
 };
@@ -31,7 +31,7 @@ beforeEach(() => {
     });
     mockElectronAPI.languageSetActive.mockResolvedValue({ success: true });
     mockElectronAPI.languageLoad.mockResolvedValue({ success: true, messages: {} });
-    mockElectronAPI.languageOpenLeafDir.mockResolvedValue({ success: true });
+    mockElectronAPI.languageOpenPhyllaDir.mockResolvedValue({ success: true });
 });
 
 describe('LanguagePicker', () => {

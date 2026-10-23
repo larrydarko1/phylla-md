@@ -17,6 +17,6 @@ import { checkAudit } from '@larrydarko/lint-config/gates/audit';
 checkAudit({
     allowlist: [
         // Each entry: { id, package, reason, expires }. The reason must say BOTH
-        // why it cannot be fixed here and why it is unreachable in Leaf's code.
+        // why it cannot be fixed here and why it is unreachable in Phylla's code.
     ],
 });

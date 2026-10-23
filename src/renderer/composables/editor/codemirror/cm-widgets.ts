@@ -163,7 +163,7 @@ export class EmbedWidget extends WidgetType {
             return placeholder;
         }
 
-        const fileUrl = `leaf://localhost${encodeURI(this.resolvedPath).replace(/#/g, '%23')}`;
+        const fileUrl = `phylla://localhost${encodeURI(this.resolvedPath).replace(/#/g, '%23')}`;
 
         switch (this.mediaType) {
             case 'image': {

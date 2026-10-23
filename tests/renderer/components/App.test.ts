@@ -236,7 +236,7 @@ describe('App', () => {
             await wrapper.vm.$nextTick();
             await new Promise((r) => setTimeout(r, 0));
             expect(mockLoadVault).toHaveBeenCalledWith();
-            expect(mockLocalStorage.getItem).not.toHaveBeenCalledWith('leaf-folder-path');
+            expect(mockLocalStorage.getItem).not.toHaveBeenCalledWith('phylla-folder-path');
             wrapper.unmount();
         });
 

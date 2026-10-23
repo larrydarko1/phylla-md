@@ -65,7 +65,7 @@
     "open_models_folder": "Ouvrir le dossier des modèles",
     "system_prompt": "Invite système",
     "no_prompts_found": "Aucune invite trouvée",
-    "refresh_models_folder": "Actualiser le dossier .leaf",
+    "refresh_models_folder": "Actualiser le dossier .phylla",
     "new_conversation": "Nouvelle conversation",
     "close": "Fermer",
     "copied": "Copié !",
@@ -119,7 +119,7 @@
     "footer_hint_intro": "Déposez",
     "footer_hint_file_type": ".json",
     "footer_hint_files_in": "fichiers dans",
-    "footer_hint_path": "~/.leaf/themes/",
+    "footer_hint_path": "~/.phylla/themes/",
     "footer_hint_action": "pour ajouter des préréglages. Modifiez-en un pour le personnaliser."
   },
   "language": {
@@ -134,7 +134,7 @@
     "open_folder": "Ouvrir le dossier des langues",
     "footer_hint_intro": "Déposez",
     "footer_hint_file_type": ".json",
-    "footer_hint_path": "~/.leaf/languages/",
+    "footer_hint_path": "~/.phylla/locales/",
     "footer_hint_action": "pour ajouter des langues. Modifiez-en une pour la personnaliser."
   },
   "search": {
@@ -162,7 +162,7 @@
     "stop_dictation": "Arrêter la dictée",
     "start_dictation": "Démarrer la dictée vocale",
     "loading_whisper_model": "Chargement du modèle Whisper...",
-    "leaf_logo": "Logo Leaf",
+    "phylla_logo": "Logo Phylla",
     "select_note_to_start_editing": "Sélectionnez une note pour commencer à modifier",
     "or_create_new_note": "ou créez-en une nouvelle depuis votre dossier de notes",
     "video_player": "Lecteur vidéo",

@@ -65,7 +65,7 @@
     "open_models_folder": "Открыть папку моделей",
     "system_prompt": "Системный промпт",
     "no_prompts_found": "Промпты не найдены",
-    "refresh_models_folder": "Обновить папку .leaf",
+    "refresh_models_folder": "Обновить папку .phylla",
     "new_conversation": "Новая беседа",
     "close": "Закрыть",
     "copied": "Скопировано!",
@@ -119,7 +119,7 @@
     "footer_hint_intro": "Поместите",
     "footer_hint_file_type": ".json",
     "footer_hint_files_in": "файлы в",
-    "footer_hint_path": "~/.leaf/themes/",
+    "footer_hint_path": "~/.phylla/themes/",
     "footer_hint_action": "сюда, чтобы добавить шаблоны. Отредактируйте один из них для настройки."
   },
   "language": {
@@ -134,7 +134,7 @@
     "open_folder": "Открыть папку языков",
     "footer_hint_intro": "Поместите",
     "footer_hint_file_type": ".json",
-    "footer_hint_path": "~/.leaf/languages/",
+    "footer_hint_path": "~/.phylla/locales/",
     "footer_hint_action": "сюда, чтобы добавить языки. Отредактируйте один из них для настройки."
   },
   "search": {
@@ -162,7 +162,7 @@
     "stop_dictation": "Остановить голосовой ввод",
     "start_dictation": "Начать голосовой ввод текста",
     "loading_whisper_model": "Загрузка модели Whisper...",
-    "leaf_logo": "Логотип Leaf",
+    "phylla_logo": "Логотип Phylla",
     "select_note_to_start_editing": "Выберите заметку, чтобы начать редактирование",
     "or_create_new_note": "или создайте новую из папки заметок",
     "video_player": "Видеоплеер",
