@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Opening the app or a vault no longer auto-selects the first note when no note was previously selected.
+
 ## [4.0.0] - 2026-10-23
 
 Leaf is now Phylla. Your notes, models, conversations and settings move over automatically on first launch.
