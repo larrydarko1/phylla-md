@@ -220,16 +220,18 @@ describe('useFileSelection', () => {
             expect(sel.activeFile.value?.path).toBe(fileB.path);
         });
 
-        it('falls back to the first available file when the stored path is not found', () => {
+        it('leaves the selection empty when the stored path is not found', () => {
             localStorageMock.getItem.mockReturnValueOnce('/not-found.md');
             sel.restoreFromStorage([fileA, fileB]);
-            expect(sel.activeFile.value?.path).toBe(fileA.path);
+            expect(sel.activeFile.value).toBeNull();
+            expect(sel.selectedFiles.value).toEqual([]);
         });
 
-        it('falls back to the first available file when localStorage has no entry', () => {
+        it('leaves the selection empty when localStorage has no entry', () => {
             localStorageMock.getItem.mockReturnValueOnce(null);
             sel.restoreFromStorage([fileA, fileB]);
-            expect(sel.activeFile.value?.path).toBe(fileA.path);
+            expect(sel.activeFile.value).toBeNull();
+            expect(sel.selectedFiles.value).toEqual([]);
         });
 
         it('does nothing when no files are available', () => {

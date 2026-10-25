@@ -107,7 +107,7 @@ export function useFileSelection(): UseFileSelectionReturn {
 
     /**
      * Restore last selected file from localStorage after vault load.
-     * If not found, selects first file.
+     * If not found, leaves the selection empty.
      */
     function restoreFromStorage(availableFiles: FileInfo[]): void {
         const lastPath = localStorage.getItem('phylla-last-selected-file');
@@ -116,14 +116,7 @@ export function useFileSelection(): UseFileSelectionReturn {
             if (lastFile !== undefined) {
                 selectedFiles.value = [lastFile];
                 activeFile.value = lastFile;
-                return;
             }
-        }
-        const [firstAvailable] = availableFiles;
-        if (firstAvailable !== undefined) {
-            selectedFiles.value = [firstAvailable];
-            activeFile.value = firstAvailable;
-            localStorage.setItem('phylla-last-selected-file', firstAvailable.path);
         }
     }
 
