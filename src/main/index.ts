@@ -52,6 +52,7 @@ function createWindow(): void {
     const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
 
     mainWindow = new BrowserWindow({
+        autoHideMenuBar: true,
         width: Math.round(sw * 0.75),
         height: Math.round(sh * 0.8),
         minWidth: Math.round(sw * 0.45),
