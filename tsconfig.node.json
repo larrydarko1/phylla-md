@@ -27,6 +27,7 @@
     "include": [
         "electron.vite.config.ts",
         "vitest.config.ts",
+        "larry.config.ts",
         "vitest.setup.ts",
         "src/main/**/*.ts",
         "src/preload/**/*.ts"

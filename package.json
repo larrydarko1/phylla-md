@@ -41,27 +41,12 @@
         "lint:fix": "eslint . --fix",
         "format": "prettier --write \"src/**/*.{ts,vue,scss,json}\"",
         "format:check": "prettier --check \"src/**/*.{ts,vue,scss,json}\"",
-        "audit:check": "node scripts/check/check-audit.ts",
-        "code:check": "node scripts/check/check-code-style.ts",
-        "dead:check": "node scripts/check/check-dead-code.ts",
-        "declorder:check": "node scripts/check/check-declaration-order.ts",
-        "dup:check": "node scripts/check/check-duplication.ts",
-        "error:check": "node scripts/check/check-error-handling.ts",
-        "html:check": "node scripts/check/check-html-standards.ts",
-        "i18n:check": "node scripts/check/check-i18n.ts",
-        "ipc:check": "node scripts/check/check-ipc-standards.ts",
-        "pipeline:check": "node scripts/check/check-pipeline.ts",
-        "pkg:check": "node scripts/check/check-package-json.ts",
-        "refactor:check": "node scripts/check/check-refactoring.ts",
-        "scss:check": "node scripts/check/check-scss-standards.ts",
-        "security:check": "node scripts/check/check-electron-security.ts",
-        "test:check": "node scripts/check/check-testing.ts",
-        "tsconfig:check": "node scripts/check/check-tsconfigs.ts",
         "stylelint": "stylelint \"src/**/*.{scss,vue}\"",
         "stylelint:fix": "stylelint \"src/**/*.{scss,vue}\" --fix",
         "prepare": "husky",
         "test:coverage": "npx vitest run --coverage",
-        "ci:check": "npm run audit:check && npm run lint && npm run format:check && npm run stylelint && npm run pkg:check && npm run pipeline:check && npm run code:check && npm run declorder:check && npm run html:check && npm run scss:check && npm run refactor:check && npm run ipc:check && npm run security:check && npm run error:check && npm run dup:check && npm run dead:check && npm run i18n:check && npm run tsconfig:check && npm run test:coverage && npm run test:check && npm run build"
+        "ci:check": "npm run lint && npm run format:check && npm run stylelint && npm run test:coverage && npm run check && npm run build",
+        "check": "larry check"
     },
     "dependencies": {
         "@codemirror/autocomplete": "^6.20.3",
@@ -84,7 +69,7 @@
         "zod": "^4.6.5"
     },
     "devDependencies": {
-        "@larrydarko/lint-config": "^0.1.0-beta.9",
+        "@larrydarko/lint-config": "^0.1.0-beta.10",
         "@types/node": "^24.0.13",
         "@vitejs/plugin-vue": "^6.0.9",
         "@vitest/coverage-v8": "^5.0.2",

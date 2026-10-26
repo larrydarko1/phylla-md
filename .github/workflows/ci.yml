@@ -31,9 +31,6 @@ jobs:
 
             - uses: ./.github/actions/node-setup
 
-            - name: Audit Check (High+ Production Vulnerabilities Only)
-              run: npm run audit:check
-
             - name: Lint
               run: npm run lint
 
@@ -42,48 +39,6 @@ jobs:
 
             - name: Style check
               run: npm run stylelint
-
-            - name: Manifest check
-              run: npm run pkg:check
-
-            - name: Pipeline check
-              run: npm run pipeline:check
-
-            - name: Code style check
-              run: npm run code:check
-
-            - name: Declaration order check
-              run: npm run declorder:check
-
-            - name: HTML standards check
-              run: npm run html:check
-
-            - name: SCSS standards check
-              run: npm run scss:check
-
-            - name: Refactoring check
-              run: npm run refactor:check
-
-            - name: IPC standards check
-              run: npm run ipc:check
-
-            - name: Electron security check
-              run: npm run security:check
-
-            - name: Error handling check
-              run: npm run error:check
-
-            - name: Duplication check
-              run: npm run dup:check
-
-            - name: Dead code check
-              run: npm run dead:check
-
-            - name: i18n check
-              run: npm run i18n:check
-
-            - name: tsconfig check
-              run: npm run tsconfig:check
 
             - name: Type check
               run: npm run typecheck
@@ -94,5 +49,6 @@ jobs:
             - name: Tests (with 80% coverage enforcement)
               run: npm run test:coverage
 
-            - name: Testing standards check
-              run: npm run test:check
+            # The testing gate reads the coverage summary the step above wrote.
+            - name: larry check
+              run: npm run check

@@ -60,7 +60,7 @@ anyway — the point of ticking it is that you thought about it before CI did.
 - [ ] Frontend (a11y checked, i18n strings added to every locale in `assets/locales/`)
 - [ ] Packaging (electron-builder config, entitlements, per-platform installer behaviour)
 - [ ] Pipeline (workflow, composite action, or a `ci:check` gate)
-- [ ] Dependencies (adds a production dep, or changes what `npm audit` reports — see `scripts/check/check-audit.ts`)
+- [ ] Dependencies (adds a production dep, or changes what `npm audit` reports — see the `audit` gate in `larry.config.ts`)
 
 ## Anything a reviewer should push back on
 

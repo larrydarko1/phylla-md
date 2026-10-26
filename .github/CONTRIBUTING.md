@@ -111,11 +111,12 @@ One command runs the exact gate list CI runs:
 npm run ci:check
 ```
 
-That is the audit gate (production deps, high and above, via `scripts/check/check-audit.ts` and its
-reviewed allowlist) → lint → format check → stylelint → the standards gates → tests with coverage →
-testing standards → build. The standards gates are one `*:check` script each — package manifest,
-pipeline, code style, declaration order, HTML, SCSS, refactoring, IPC, Electron security, error
-handling, duplication, dead code, i18n and tsconfigs. Running it locally first is the difference
+That is lint → format check → stylelint → tests with coverage → the standards gates → build. The
+standards gates are configured in `larry.config.ts` and run by `npm run check` — the audit
+(production deps, high and above, with a reviewed allowlist), package manifest, pipeline, code
+style, declaration order, HTML, SCSS, refactoring, IPC, Electron security, error handling,
+duplication, dead code, i18n, tsconfigs and testing standards, which reads the coverage the tests
+just wrote. Running it locally first is the difference
 between one push and six.
 
 If lint or formatting fails, auto-fix with:
@@ -232,7 +233,7 @@ shared rule belongs in the package, not here.
 - **Prettier** (`prettier.config.js`): re-exports the shared config — single quotes, 4-space indent, 120 char line width, trailing commas, LF line endings
 - **ESLint** (`eslint.config.js`): the shared TypeScript + Vue base, plus Phylla's own rules for what main, preload, renderer and schemas may import and use
 - **stylelint** (`.stylelintrc.mjs`), **lint-staged** (`lint-staged.config.js`), **commitlint** (`commitlint.config.js`) and **knip** (`knip.config.js`) follow the same pattern
-- **Gate scripts** (`scripts/check/`): each one runs a gate from the package with Phylla's paths and allowlists
+- **Gates** (`larry.config.ts`): each gate from the package, with Phylla's paths and allowlists; `npx larry check <gate>` runs one
 - Follow existing patterns in the codebase — look at similar files before writing new code
 - Keep components small and focused — extract sub-components and composables when a file grows beyond ~300 lines
 - Write clear, descriptive comments only where the logic isn't self-evident

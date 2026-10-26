@@ -332,7 +332,7 @@ npm run format
 npm run ci:check
 ```
 
-Tests live in the `tests/` directory and mirror the `src/` structure. On every push and pull request, CI runs the dependency audit, lint, formatting and style checks, the project's standards gates (`scripts/check/`), type-checking, the build, and the full test suite with coverage — the release pipeline only triggers if CI passes.
+Tests live in the `tests/` directory and mirror the `src/` structure. On every push and pull request, CI runs lint, formatting and style checks, type-checking, the build, the full test suite with coverage, and the project's standards gates (`larry.config.ts`), the dependency audit among them — the release pipeline only triggers if CI passes.
 
 > **No E2E tests:** Playwright's Electron support remains experimental and broken for Electron 30+ (as of 2026). The --remote-debugging-port flag was removed from the CLI in Electron 30, and the only reliable workaround requires patching your Electron application code via app.commandLine.appendSwitch(). Unit test coverage sits above 80% across all branches and keeps the CI feedback loop fast. E2E support should be revisited once Playwright ships a stable fix for Electron 30+.
 
@@ -552,10 +552,6 @@ phylla-md/
 ├── public/                         # Static assets (demo GIF)
 ├── build/                          # Packaging inputs: master icon, DMG backgrounds, hooks
 ├── design/                         # Source design files (PSD, SVG)
-├── scripts/
-│   └── check/                      # CI gate scripts — thin wrappers over @larrydarko/lint-config/gates
-│       ├── check-audit.ts          # npm audit gate with a reviewed advisory allowlist
-│       └── check-*.ts              # One per `*:check` npm script (security, IPC, i18n, dead code, …)
 ├── .github/
 │   ├── CONTRIBUTING.md             # Contributor guide (setup, testing, releases)
 │   ├── SECURITY.md                 # Vulnerability reporting policy
@@ -577,13 +573,13 @@ phylla-md/
 ├── .stylelintrc.mjs                # stylelint rules (shared config)
 ├── lint-staged.config.js           # Pre-commit tasks on staged files (shared config)
 ├── knip.config.js                  # Dead-code analysis entry points and ignores
+├── larry.config.ts                 # The standards gates and Phylla's options for each, run by larry check
 ├── package.json
 ├── tsconfig.json                   # Root TS config (project references)
 ├── tsconfig.base.json              # Options shared by every TS config below
 ├── tsconfig.app.json               # Renderer TS config (DOM + Vue, strict)
-├── tsconfig.node.json              # Main & preload TS config (Node, strict)
-├── tsconfig.test.json              # Test TS config (Vitest globals, path aliases)
-└── tsconfig.scripts.json           # Gate scripts TS config (run directly by Node)
+├── tsconfig.node.json              # Main & preload TS config (Node, strict), and the root tool configs
+└── tsconfig.test.json              # Test TS config (Vitest globals, path aliases)
 ```
 
 ## Contributing
