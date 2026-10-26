@@ -234,9 +234,9 @@ void app.whenReady().then(async (): Promise<void> => {
     logService.register(ipcMain);
 
     // Clipboard
-    ipcMain.handle('clipboard:write', (_event, text: string): void => {
+    ipcMain.handle('clipboard:write', async (_event, text: string): Promise<void> => {
         try {
-            if (typeof text === 'string') clipboard.writeText(text);
+            if (typeof text === 'string') await clipboard.writeText(text);
         } catch (err) {
             log.error({ err, op: 'clipboard:write' }, 'Failed to write to clipboard');
         }
