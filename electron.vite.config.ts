@@ -11,7 +11,6 @@ export default defineConfig({
                 '@/schemas': fileURLToPath(new URL('./src/schemas', import.meta.url)),
             },
         },
-        esbuild: { tsconfigRaw: { compilerOptions: { target: 'ESNext' } } },
         build: {
             rollupOptions: {
                 input: {
@@ -27,7 +26,6 @@ export default defineConfig({
                 '@/schemas': fileURLToPath(new URL('./src/schemas', import.meta.url)),
             },
         },
-        esbuild: { tsconfigRaw: { compilerOptions: { target: 'ESNext' } } },
         build: {
             rollupOptions: {
                 input: {
@@ -71,9 +69,6 @@ export default defineConfig({
             rollupOptions: {
                 input: {
                     index: resolve(__dirname, 'src/renderer/index.html'),
-                },
-                output: {
-                    manualChunks: undefined,
                 },
             },
         },
