@@ -52,9 +52,9 @@ Notes are plain files with the user's own permissions by design, so "another loc
 the vault" is the threat model working as intended, not a vulnerability.
 
 Dependency advisories with no reachable path in Phylla's code are tracked in the audit gate's
-allowlist ([scripts/check/check-audit.ts](../scripts/check/check-audit.ts)) rather than reported
-as vulnerabilities. Each entry carries the reason it cannot be fixed here, and CI fails once the
-advisory stops being reported — upstream shipped a fix, so the waiver has to go.
+allowlist ([larry.config.ts](../larry.config.ts)) rather than reported as vulnerabilities. Each
+entry carries the reason it cannot be fixed here, and CI fails once the advisory stops being
+reported — upstream shipped a fix, so the waiver has to go.
 
 ## Supported Versions
 

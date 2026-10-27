@@ -25,15 +25,15 @@ import {
     functionContractsPlugin,
 } from '@larrydarko/lint-config/eslint/electron';
 
-const SOURCE = ['src/**/*.{ts,vue}', 'scripts/**/*.ts'];
+const SOURCE = ['src/**/*.{ts,vue}'];
 
 export default larry({
     preset: 'electron',
     rootDir: import.meta.dirname,
     testProject: './tsconfig.test.json',
-    // The scripts are run by Node directly, with no bundler in front, so an import there has to
-    // name the real `.ts` file or it fails with ERR_MODULE_NOT_FOUND.
-    importExtensions: { nodeRun: ['scripts/**/*.ts'] },
+    // larry.config.ts is loaded by Node directly, with no bundler in front, so an import there has
+    // to name the real `.ts` file or it fails with ERR_MODULE_NOT_FOUND.
+    importExtensions: { nodeRun: ['larry.config.ts'] },
     // Test helpers are typed by their callers, not by an exported signature.
     testRules: { '@typescript-eslint/explicit-module-boundary-types': 'off' },
 

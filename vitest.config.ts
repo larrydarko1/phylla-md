@@ -13,7 +13,6 @@ export default defineConfig({
             '@test-utils': fileURLToPath(new URL('./tests/renderer/test-utils', import.meta.url)),
         },
     },
-    esbuild: { tsconfigRaw: { compilerOptions: { target: 'ESNext' } } },
     test: {
         globals: true,
         environment: 'jsdom',
