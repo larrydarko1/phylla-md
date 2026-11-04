@@ -29,3 +29,20 @@ updates:
           minor-and-patch:
               patterns: ['*']
               update-types: ['minor', 'patch']
+          # Must move in lockstep (coverage-v8 peer-pins the exact vitest version).
+          vitest:
+              patterns: ['vitest', '@vitest/*']
+              update-types: ['major']
+      ignore:
+          # Must match the Node bundled in Electron, not local Node. Bump alongside Electron.
+          - dependency-name: '@types/node'
+            update-types: ['version-update:semver-major']
+          # Gated by electron-vite's vite peer range. Bump once electron-vite supports the new major.
+          - dependency-name: 'vite'
+            update-types: ['version-update:semver-major']
+          # Pinned with ~ on purpose; @larrydarko/lint-config pins the same range. Bump together.
+          - dependency-name: 'typescript'
+            update-types: ['version-update:semver-major', 'version-update:semver-minor']
+          # @huggingface/transformers pins this exactly; diverging ships a second native copy.
+          # Bump only to match transformers.
+          - dependency-name: 'onnxruntime-node'
