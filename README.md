@@ -392,6 +392,10 @@ npm run build:win   # on Windows — .exe in dist-electron/
 This is a solo project, and it's a matter of resources rather than intent — as Phylla grows, proper
 signed macOS and Windows releases are on the list.
 
+## Releases
+
+Phylla gets a feature release four times a year, on the second Tuesday of March, June, September and December. A bug that loses data, opens a security hole, crashes Phylla, stops it opening or saving, or breaks a common task with no workaround is fixed within 7 days of being confirmed, in a release of its own. What the next release contains is listed under `[Unreleased]` in [CHANGELOG.md](CHANGELOG.md).
+
 ## Tech Stack
 
 - **Desktop:** [Electron](https://www.electronjs.org) (Linux releases; macOS and Windows build from source)
