@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- The release schedule in the README: a feature release every quarter, and fixes for urgent bugs within 7 days.
+
 ### Fixed
 
 - Opening the app or a vault no longer auto-selects the first note when no note was previously selected.
