@@ -6,6 +6,9 @@
 # tag, decide there was nothing to do, and quietly skip.
 #
 # It hangs off `workflow_run` rather than `push` so a red CI can never produce a release.
+# One queue, never cancelled: a release pushes a tag, opens a draft, uploads and publishes, so a run
+# stopped half-way, or one racing another, leaves a tag whose installers came from a different commit.
+# A run queued behind a release finds it published and skips.
 
 name: Release
 
@@ -16,8 +19,8 @@ on:
         branches: [main]
 
 concurrency:
-    group: ${{ github.workflow }}-${{ github.event.workflow_run.head_sha }}
-    cancel-in-progress: true
+    group: ${{ github.workflow }}
+    cancel-in-progress: false
 
 permissions:
     contents: read

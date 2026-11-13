@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Opening the app or a vault no longer auto-selects the first note when no note was previously selected.
+- Two release runs can no longer overlap, so a release's installers always come from the commit its tag points at.
 
 ## [4.0.0] - 2026-10-23
 
