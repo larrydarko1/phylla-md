@@ -8,7 +8,8 @@
 # It hangs off `workflow_run` rather than `push` so a red CI can never produce a release.
 # One queue, never cancelled: a release pushes a tag, opens a draft, uploads and publishes, so a run
 # stopped half-way, or one racing another, leaves a tag whose installers came from a different commit.
-# A run queued behind a release finds it published and skips.
+# A run queued behind a release finds it published and skips. A failed release is finished only by
+# re-running it: a later commit with the same version stops at "Create tag".
 
 name: Release
 
@@ -84,13 +85,22 @@ jobs:
               with:
                   ref: ${{ github.event.workflow_run.head_sha }}
 
-            # A retry of a failed release re-enters this job with the tag already pushed.
+            # A retry of a failed release re-enters this job with the tag already pushed. Only a retry may
+            # reuse it: a later commit with the same version would build itself under the earlier tag.
             - name: Create tag
               env:
                   TAG: ${{ needs.version.outputs.tag }}
+                  HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
               run: |
-                  if git ls-remote --tags origin "refs/tags/$TAG" | grep -q .; then
-                      echo "Tag $TAG already exists, reusing it"
+                  set -euo pipefail
+                  # An annotated tag's commit is its peeled line (^{}), listed last; a lightweight tag has one line.
+                  TAGGED=$(git ls-remote --tags origin "refs/tags/$TAG" "refs/tags/$TAG^{}" | tail -n 1 | cut -f1)
+                  if [ -n "$TAGGED" ]; then
+                      if [ "$TAGGED" != "$HEAD_SHA" ]; then
+                          echo "::error::$TAG already points at $TAGGED, not at this run's commit $HEAD_SHA. Re-run the failed release run for $TAGGED, or bump the version."
+                          exit 1
+                      fi
+                      echo "Tag $TAG already exists at this commit, reusing it"
                       exit 0
                   fi
                   git config user.name "github-actions"
