@@ -57,9 +57,7 @@ function buildLineChanges(
     let pos = fromPos;
     for (const [i, origLine] of origLines.entries()) {
         const updLine = updLines[i] ?? '';
-        if (origLine !== updLine) {
-            changes.push({ from: pos, to: pos + origLine.length, insert: updLine });
-        }
+        if (origLine !== updLine) changes.push({ from: pos, to: pos + origLine.length, insert: updLine });
         pos += origLine.length + 1;
     }
     return changes;
@@ -129,9 +127,7 @@ function continueMarkdownList(view: EditorView): boolean {
             const nextLineFrom = state.doc.line(line.number + 1).from;
             const origText = state.doc.toString();
             const updated = renumberOrderedList(origText, nextLineFrom, indent, num + 2);
-            if (updated !== origText) {
-                renumberChanges.push(...buildLineChanges(origText, updated, nextLineFrom));
-            }
+            if (updated !== origText) renumberChanges.push(...buildLineChanges(origText, updated, nextLineFrom));
         }
 
         view.dispatch({

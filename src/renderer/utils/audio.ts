@@ -21,9 +21,7 @@ export async function convertWebMToWav(webmBlob: Blob): Promise<ArrayBuffer> {
 export function arrayBufferToBase64(buffer: ArrayBuffer): string {
     const bytes = new Uint8Array(buffer);
     let binary = '';
-    for (const byte of bytes) {
-        binary += String.fromCharCode(byte);
-    }
+    for (const byte of bytes) binary += String.fromCharCode(byte);
     return btoa(binary);
 }
 
@@ -85,7 +83,5 @@ function audioBufferToWav(audioBuffer: AudioBuffer): ArrayBuffer {
 }
 
 function writeString(view: DataView, offset: number, str: string): void {
-    for (let i = 0; i < str.length; i++) {
-        view.setUint8(offset + i, str.charCodeAt(i));
-    }
+    for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
 }

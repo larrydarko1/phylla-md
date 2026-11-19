@@ -65,9 +65,7 @@ export function register(ipc: IpcMain): void {
     );
 
     ipc.handle('systemPrompt:setActive', async (_event, id: unknown): Promise<AiSimpleResult> => {
-        if (typeof id !== 'string' || !isValidPromptId(id)) {
-            return { success: false, error: 'INVALID_ARGUMENTS' };
-        }
+        if (typeof id !== 'string' || !isValidPromptId(id)) return { success: false, error: 'INVALID_ARGUMENTS' };
         const file = path.join(PROMPTS_DIR, `${id}.md`);
         if (!existsSync(file)) return { success: false, error: 'NOT_FOUND' };
         try {

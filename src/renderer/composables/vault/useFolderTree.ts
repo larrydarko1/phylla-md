@@ -75,9 +75,7 @@ export function useFolderTree(
                 root.push(node);
             } else {
                 const parent = folderMap.get(parentPath);
-                if (parent !== undefined && Array.isArray(parent.children)) {
-                    parent.children.push(node);
-                }
+                if (parent !== undefined && Array.isArray(parent.children)) parent.children.push(node);
             }
         });
 
@@ -93,9 +91,7 @@ export function useFolderTree(
                 root.push(fileNode);
             } else {
                 const parent = folderMap.get(file.folder);
-                if (parent !== undefined && Array.isArray(parent.children)) {
-                    parent.children.push(fileNode);
-                }
+                if (parent !== undefined && Array.isArray(parent.children)) parent.children.push(fileNode);
             }
         });
 
@@ -106,9 +102,7 @@ export function useFolderTree(
                 return a.name.localeCompare(b.name);
             });
             nodes.forEach((node): void => {
-                if (node.children !== undefined && Array.isArray(node.children)) {
-                    sortNodes(node.children);
-                }
+                if (node.children !== undefined && Array.isArray(node.children)) sortNodes(node.children);
             });
         };
         sortNodes(root);
@@ -152,11 +146,8 @@ export function useFolderTree(
     );
 
     function toggleFolder(folderPath: string): void {
-        if (expandedFolders.value.has(folderPath)) {
-            expandedFolders.value.delete(folderPath);
-        } else {
-            expandedFolders.value.add(folderPath);
-        }
+        if (expandedFolders.value.has(folderPath)) expandedFolders.value.delete(folderPath);
+        else expandedFolders.value.add(folderPath);
         expandedFolders.value = new Set(expandedFolders.value);
     }
 

@@ -55,9 +55,7 @@ export function useDrawingPersistence({
     function scheduleAutoSave(): void {
         hasUnsavedChanges.value = true;
         onContentChanged(true);
-        if (autoSaveTimeout !== null) {
-            clearTimeout(autoSaveTimeout);
-        }
+        if (autoSaveTimeout !== null) clearTimeout(autoSaveTimeout);
         autoSaveTimeout = window.setTimeout(saveDrawing, 1000);
     }
 
@@ -147,9 +145,7 @@ export function useDrawingPersistence({
         const result: CanvasElement[] = [];
         const strokes = data.strokes;
 
-        if (strokes === undefined) {
-            return result;
-        }
+        if (strokes === undefined) return result;
 
         for (const stroke of strokes) {
             if (stroke.tool === 'eraser') continue;
@@ -219,9 +215,7 @@ export function useDrawingPersistence({
         saveDrawing,
         loadDrawing,
         cleanup: (): void => {
-            if (autoSaveTimeout !== null) {
-                clearTimeout(autoSaveTimeout);
-            }
+            if (autoSaveTimeout !== null) clearTimeout(autoSaveTimeout);
         },
     };
 }

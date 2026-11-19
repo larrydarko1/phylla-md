@@ -76,12 +76,8 @@ function handleSelectModel(model: AiModelInfo): void {
 
 function handleClickOutside(event: MouseEvent): void {
     const target = event.target instanceof Node ? event.target : null;
-    if (dropdownRef.value !== null && !dropdownRef.value.contains(target)) {
-        showDropdown.value = false;
-    }
-    if (promptDropdownRef.value !== null && !promptDropdownRef.value.contains(target)) {
-        showPromptDropdown.value = false;
-    }
+    if (dropdownRef.value !== null && !dropdownRef.value.contains(target)) showDropdown.value = false;
+    if (promptDropdownRef.value !== null && !promptDropdownRef.value.contains(target)) showPromptDropdown.value = false;
 }
 
 function togglePromptDropdown(): void {

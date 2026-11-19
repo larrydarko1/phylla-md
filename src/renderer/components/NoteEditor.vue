@@ -188,9 +188,7 @@ const { isDragOverEditor, onEditorDragEnter, onEditorDragOver, onEditorDragLeave
 
 /** Reload the current file's content from disk */
 async function reloadContent(): Promise<void> {
-    if (props.file !== null) {
-        await loadFile(props.file);
-    }
+    if (props.file !== null) await loadFile(props.file);
 }
 
 // Keyboard shortcuts
@@ -289,18 +287,14 @@ onMounted(() => {
 onUnmounted(() => {
     clearAutoSaveTimeout();
     debouncedEmitContentChanged.cancel();
-    if (isDictating.value) {
-        stopDictation();
-    }
+    if (isDictating.value) stopDictation();
     document.removeEventListener('drop', preventGlobalDrop, true);
     document.removeEventListener('dragover', preventGlobalDragOver, true);
     window.removeEventListener('keydown', handleKeyboard);
 });
 
 // Add keyboard listener
-if (typeof window !== 'undefined') {
-    window.addEventListener('keydown', handleKeyboard);
-}
+if (typeof window !== 'undefined') window.addEventListener('keydown', handleKeyboard);
 </script>
 
 <template>

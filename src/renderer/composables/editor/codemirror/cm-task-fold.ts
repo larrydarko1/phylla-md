@@ -184,11 +184,8 @@ function taskFoldRange(state: EditorState, lineStart: number): { from: number; t
         }
 
         const nextIndent = /^(\s*)/.exec(nextLine.text)?.[1]?.length ?? 0;
-        if (nextIndent > parentIndent) {
-            lastNonEmptyChildLine = lineNo;
-        } else {
-            break;
-        }
+        if (nextIndent > parentIndent) lastNonEmptyChildLine = lineNo;
+        else break;
     }
 
     // No actual nested content found

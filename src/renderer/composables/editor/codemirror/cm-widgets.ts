@@ -287,9 +287,7 @@ export class EmbedWidget extends WidgetType {
                 media.addEventListener('timeupdate', (): void => {
                     if (probing) return;
                     timeEl.textContent = fmt(media.currentTime);
-                    if (realDuration !== 0) {
-                        progressFill.style.width = `${(media.currentTime / realDuration) * 100}%`;
-                    }
+                    if (realDuration !== 0) progressFill.style.width = `${(media.currentTime / realDuration) * 100}%`;
                 });
 
                 media.addEventListener('play', (): void => {
@@ -307,11 +305,12 @@ export class EmbedWidget extends WidgetType {
                     if (media.paused) void media.play();
                     else media.pause();
                 };
-                if (isVideo)
+                if (isVideo) {
                     media.onclick = (): void => {
                         if (media.paused) void media.play();
                         else media.pause();
                     };
+                }
 
                 // Seek handler — uses realDuration from closure (set by probe)
                 progressWrap.onclick = (e): void => {

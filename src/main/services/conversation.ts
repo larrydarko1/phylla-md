@@ -43,9 +43,7 @@ let conversationsDir: string | null = null;
  */
 export function init(userDataPath: string): void {
     conversationsDir = path.join(userDataPath, 'conversations');
-    if (!existsSync(conversationsDir)) {
-        mkdirSync(conversationsDir, { recursive: true });
-    }
+    if (!existsSync(conversationsDir)) mkdirSync(conversationsDir, { recursive: true });
 }
 
 export function register(ipc: IpcMain): void {
@@ -134,9 +132,7 @@ async function saveConversation(conversation: Conversation): Promise<AiSimpleRes
 async function addMessage(conversationId: string, message: ConversationMessage): Promise<AiSimpleResult> {
     try {
         const conversation = await findConversation(conversationId);
-        if (conversation === null) {
-            return { success: false, error: 'NOT_FOUND' };
-        }
+        if (conversation === null) return { success: false, error: 'NOT_FOUND' };
 
         message.timestamp = new Date().toISOString();
         conversation.messages.push(message);
@@ -165,9 +161,7 @@ async function findConversation(id: string): Promise<Conversation | null> {
 
 async function readConversations(): Promise<ConversationListResult> {
     try {
-        if (conversationsDir === null) {
-            return { success: false, conversations: [], error: 'INVALID_STATE' };
-        }
+        if (conversationsDir === null) return { success: false, conversations: [], error: 'INVALID_STATE' };
         const dir = conversationsDir;
         const entries = await fs.readdir(dir, { withFileTypes: true });
         const conversations: ConversationSummary[] = [];
@@ -190,9 +184,7 @@ async function readConversations(): Promise<ConversationListResult> {
 async function loadConversation(id: string): Promise<ConversationLoadResult> {
     try {
         const conversation = await findConversation(id);
-        if (conversation === null) {
-            return { success: false, error: 'NOT_FOUND' };
-        }
+        if (conversation === null) return { success: false, error: 'NOT_FOUND' };
         return { success: true, conversation };
     } catch (error) {
         return ipcFailure('conversation loadConversation', error);
@@ -213,9 +205,7 @@ async function deleteConversation(id: string): Promise<AiSimpleResult> {
 async function renameConversation(id: string, newTitle: string): Promise<AiSimpleResult> {
     try {
         const conversation = await findConversation(id);
-        if (conversation === null) {
-            return { success: false, error: 'NOT_FOUND' };
-        }
+        if (conversation === null) return { success: false, error: 'NOT_FOUND' };
         conversation.title = newTitle;
         return await saveConversation(conversation);
     } catch (error) {
@@ -244,9 +234,7 @@ function deriveTitle(messages: ConversationMessage[]): string {
 
 function getConversationPath(id: string): string {
     // Prevent path traversal via crafted IDs like "../../etc/passwd"
-    if (conversationsDir === null) {
-        throw new IpcError('INVALID_STATE', 'Conversations directory not initialized');
-    }
+    if (conversationsDir === null) throw new IpcError('INVALID_STATE', 'Conversations directory not initialized');
     assertSafeFileName(id);
     const filePath = path.join(conversationsDir, `${id}.json`);
     resolveInsideBoundary(filePath, conversationsDir);

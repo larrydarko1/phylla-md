@@ -213,9 +213,7 @@ export function useTextEditing({
         const lh = fs * 1.3;
         let maxW = 0;
 
-        for (const line of lines) {
-            maxW = Math.max(maxW, ctx.measureText(line).width);
-        }
+        for (const line of lines) maxW = Math.max(maxW, ctx.measureText(line).width);
         ctx.restore();
 
         if (editingElementId.value !== null) {
@@ -266,11 +264,8 @@ export function useTextEditing({
         const hit = hitTestElement(worldPt.x, worldPt.y, zoom.value);
 
         if (hit !== null) {
-            if (hit.type === 'text') {
-                startEditText(hit);
-            } else if (isShapeElement(hit)) {
-                startEditShapeText(hit);
-            }
+            if (hit.type === 'text') startEditText(hit);
+            else if (isShapeElement(hit)) startEditShapeText(hit);
         } else {
             startNewText(worldPt.x, worldPt.y);
         }

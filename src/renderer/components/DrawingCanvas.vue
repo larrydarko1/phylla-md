@@ -242,9 +242,7 @@ const showFontSizeOption = computed(() => {
 const showRoundnessOption = computed(() => {
     const roundableTypes = ['rectangle', 'diamond', 'triangle', 'hexagon', 'parallelogram'];
     const tool = effectiveTool.value;
-    if (selectedElement.value !== null) {
-        return roundableTypes.includes(selectedElement.value.type);
-    }
+    if (selectedElement.value !== null) return roundableTypes.includes(selectedElement.value.type);
     return roundableTypes.includes(tool);
 });
 

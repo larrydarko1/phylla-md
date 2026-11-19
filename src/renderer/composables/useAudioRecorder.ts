@@ -70,11 +70,8 @@ export function useAudioRecorder(
     }
 
     async function toggle(): Promise<void> {
-        if (isRecording.value) {
-            stop();
-        } else {
-            await start();
-        }
+        if (isRecording.value) stop();
+        else await start();
     }
 
     async function save(): Promise<void> {

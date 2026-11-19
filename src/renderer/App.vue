@@ -121,9 +121,7 @@ function handleKeydown(e: KeyboardEvent): void {
 function handleFileSelect(file: FileInfo, options: { event?: MouseEvent; visibleFiles?: FileInfo[] } = {}): void {
     selection.selectFile(file, options);
     // Open/activate a tab for the single active file (ignore multi-select)
-    if (options.event?.shiftKey !== true) {
-        editorTabs.openTab(file);
-    }
+    if (options.event?.shiftKey !== true) editorTabs.openTab(file);
 }
 
 function handleFolderSelect(folderPath: string): void {
@@ -134,9 +132,7 @@ function handleFileSave(): void {
     // Mark the active tab as saved
     if (activeFile.value !== null) {
         const tab = editorTabs.tabs.value.find((t) => t.file.path === activeFile.value?.path);
-        if (tab !== undefined && tab.content !== null) {
-            editorTabs.markTabSaved(activeFile.value.path, tab.content);
-        }
+        if (tab !== undefined && tab.content !== null) editorTabs.markTabSaved(activeFile.value.path, tab.content);
     }
     void refreshFiles();
 }
@@ -287,9 +283,7 @@ function handleSearchFileOpen(file: FileInfo): void {
 function handleTabSwitch(index: number): void {
     editorTabs.switchTab(index);
     const file = editorTabs.activeFile.value;
-    if (file !== null) {
-        selection.openFile(file);
-    }
+    if (file !== null) selection.openFile(file);
 }
 
 function toggleBookmarks(): void {

@@ -103,9 +103,7 @@ describe('useEditorTabs', () => {
         });
 
         it('enforces the MAX_TABS cap', () => {
-            for (let i = 0; i < tabs.MAX_TABS; i++) {
-                tabs.openTab(makeFile(`file${i}.md`));
-            }
+            for (let i = 0; i < tabs.MAX_TABS; i++) tabs.openTab(makeFile(`file${i}.md`));
             expect(tabs.tabs.value).toHaveLength(tabs.MAX_TABS);
 
             tabs.openTab(makeFile('overflow.md'));
@@ -113,9 +111,7 @@ describe('useEditorTabs', () => {
         });
 
         it('replaces a non-active tab when at cap', () => {
-            for (let i = 0; i < tabs.MAX_TABS; i++) {
-                tabs.openTab(makeFile(`file${i}.md`));
-            }
+            for (let i = 0; i < tabs.MAX_TABS; i++) tabs.openTab(makeFile(`file${i}.md`));
             const overflow = makeFile('overflow.md');
             tabs.openTab(overflow);
             const paths = tabs.tabs.value.map((t) => t.file.path);

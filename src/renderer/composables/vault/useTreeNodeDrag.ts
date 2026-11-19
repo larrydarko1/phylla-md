@@ -30,9 +30,7 @@ export function useTreeNodeDrag(
         const node = getNode();
         const dataTransfer = event.dataTransfer;
 
-        if (dataTransfer === null) {
-            return;
-        }
+        if (dataTransfer === null) return;
 
         isDragging.value = true;
         dataTransfer.effectAllowed = 'move';
@@ -57,9 +55,7 @@ export function useTreeNodeDrag(
             isDragOver.value = true;
 
             const dataTransfer = event.dataTransfer;
-            if (dataTransfer !== null) {
-                dataTransfer.dropEffect = 'move';
-            }
+            if (dataTransfer !== null) dataTransfer.dropEffect = 'move';
         }
     }
 
@@ -72,31 +68,23 @@ export function useTreeNodeDrag(
         const node = getNode();
         const dataTransfer = event.dataTransfer;
 
-        if (node.type !== 'folder' || dataTransfer === null) {
-            return;
-        }
+        if (node.type !== 'folder' || dataTransfer === null) return;
 
         const data = dataTransfer.getData('text/plain');
 
-        if (data === '') {
-            return;
-        }
+        if (data === '') return;
 
         if (data.startsWith('file:')) {
             const filePath = data.substring(5);
             const activeFile = getActiveFile();
 
-            if (activeFile !== null && activeFile.path === filePath && activeFile.folder === node.path) {
-                return;
-            }
+            if (activeFile !== null && activeFile.path === filePath && activeFile.folder === node.path) return;
 
             onMoveFile(filePath, node.path);
         } else if (data.startsWith('folder:')) {
             const folderPath = data.substring(7);
 
-            if (folderPath === node.path || node.path.startsWith(`${folderPath}/`)) {
-                return;
-            }
+            if (folderPath === node.path || node.path.startsWith(`${folderPath}/`)) return;
 
             onMoveFolder(folderPath, node.path);
         }

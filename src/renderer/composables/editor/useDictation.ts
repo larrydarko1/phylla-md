@@ -213,11 +213,8 @@ function resampleTo16kHz(input: Float32Array, inputSampleRate: number): Float32A
         const srcIdx = i * ratio;
         const floor = Math.floor(srcIdx);
         const frac = srcIdx - floor;
-        if (floor + 1 < input.length) {
-            output[i] = (input[floor] ?? 0) * (1 - frac) + (input[floor + 1] ?? 0) * frac;
-        } else {
-            output[i] = input[floor] ?? 0;
-        }
+        if (floor + 1 < input.length) output[i] = (input[floor] ?? 0) * (1 - frac) + (input[floor + 1] ?? 0) * frac;
+        else output[i] = input[floor] ?? 0;
     }
     return output;
 }

@@ -68,9 +68,7 @@ function makeDictation() {
 }
 
 function sendChunk(data: Float32Array) {
-    if (lastWorkletNode?.port.onmessage) {
-        lastWorkletNode.port.onmessage(new MessageEvent('message', { data }));
-    }
+    if (lastWorkletNode?.port.onmessage) lastWorkletNode.port.onmessage(new MessageEvent('message', { data }));
 }
 
 vi.stubGlobal('AudioContext', MockAudioContext);

@@ -107,9 +107,7 @@ export function useDrawingHistory({
     function copySelected(): void {
         if (selectedElements.value.length === 0) return;
         const result = z.array(CanvasElementSchema).safeParse(JSON.parse(JSON.stringify(selectedElements.value)));
-        if (result.success) {
-            clipboard.value = result.data;
-        }
+        if (result.success) clipboard.value = result.data;
     }
 
     function pasteClipboard(): void {

@@ -43,9 +43,7 @@ export function useEmbedResolver(
         for (const match of matches) {
             const inner = match[1] ?? '';
             const fileName = (inner.split('|')[0]?.split('#')[0] ?? '').trim();
-            if (fileName !== '' && !embedCache.value.has(fileName)) {
-                fileNames.add(fileName);
-            }
+            if (fileName !== '' && !embedCache.value.has(fileName)) fileNames.add(fileName);
         }
         if (fileNames.size === 0) return;
 
@@ -79,9 +77,7 @@ export function useEmbedResolver(
             }
         }
 
-        if (changed) {
-            embedCacheVersion.value++;
-        }
+        if (changed) embedCacheVersion.value++;
     }
 
     function getEmbedMediaType(fileName: string): 'image' | 'video' | 'audio' | 'pdf' | 'note' | 'unknown' {

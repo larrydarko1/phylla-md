@@ -150,9 +150,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
             if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
             const { filePath, base64Data } = parsed.data;
             const resolved = path.resolve(filePath);
-            if (!authorizedWritePaths.delete(resolved)) {
-                return { success: false, error: 'ACCESS_DENIED' };
-            }
+            if (!authorizedWritePaths.delete(resolved)) return { success: false, error: 'ACCESS_DENIED' };
             try {
                 await fs.writeFile(resolved, Buffer.from(base64Data, 'base64'));
                 return { success: true };
@@ -593,9 +591,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
                 const bookmarksPath = path.join(vaultMetaDir(root), 'bookmarks.json');
                 await fs.mkdir(path.dirname(bookmarksPath), { recursive: true });
                 // Validate every path is inside the vault before persisting
-                for (const bookmarkPath of parsed.data) {
-                    resolveInsideBoundary(bookmarkPath, root);
-                }
+                for (const bookmarkPath of parsed.data) resolveInsideBoundary(bookmarkPath, root);
                 await fs.writeFile(bookmarksPath, JSON.stringify(parsed.data, null, 2), 'utf-8');
                 return { success: true };
             } catch (error) {

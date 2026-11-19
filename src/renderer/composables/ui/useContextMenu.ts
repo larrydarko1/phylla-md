@@ -22,9 +22,7 @@ export function useContextMenu(
     }
 
     function handleEscape(event: KeyboardEvent): void {
-        if (event.key === 'Escape') {
-            onClose();
-        }
+        if (event.key === 'Escape') onClose();
     }
 
     function removeListeners(): void {
@@ -40,12 +38,8 @@ export function useContextMenu(
                 if (menuRef.value !== null) {
                     const rect = menuRef.value.getBoundingClientRect();
                     let { x, y } = getPosition();
-                    if (y + rect.height > window.innerHeight) {
-                        y = Math.max(0, window.innerHeight - rect.height - 4);
-                    }
-                    if (x + rect.width > window.innerWidth) {
-                        x = Math.max(0, window.innerWidth - rect.width - 4);
-                    }
+                    if (y + rect.height > window.innerHeight) y = Math.max(0, window.innerHeight - rect.height - 4);
+                    if (x + rect.width > window.innerWidth) x = Math.max(0, window.innerWidth - rect.width - 4);
                     adjustedPosition.value = { x, y };
                 }
             });
