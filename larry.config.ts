@@ -142,7 +142,7 @@ export default defineConfig({
             },
         },
         'pipeline': {},
-        'refactoring': {},
+        'refactoring': { claudeCode: true },
         // `index.scss` is the entry, imported once by main.ts. `_variables.scss` is injected into every SFC
         // style block, each its own Sass compilation, so anything reachable from it that emits ships once per
         // component. `json-presets` is a product decision: the themes are JSON files seeded into
