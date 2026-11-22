@@ -55,6 +55,21 @@ describe('audio:saveRecording', () => {
         expect(result.success).toBe(false);
     });
 
+    it('rejects a folder link inside the vault that points outside it', async () => {
+        const outsideDir = fs.mkdtempSync(path.join(os.tmpdir(), 'outside-'));
+        fs.symlinkSync(outsideDir, path.join(tmpDir, 'recordings'));
+        const base64 = Buffer.from('x').toString('base64');
+        try {
+            const result = readReply(
+                await ipc.invoke('audio:saveRecording', path.join(tmpDir, 'recordings'), 'rec.wav', base64),
+            );
+            expect(result).toEqual({ success: false, error: 'ACCESS_DENIED' });
+            expect(fs.readdirSync(outsideDir)).toEqual([]);
+        } finally {
+            fs.rmSync(outsideDir, { recursive: true, force: true });
+        }
+    });
+
     it('rejects a folder path outside the vault', async () => {
         const outsideDir = fs.mkdtempSync(path.join(os.tmpdir(), 'outside-'));
         const base64 = Buffer.from('x').toString('base64');

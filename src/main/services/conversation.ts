@@ -106,7 +106,7 @@ async function createConversation(modelName: string): Promise<ConversationCreate
             tokenCount: 0,
         };
 
-        await writeFileAtomic(getConversationPath(conversation.id), JSON.stringify(conversation, null, 2));
+        await writeFileAtomic(await getConversationPath(conversation.id), JSON.stringify(conversation, null, 2));
 
         return { success: true, conversation };
     } catch (error) {
@@ -122,7 +122,7 @@ async function saveConversation(conversation: Conversation): Promise<AiSimpleRes
             conversation.title = deriveTitle(conversation.messages);
         }
 
-        await writeFileAtomic(getConversationPath(conversation.id), JSON.stringify(conversation, null, 2));
+        await writeFileAtomic(await getConversationPath(conversation.id), JSON.stringify(conversation, null, 2));
 
         return { success: true };
     } catch (error) {
@@ -150,7 +150,7 @@ async function addMessage(conversationId: string, message: ConversationMessage):
 
 async function findConversation(id: string): Promise<Conversation | null> {
     try {
-        const filePath = getConversationPath(id);
+        const filePath = await getConversationPath(id);
         const data = await fs.readFile(filePath, 'utf-8');
         const result = ConversationSchema.safeParse(JSON.parse(data));
         if (!result.success) {
@@ -201,7 +201,7 @@ async function loadConversation(id: string): Promise<ConversationLoadResult> {
 
 async function deleteConversation(id: string): Promise<AiSimpleResult> {
     try {
-        const filePath = getConversationPath(id);
+        const filePath = await getConversationPath(id);
         await fs.unlink(filePath);
         return { success: true };
     } catch (error) {
@@ -242,14 +242,14 @@ function deriveTitle(messages: ConversationMessage[]): string {
     return `${text.slice(0, 57)}...`;
 }
 
-function getConversationPath(id: string): string {
+async function getConversationPath(id: string): Promise<string> {
     // Prevent path traversal via crafted IDs like "../../etc/passwd"
     if (conversationsDir === null) {
         throw new IpcError('INVALID_STATE', 'Conversations directory not initialized');
     }
     assertSafeFileName(id);
     const filePath = path.join(conversationsDir, `${id}.json`);
-    resolveInsideBoundary(filePath, conversationsDir);
+    await resolveInsideBoundary(filePath, conversationsDir);
     return filePath;
 }
 

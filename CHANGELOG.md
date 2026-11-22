@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Two release runs can no longer overlap, so a release's installers always come from the commit its tag points at.
 - A failed release can only be finished by re-running it. A later commit with the same version now stops with an error instead of shipping its own installers under the earlier commit's tag.
 
+### Security
+
+- A symlink inside your vault can no longer lead Phylla to read, write, move or delete files outside it, for example in a vault someone shared with you. Symlinks that stay inside the vault still work.
+
 ## [4.0.0] - 2026-10-23
 
 Leaf is now Phylla. Your notes, models, conversations and settings move over automatically on first launch.
