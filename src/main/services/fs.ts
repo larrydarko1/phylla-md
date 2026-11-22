@@ -14,12 +14,13 @@ import { app, dialog, shell } from 'electron';
 import { z } from 'zod';
 
 import { readState, updateState } from '@/main/lib/appState';
+import { readBookmarks, saveBookmarks } from '@/main/lib/bookmarks';
 import { IpcError, ipcFailure } from '@/main/lib/errors';
 import { ALLOWED_EXTENSIONS } from '@/main/lib/extensions';
 import type { IpcMain } from '@/main/lib/ipc';
 import { log } from '@/main/lib/logger';
 import { IMAGE_MIMETYPES, AUDIO_MIMETYPES } from '@/main/lib/mime';
-import { VAULT_META_DIRS, vaultMetaDir } from '@/main/lib/paths';
+import { VAULT_META_DIRS } from '@/main/lib/paths';
 import { resolveInsideBoundary } from '@/main/lib/validation';
 import type { AiSimpleResult } from '@/schemas/ai';
 import type { IpcErrorCode } from '@/schemas/errors';
@@ -537,7 +538,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
         },
     );
 
-    // Bookmarks — persisted in <vault>/.phylla/bookmarks.json
+    // Bookmarks — persisted vault-relative in <vault>/.phylla/bookmarks.json
     ipc.handle(
         'bookmarks:load',
         async (): Promise<
@@ -546,19 +547,11 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
         > => {
             try {
                 const root = getVaultRoot();
-                const bookmarksPath = path.join(vaultMetaDir(root), 'bookmarks.json');
-                try {
-                    const raw = await fs.readFile(bookmarksPath, 'utf-8');
-                    const parsed: unknown = JSON.parse(raw);
-                    if (!Array.isArray(parsed)) return { success: true, bookmarks: [] };
-                    // Only return paths that are still inside the vault
-                    const valid = parsed.filter(
-                        (p): p is string => typeof p === 'string' && p.startsWith(root + path.sep),
-                    );
-                    return { success: true, bookmarks: valid };
-                } catch {
-                    return { success: true, bookmarks: [] };
-                }
+                const bookmarks = await readBookmarks(root, async (): Promise<string[]> => {
+                    const { files } = await scanFolder(root);
+                    return files.map((file): string => file.relativePath.split(path.sep).join('/'));
+                });
+                return { success: true, bookmarks };
             } catch (error) {
                 return ipcFailure('fs-service bookmarks:load', error);
             }
@@ -574,12 +567,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
             const parsed = z.array(z.string()).safeParse(rawBookmarks);
             if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
             try {
-                const root = getVaultRoot();
-                const bookmarksPath = path.join(vaultMetaDir(root), 'bookmarks.json');
-                await fs.mkdir(path.dirname(bookmarksPath), { recursive: true });
-                // Validate every path is inside the vault before persisting
-                await Promise.all(parsed.data.map((p): Promise<string> => resolveInsideBoundary(p, root)));
-                await fs.writeFile(bookmarksPath, JSON.stringify(parsed.data, null, 2), 'utf-8');
+                await saveBookmarks(getVaultRoot(), parsed.data);
                 return { success: true };
             } catch (error) {
                 return ipcFailure('fs-service bookmarks:save', error);

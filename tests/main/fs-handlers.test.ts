@@ -623,15 +623,15 @@ describe('bookmarks:load', () => {
 });
 
 describe('bookmarks:save', () => {
-    it('saves bookmarks inside the vault', async () => {
-        const bookmarks = [path.join(tmpVault, 'note.md')];
+    it('saves bookmarks relative to the vault, so moving the vault keeps them', async () => {
+        const bookmarks = [path.join(tmpVault, 'note.md'), path.join(tmpVault, 'Personal', 'The Day.md')];
         const result = readReply(await ipc.invoke('bookmarks:save', bookmarks));
         expect(result.success).toBe(true);
 
         const saved = z
             .array(z.string())
             .parse(JSON.parse(fs.readFileSync(path.join(tmpVault, '.phylla', 'bookmarks.json'), 'utf-8')));
-        expect(saved).toEqual(bookmarks);
+        expect(saved).toEqual(['note.md', 'Personal/The Day.md']);
     });
 
     it('returns failure for non-array bookmarks', async () => {

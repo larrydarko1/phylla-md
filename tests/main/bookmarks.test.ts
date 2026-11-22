@@ -33,6 +33,15 @@ const fakeWindow = new BrowserWindow();
 let tmpVault: string;
 let ipc: ReturnType<typeof createFakeIpc>;
 
+function writeStored(entries: string[]): void {
+    fs.mkdirSync(path.join(tmpVault, '.phylla'), { recursive: true });
+    fs.writeFileSync(path.join(tmpVault, '.phylla', 'bookmarks.json'), JSON.stringify(entries));
+}
+
+function readStored(): unknown {
+    return JSON.parse(fs.readFileSync(path.join(tmpVault, '.phylla', 'bookmarks.json'), 'utf-8'));
+}
+
 function newTmpVault(): string {
     const dir = path.join(os.tmpdir(), `phylla-bm-test-${process.pid}-${Date.now()}`);
     fs.mkdirSync(dir, { recursive: true });
@@ -91,6 +100,49 @@ describe('bookmarks IPC handlers', () => {
             expect(result.bookmarks).toEqual([`${tmpVault}/a.md`]);
             expect(fs.existsSync(legacyDir)).toBe(false);
             expect(fs.existsSync(path.join(tmpVault, '.phylla', 'bookmarks.json'))).toBe(true);
+        });
+
+        it('keeps the bookmarks of a vault that was moved or renamed', async () => {
+            fs.mkdirSync(path.join(tmpVault, 'Personal'));
+            fs.writeFileSync(path.join(tmpVault, 'Personal', 'The Day.md'), '');
+            writeStored([`/Users/someone/Old Vault/Personal/The Day.md`]);
+            const result = readReply(await ipc.invoke('bookmarks:load'));
+            expect(result.bookmarks).toEqual([`${tmpVault}/Personal/The Day.md`]);
+            expect(readStored()).toEqual(['Personal/The Day.md']);
+        });
+
+        it('follows a bookmark to a folder renamed outside Phylla', async () => {
+            fs.mkdirSync(path.join(tmpVault, 'Private'));
+            fs.writeFileSync(path.join(tmpVault, 'Private', 'The Day.md'), '');
+            writeStored(['Personal/The Day.md']);
+            const result = readReply(await ipc.invoke('bookmarks:load'));
+            expect(result.bookmarks).toEqual([`${tmpVault}/Private/The Day.md`]);
+            expect(readStored()).toEqual(['Private/The Day.md']);
+        });
+
+        it('leaves a missing bookmark as it was when two files could be it', async () => {
+            for (const folder of ['A', 'B']) {
+                fs.mkdirSync(path.join(tmpVault, folder));
+                fs.writeFileSync(path.join(tmpVault, folder, 'The Day.md'), '');
+            }
+            writeStored(['Personal/The Day.md']);
+            const result = readReply(await ipc.invoke('bookmarks:load'));
+            expect(result.bookmarks).toEqual([`${tmpVault}/Personal/The Day.md`]);
+            expect(readStored()).toEqual(['Personal/The Day.md']);
+        });
+
+        it('rewrites an older file of absolute paths as vault-relative ones', async () => {
+            fs.writeFileSync(path.join(tmpVault, 'a.md'), '');
+            writeStored([`${tmpVault}/a.md`]);
+            const result = readReply(await ipc.invoke('bookmarks:load'));
+            expect(result.bookmarks).toEqual([`${tmpVault}/a.md`]);
+            expect(readStored()).toEqual(['a.md']);
+        });
+
+        it('drops a relative entry that climbs out of the vault', async () => {
+            writeStored(['../outside.md']);
+            const result = readReply(await ipc.invoke('bookmarks:load'));
+            expect(result.bookmarks).toEqual([]);
         });
 
         it('returns empty array when bookmarks.json contains non-array JSON', async () => {
