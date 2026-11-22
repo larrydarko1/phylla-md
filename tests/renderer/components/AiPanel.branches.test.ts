@@ -414,9 +414,7 @@ describe('decreaseWidth / increaseWidth', () => {
     it('increaseWidth clamps to maxWidth (600)', async () => {
         const wrapper = mountPanel();
         const handle = wrapper.find('.ai-panel-resize-handle');
-        for (let i = 0; i < 20; i++) {
-            await handle.trigger('keydown.right');
-        }
+        for (let i = 0; i < 20; i++) await handle.trigger('keydown.right');
         expect(wrapper.find('.ai-panel').attributes('style')).toContain('width: 600px');
         wrapper.unmount();
     });

@@ -302,9 +302,7 @@ export function buildSyntaxDecos(
                 }
 
                 // ── Blockquote ────────────────────────────────────────
-                if (name === 'Blockquote') {
-                    pushBlockquoteLines(decos, state, lineFrom, lineTo, activeLines);
-                }
+                if (name === 'Blockquote') pushBlockquoteLines(decos, state, lineFrom, lineTo, activeLines);
 
                 // ── Links ─────────────────────────────────────────────
                 if (name === 'Link') {
@@ -327,9 +325,7 @@ export function buildSyntaxDecos(
                 if (name === 'Image') {
                     const text = state.doc.sliceString(from, to);
                     const imgMatch = /^!\[([^\]]*)\]\(([^)]*)\)$/.exec(text);
-                    if (imgMatch !== null) {
-                        decos.push(Decoration.mark({ class: 'cm-image-link' }).range(from, to));
-                    }
+                    if (imgMatch !== null) decos.push(Decoration.mark({ class: 'cm-image-link' }).range(from, to));
                 }
 
                 // ── Horizontal rule ───────────────────────────────────
@@ -372,11 +368,8 @@ export function mergeVisibleRanges(
     const merged: { from: number; to: number }[] = [];
     for (const range of expanded) {
         const last = merged[merged.length - 1];
-        if (last !== undefined && range.from <= last.to) {
-            last.to = Math.max(last.to, range.to);
-        } else {
-            merged.push({ ...range });
-        }
+        if (last !== undefined && range.from <= last.to) last.to = Math.max(last.to, range.to);
+        else merged.push({ ...range });
     }
     return merged;
 }
@@ -394,9 +387,7 @@ function pushHiddenRows(decos: Range<Decoration>[], state: EditorState, from: nu
     for (let ln = from; ln <= to; ln++) {
         const line = state.doc.line(ln);
         decos.push(Decoration.line({ class: 'cm-table-hidden-row' }).range(line.from));
-        if (line.from < line.to) {
-            decos.push(Decoration.replace({}).range(line.from, line.to));
-        }
+        if (line.from < line.to) decos.push(Decoration.replace({}).range(line.from, line.to));
     }
 }
 

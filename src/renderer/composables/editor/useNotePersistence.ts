@@ -60,9 +60,7 @@ export function useNotePersistence(
                 content.value = result.content;
                 originalContent.value = result.content;
                 hasUnsavedChanges.value = false;
-                if (file.extension.toLowerCase() === '.md') {
-                    resolveEmbeds(result.content);
-                }
+                if (file.extension.toLowerCase() === '.md') resolveEmbeds(result.content);
             } else {
                 window.electronAPI.log.error('Failed to read file:', result.error);
             }

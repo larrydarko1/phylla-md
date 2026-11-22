@@ -59,9 +59,7 @@ export function useLanguage(): UseLanguageReturn {
 
     async function setActive(id: string): Promise<boolean> {
         // Early return if already active
-        if (id === activeId.value) {
-            return true;
-        }
+        if (id === activeId.value) return true;
 
         const language = languages.value.find((l): boolean => l.id === id);
         if (language === undefined) return false;
@@ -69,9 +67,7 @@ export function useLanguage(): UseLanguageReturn {
             const result = await window.electronAPI.languageSetActive(id);
             if (result.success) {
                 const messages = await loadLanguageMessages(id);
-                if (messages !== null) {
-                    i18n.global.setLocaleMessage<LocaleMessages>(id, messages);
-                }
+                if (messages !== null) i18n.global.setLocaleMessage<LocaleMessages>(id, messages);
                 activeId.value = id;
                 locale.value = id;
                 try {

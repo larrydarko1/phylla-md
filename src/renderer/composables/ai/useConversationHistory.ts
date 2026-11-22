@@ -71,9 +71,7 @@ export function useConversationHistory(
         try {
             const modelName = status.value.currentModelName ?? 'unknown';
             const result = await window.electronAPI.conversationCreate(modelName);
-            if (result.success && result.conversation != null) {
-                currentConversationId.value = result.conversation.id;
-            }
+            if (result.success && result.conversation != null) currentConversationId.value = result.conversation.id;
         } catch (error) {
             window.electronAPI.log.error('Failed to create conversation:', error);
         }
@@ -135,18 +133,14 @@ export function useConversationHistory(
             await saveCurrentConversation();
             const result = await window.electronAPI.conversationLoad(id);
             if (result.success && result.conversation != null) {
-                if (status.value.isModelLoaded) {
-                    await window.electronAPI.aiResetChat();
-                }
+                if (status.value.isModelLoaded) await window.electronAPI.aiResetChat();
                 currentConversationId.value = result.conversation.id;
                 messages.value = result.conversation.messages.map((m): ChatMessage => ({
                     role: m.role,
                     content: m.content,
                     ...(m.thinking === undefined ? {} : { thinking: m.thinking }),
                 }));
-                if (result.conversation.model !== '') {
-                    lastUsedModelName.value = result.conversation.model;
-                }
+                if (result.conversation.model !== '') lastUsedModelName.value = result.conversation.model;
                 conversationTokenCount.value = result.conversation.tokenCount ?? 0;
                 if (status.value.isModelLoaded && messages.value.length > 0) {
                     await window.electronAPI.aiRestoreChatHistory(toModelTurns(messages.value));

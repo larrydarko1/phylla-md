@@ -95,9 +95,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
 
 /** Graceful shutdown: unload the model and free resources. */
 export async function cleanup(): Promise<void> {
-    if (isModelLoaded) {
-        await unloadModel();
-    }
+    if (isModelLoaded) await unloadModel();
 }
 
 async function ensureModelsDir(): Promise<void> {
@@ -196,9 +194,7 @@ async function getModelLoadOptions(modelPath: string): Promise<{ gpuLayers?: num
 
 async function loadModel(modelPath: string): Promise<AiLoadResult> {
     try {
-        if (isModelLoaded) {
-            await unloadModel();
-        }
+        if (isModelLoaded) await unloadModel();
 
         // Only allow loading models from the designated models directory
         const resolvedModel = path.resolve(modelPath);
@@ -207,9 +203,7 @@ async function loadModel(modelPath: string): Promise<AiLoadResult> {
             return { success: false, error: 'ACCESS_DENIED' };
         }
 
-        if (!existsSync(modelPath)) {
-            return { success: false, error: 'NOT_FOUND' };
-        }
+        if (!existsSync(modelPath)) return { success: false, error: 'NOT_FOUND' };
 
         const llamaInstance = await getLlamaInstance();
 
@@ -292,13 +286,9 @@ async function chat(
     onThinkingToken: (token: string) => void,
     noteContext: string | null = null,
 ): Promise<AiChatResult> {
-    if (!isModelLoaded || session === null) {
-        return { success: false, error: 'MODEL_NOT_LOADED' };
-    }
+    if (!isModelLoaded || session === null) return { success: false, error: 'MODEL_NOT_LOADED' };
 
-    if (isGenerating) {
-        return { success: false, error: 'BUSY' };
-    }
+    if (isGenerating) return { success: false, error: 'BUSY' };
 
     isGenerating = true;
     currentAbortController = new AbortController();
@@ -373,9 +363,7 @@ function stopChat(): AiSimpleResult {
 }
 
 async function resetChat(): Promise<AiSimpleResult> {
-    if (!isModelLoaded || model === null || context === null) {
-        return { success: false, error: 'MODEL_NOT_LOADED' };
-    }
+    if (!isModelLoaded || model === null || context === null) return { success: false, error: 'MODEL_NOT_LOADED' };
 
     try {
         pendingConversationHistory = null;

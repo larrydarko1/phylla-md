@@ -46,9 +46,7 @@ export function useDebounceFn<TArgs extends unknown[]>(
     const debounced = (...args: TArgs): void => {
         lastArgs = args;
         if (timer !== undefined) clearTimeout(timer);
-        if (options.maxWait !== undefined && maxTimer === undefined) {
-            maxTimer = setTimeout(invoke, options.maxWait);
-        }
+        if (options.maxWait !== undefined && maxTimer === undefined) maxTimer = setTimeout(invoke, options.maxWait);
         timer = setTimeout(invoke, ms);
     };
 

@@ -250,9 +250,7 @@ export function useAIChat(deps: AiChatDeps, actions: AiChatActions): UseAIChatRe
         // Restore context of messages before the edited one so subsequent
         // sends have conversation history available.
         const priorMessages = messages.value.slice(0, index).filter((m): boolean => m.role !== 'system');
-        if (priorMessages.length > 0) {
-            await window.electronAPI.aiRestoreChatHistory(toModelTurns(priorMessages));
-        }
+        if (priorMessages.length > 0) await window.electronAPI.aiRestoreChatHistory(toModelTurns(priorMessages));
         await saveCurrentConversation();
         await saveTokenCountToConversation();
         await refreshConversationList();
@@ -271,9 +269,7 @@ export function useAIChat(deps: AiChatDeps, actions: AiChatActions): UseAIChatRe
         // Restore context of messages that preceded this one so the AI
         // doesn't lose conversation history on regenerate/resend.
         const priorMessages = messages.value.slice(0, index).filter((m): boolean => m.role !== 'system');
-        if (priorMessages.length > 0) {
-            await window.electronAPI.aiRestoreChatHistory(toModelTurns(priorMessages));
-        }
+        if (priorMessages.length > 0) await window.electronAPI.aiRestoreChatHistory(toModelTurns(priorMessages));
         messages.value.push({ role: 'assistant', content: '' });
         isStreaming.value = true;
         userScrolledUp.value = false;
@@ -331,9 +327,7 @@ export function useAIChat(deps: AiChatDeps, actions: AiChatActions): UseAIChatRe
         messages.value.pop();
         await saveCurrentConversation();
         const lastIndex = messages.value.length - 1;
-        if (messages.value[lastIndex]?.role === 'user') {
-            await resendMessage(lastIndex);
-        }
+        if (messages.value[lastIndex]?.role === 'user') await resendMessage(lastIndex);
     }
 
     // Send and stop

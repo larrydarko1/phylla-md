@@ -151,9 +151,7 @@ describe('audio utilities', () => {
             const wav = await encode(ab);
             const view = new DataView(wav);
 
-            for (let i = 0; i < 4; i++) {
-                expect(view.getInt16(44 + i * 2, true)).toBe(0);
-            }
+            for (let i = 0; i < 4; i++) expect(view.getInt16(44 + i * 2, true)).toBe(0);
         });
     });
 });

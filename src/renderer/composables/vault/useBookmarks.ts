@@ -34,11 +34,8 @@ export function useBookmarks(_getCurrentFolder: () => string | null): UseBookmar
 
     function toggle(filePath: string): void {
         const index = bookmarkedFiles.value.indexOf(filePath);
-        if (index >= 0) {
-            bookmarkedFiles.value.splice(index, 1);
-        } else {
-            bookmarkedFiles.value.push(filePath);
-        }
+        if (index >= 0) bookmarkedFiles.value.splice(index, 1);
+        else bookmarkedFiles.value.push(filePath);
         void save();
     }
 
@@ -62,11 +59,8 @@ export function useBookmarks(_getCurrentFolder: () => string | null): UseBookmar
         const updated: string[] = [];
         for (const bookmark of bookmarkedFiles.value) {
             let next = bookmark;
-            if (bookmark === oldPath) {
-                next = newPath;
-            } else if (bookmark.startsWith(descendantPrefix)) {
-                next = newPath + bookmark.slice(oldPath.length);
-            }
+            if (bookmark === oldPath) next = newPath;
+            else if (bookmark.startsWith(descendantPrefix)) next = newPath + bookmark.slice(oldPath.length);
             if (next !== bookmark) changed = true;
             if (!updated.includes(next)) updated.push(next);
         }

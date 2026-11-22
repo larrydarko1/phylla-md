@@ -37,9 +37,7 @@ export function useFileSelection(): UseFileSelectionReturn {
             const index = selectedFiles.value.findIndex((f): boolean => f.path === file.path);
             if (index >= 0) {
                 selectedFiles.value.splice(index, 1);
-                if (activeFile.value?.path === file.path) {
-                    activeFile.value = selectedFiles.value[0] ?? null;
-                }
+                if (activeFile.value?.path === file.path) activeFile.value = selectedFiles.value[0] ?? null;
             } else {
                 selectedFiles.value.push(file);
                 activeFile.value = file;
@@ -56,9 +54,7 @@ export function useFileSelection(): UseFileSelectionReturn {
             lastSelectedIndex.value = fileIndex;
         }
 
-        if (activeFile.value !== null) {
-            localStorage.setItem('phylla-last-selected-file', activeFile.value.path);
-        }
+        if (activeFile.value !== null) localStorage.setItem('phylla-last-selected-file', activeFile.value.path);
     }
 
     function selectFolder(folderPath: string): void {

@@ -35,11 +35,8 @@ const { selectedIndex, resetIndex } = useListKeyboardNavigation<FileInfo>(
         onSelect: (file: FileInfo): void => emit('selectFile', file),
         onOpen: openSelectedResult,
         onEscape: (): void => {
-            if (searchQuery.value.trim() !== '') {
-                clearSearch();
-            } else {
-                emit('close');
-            }
+            if (searchQuery.value.trim() !== '') clearSearch();
+            else emit('close');
         },
     },
     {
@@ -68,15 +65,11 @@ function runSearch(): void {
             if (fileName.includes(query)) {
                 score += 100;
                 // Bonus for exact match at start
-                if (fileName.startsWith(query)) {
-                    score += 50;
-                }
+                if (fileName.startsWith(query)) score += 50;
             }
 
             // Also search in folder path
-            if (folderPath.includes(query)) {
-                score += 30;
-            }
+            if (folderPath.includes(query)) score += 30;
 
             // Fuzzy match: check if all characters in query appear in order
             let queryIndex = 0;
@@ -119,15 +112,11 @@ function openSelectedResult(): void {
     // Flush any pending debounce so results are current before opening
     runSearch();
     const result = searchResults.value[selectedIndex.value];
-    if (result !== undefined) {
-        openFile(result);
-    }
+    if (result !== undefined) openFile(result);
 }
 
 function splitHighlightedText(text: string): HighlightPart[] {
-    if (searchQuery.value.trim() === '') {
-        return [{ text, highlighted: false }];
-    }
+    if (searchQuery.value.trim() === '') return [{ text, highlighted: false }];
 
     const escaped = searchQuery.value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const regex = new RegExp(`(${escaped})`, 'gi');
@@ -139,18 +128,14 @@ function splitHighlightedText(text: string): HighlightPart[] {
     regex.lastIndex = 0;
     while ((match = regex.exec(text)) !== null) {
         // Non-highlighted part before match
-        if (match.index > lastIndex) {
-            parts.push({ text: text.slice(lastIndex, match.index), highlighted: false });
-        }
+        if (match.index > lastIndex) parts.push({ text: text.slice(lastIndex, match.index), highlighted: false });
         // Highlighted match
         parts.push({ text: match[0], highlighted: true });
         lastIndex = match.index + match[0].length;
     }
 
     // Remaining non-highlighted text
-    if (lastIndex < text.length) {
-        parts.push({ text: text.slice(lastIndex), highlighted: false });
-    }
+    if (lastIndex < text.length) parts.push({ text: text.slice(lastIndex), highlighted: false });
 
     return parts.length > 0 ? parts : [{ text, highlighted: false }];
 }

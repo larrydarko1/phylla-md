@@ -12,14 +12,13 @@ const CODEMIRROR = /^src\/renderer\/composables\/editor\/codemirror\/cm-[a-z0-9-
  * regrow to the old number.
  */
 const LENGTH_BASELINE: Record<string, number> = {
-    'src/renderer/composables/drawing/useDrawingInteraction.ts': 747,
-    'src/main/services/fs.ts': 658,
-    'src/renderer/composables/drawing/useCanvasRenderer.ts': 623,
-    'src/renderer/App.vue': 516,
-    'src/renderer/composables/ai/useAIChat.ts': 447,
-    'src/renderer/components/NoteEditor.vue': 425,
+    'src/renderer/composables/drawing/useDrawingInteraction.ts': 734,
+    'src/main/services/fs.ts': 654,
+    'src/renderer/composables/drawing/useCanvasRenderer.ts': 606,
+    'src/renderer/App.vue': 509,
+    'src/renderer/composables/ai/useAIChat.ts': 431,
+    'src/renderer/components/NoteEditor.vue': 413,
     'src/renderer/composables/editor/codemirror/cm-theme.ts': 421,
-    'src/main/services/ai.ts': 412,
 };
 
 export default defineConfig({
@@ -142,7 +141,7 @@ export default defineConfig({
             },
         },
         'pipeline': {},
-        'refactoring': {},
+        'refactoring': { claudeCode: true },
         // `index.scss` is the entry, imported once by main.ts. `_variables.scss` is injected into every SFC
         // style block, each its own Sass compilation, so anything reachable from it that emits ships once per
         // component. `json-presets` is a product decision: the themes are JSON files seeded into

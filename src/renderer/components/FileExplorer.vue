@@ -131,11 +131,8 @@ function handleKeyDown(e: KeyboardEvent): void {
 
     // Calculate new index
     let newIndex: number;
-    if (e.key === 'ArrowDown') {
-        newIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-    } else {
-        newIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
-    }
+    if (e.key === 'ArrowDown') newIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+    else newIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
 
     // Select the new item
     const newItem = items[newIndex];
@@ -176,26 +173,20 @@ function handleContextMenuAction(action: string): void {
     const { type, targetPath } = contextMenu.value;
 
     if (action === 'bookmark') {
-        if (type === 'file') {
-            emit('toggleBookmark', targetPath);
-        }
+        if (type === 'file') emit('toggleBookmark', targetPath);
     } else if (action === 'rename') {
         if (type === 'folder') {
             emit('startRenameFolder', targetPath);
         } else {
             const file = props.files.find((f) => f.path === targetPath);
-            if (file !== undefined) {
-                emit('startRenameFile', file);
-            }
+            if (file !== undefined) emit('startRenameFile', file);
         }
     } else if (action === 'delete') {
         if (type === 'folder') {
             emit('deleteFolder', targetPath);
         } else {
             const file = props.files.find((f) => f.path === targetPath);
-            if (file !== undefined) {
-                emit('deleteFile', file);
-            }
+            if (file !== undefined) emit('deleteFile', file);
         }
     }
 
@@ -205,11 +196,8 @@ function handleContextMenuAction(action: string): void {
 function confirmRename(): void {
     if (props.renamingFile !== null && renameValue.value.trim() !== '') {
         const currentName = getFileNameWithoutExtension(props.renamingFile.name);
-        if (renameValue.value.trim() !== currentName) {
-            emit('renameFile', props.renamingFile, renameValue.value.trim());
-        } else {
-            emit('cancelRename');
-        }
+        if (renameValue.value.trim() !== currentName) emit('renameFile', props.renamingFile, renameValue.value.trim());
+        else emit('cancelRename');
     } else if (props.renamingFolder !== null && props.renamingFolder !== '' && renameValue.value.trim() !== '') {
         const currentName = props.renamingFolder.split('/').pop() ?? props.renamingFolder;
         if (renameValue.value.trim() !== currentName) {
@@ -237,9 +225,7 @@ function handleMoveFolder(folderPath: string, targetFolderPath: string): void {
 function handleRootDragOver(event: DragEvent): void {
     event.preventDefault();
     isDragOverRoot.value = true;
-    if (event.dataTransfer !== null) {
-        event.dataTransfer.dropEffect = 'move';
-    }
+    if (event.dataTransfer !== null) event.dataTransfer.dropEffect = 'move';
 }
 
 function handleRootDragLeave(event: DragEvent): void {
@@ -247,9 +233,7 @@ function handleRootDragLeave(event: DragEvent): void {
     const { target, relatedTarget } = event;
     if (!(target instanceof Node)) return;
 
-    if (!target.contains(relatedTarget instanceof Node ? relatedTarget : null)) {
-        isDragOverRoot.value = false;
-    }
+    if (!target.contains(relatedTarget instanceof Node ? relatedTarget : null)) isDragOverRoot.value = false;
 }
 
 function handleRootDrop(event: DragEvent): void {
@@ -271,9 +255,7 @@ function handleRootDrop(event: DragEvent): void {
 watch(
     () => props.renamingFile,
     (newRenamingFile) => {
-        if (newRenamingFile !== null) {
-            renameValue.value = getFileNameWithoutExtension(newRenamingFile.name);
-        }
+        if (newRenamingFile !== null) renameValue.value = getFileNameWithoutExtension(newRenamingFile.name);
     },
 );
 

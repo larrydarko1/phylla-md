@@ -135,9 +135,7 @@ function syncChildElements(): void {
     if (messageList.value?.messagesContainer !== undefined) {
         messagesContainer.value = messageList.value.messagesContainer;
     }
-    if (inputArea.value?.inputField !== undefined) {
-        inputField.value = inputArea.value.inputField;
-    }
+    if (inputArea.value?.inputField !== undefined) inputField.value = inputArea.value.inputField;
 }
 
 async function loadSelectedModel(): Promise<void> {
@@ -220,9 +218,7 @@ onMounted(async () => {
     await refreshStatus();
     await refreshModels();
     await refreshConversationList();
-    if (status.value.isModelLoaded && inputField.value !== null) {
-        inputField.value.focus();
-    }
+    if (status.value.isModelLoaded && inputField.value !== null) inputField.value.focus();
 });
 
 onBeforeUnmount(() => {

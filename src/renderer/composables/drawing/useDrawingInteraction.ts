@@ -196,9 +196,7 @@ export function useDrawingInteraction({
             return;
         }
         const container = containerEl.value;
-        if (container !== null) {
-            container.focus();
-        }
+        if (container !== null) container.focus();
 
         const screenPt = getScreenPoint(e);
         const worldPt = screenToWorld(screenPt.x, screenPt.y);
@@ -260,17 +258,13 @@ export function useDrawingInteraction({
                 // Start multi-move for all selected elements
                 dragAction.value = 'move';
                 dragOriginals.value = new Map();
-                for (const sel of selectedElements.value) {
-                    dragOriginals.value.set(sel.id, { x: sel.x, y: sel.y });
-                }
+                for (const sel of selectedElements.value) dragOriginals.value.set(sel.id, { x: sel.x, y: sel.y });
                 renderScene();
                 return;
             }
 
             // Click on empty space: start marquee or clear selection
-            if (!shiftHeld.value) {
-                selectedIds.value = new Set();
-            }
+            if (!shiftHeld.value) selectedIds.value = new Set();
             dragAction.value = 'marquee';
             marqueeRect.value = { x: worldPt.x, y: worldPt.y, width: 0, height: 0 };
             renderScene();
@@ -284,9 +278,7 @@ export function useDrawingInteraction({
             if (hit !== null) {
                 erasedIds.value.push(hit.id);
                 elements.value = elements.value.filter((el): boolean => el.id !== hit.id);
-                if (selectedId.value === hit.id) {
-                    selectedId.value = null;
-                }
+                if (selectedId.value === hit.id) selectedId.value = null;
                 renderScene();
             }
             return;
@@ -604,9 +596,7 @@ export function useDrawingInteraction({
             // Recalculate text bounds to match the new font size
             if (el.type === 'text' && el.text !== undefined && el.text.length > 0) {
                 const ctx = canvas.value !== null ? findContext2D(canvas.value) : null;
-                if (ctx !== null) {
-                    Object.assign(el, measureTextBox(ctx, el.text, newFs));
-                }
+                if (ctx !== null) Object.assign(el, measureTextBox(ctx, el.text, newFs));
             }
         }
     }
@@ -711,11 +701,8 @@ export function useDrawingInteraction({
         if (e.key === 'Enter' && selectedElement.value !== null) {
             e.preventDefault();
             const sel = selectedElement.value;
-            if (sel.type === 'text') {
-                startEditText(sel);
-            } else if (isShapeElement(sel)) {
-                startEditShapeText(sel);
-            }
+            if (sel.type === 'text') startEditText(sel);
+            else if (isShapeElement(sel)) startEditShapeText(sel);
             return;
         }
 

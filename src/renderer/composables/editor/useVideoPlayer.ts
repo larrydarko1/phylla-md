@@ -46,9 +46,7 @@ export function useVideoPlayer(): UseVideoPlayerReturn {
     }
 
     function onVideoLoaded(): void {
-        if (videoRef.value !== null) {
-            videoDuration.value = videoRef.value.duration;
-        }
+        if (videoRef.value !== null) videoDuration.value = videoRef.value.duration;
     }
 
     function onVideoEnded(): void {
@@ -60,12 +58,8 @@ export function useVideoPlayer(): UseVideoPlayerReturn {
     }
 
     function updateVideoProgress(): void {
-        if (videoRef.value !== null) {
-            videoCurrentTime.value = videoRef.value.currentTime;
-        }
-        if (videoPlaying.value) {
-            videoRafId = requestAnimationFrame(updateVideoProgress);
-        }
+        if (videoRef.value !== null) videoCurrentTime.value = videoRef.value.currentTime;
+        if (videoPlaying.value) videoRafId = requestAnimationFrame(updateVideoProgress);
     }
 
     function toggleVideoPlayback(): void {
@@ -103,20 +97,13 @@ export function useVideoPlayer(): UseVideoPlayerReturn {
         if (!(event.target instanceof HTMLInputElement)) return;
         const value = parseFloat(event.target.value);
         videoVolume.value = value;
-        if (videoRef.value !== null) {
-            videoRef.value.volume = value;
-        }
+        if (videoRef.value !== null) videoRef.value.volume = value;
     }
 
     function toggleVideoMute(): void {
-        if (videoVolume.value > 0) {
-            videoVolume.value = 0;
-        } else {
-            videoVolume.value = 1;
-        }
-        if (videoRef.value !== null) {
-            videoRef.value.volume = videoVolume.value;
-        }
+        if (videoVolume.value > 0) videoVolume.value = 0;
+        else videoVolume.value = 1;
+        if (videoRef.value !== null) videoRef.value.volume = videoVolume.value;
     }
 
     function reset(): void {

@@ -22,14 +22,10 @@ export const interactiveExtension = EditorView.domEventHandlers({
         const target = event.target instanceof Element ? event.target : null;
 
         // ── Block CM6 from processing clicks inside embed media controls ────
-        if (target?.closest('.cm-embed-controls') != null) {
-            return true;
-        }
+        if (target?.closest('.cm-embed-controls') != null) return true;
 
         // ── Block CM6 for clicks on the video element itself ────────────────
-        if (target?.closest('.cm-embed-video') != null) {
-            return true;
-        }
+        if (target?.closest('.cm-embed-video') != null) return true;
 
         // ── Link click via syntax tree ──────────────────────────────────────
         const pos = view.posAtCoords({ x: event.clientX, y: event.clientY });
@@ -139,15 +135,10 @@ export function createMarkdownWidgetsPlugin(
                     const lineText = line.text;
 
                     let newLine: string;
-                    if (lineText.includes('- [ ]')) {
-                        newLine = lineText.replace('- [ ]', '- [/]');
-                    } else if (lineText.includes('- [/]')) {
-                        newLine = lineText.replace('- [/]', '- [x]');
-                    } else if (/- \[x\]/i.test(lineText)) {
-                        newLine = lineText.replace(/- \[x\]/i, '- [ ]');
-                    } else {
-                        return;
-                    }
+                    if (lineText.includes('- [ ]')) newLine = lineText.replace('- [ ]', '- [/]');
+                    else if (lineText.includes('- [/]')) newLine = lineText.replace('- [/]', '- [x]');
+                    else if (/- \[x\]/i.test(lineText)) newLine = lineText.replace(/- \[x\]/i, '- [ ]');
+                    else return;
 
                     view.dispatch({
                         changes: { from: line.from, to: line.to, insert: newLine },

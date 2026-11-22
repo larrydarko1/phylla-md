@@ -185,11 +185,8 @@ export function useEditorTabs(): UseEditorTabsReturn {
             return;
         }
 
-        if (activeIndex.value >= tabs.value.length) {
-            activeIndex.value = tabs.value.length - 1;
-        } else if (index < activeIndex.value) {
-            activeIndex.value = activeIndex.value - 1;
-        }
+        if (activeIndex.value >= tabs.value.length) activeIndex.value = tabs.value.length - 1;
+        else if (index < activeIndex.value) activeIndex.value = activeIndex.value - 1;
         // If index === activeIndex, we stay at same index (now pointing to the next tab)
         persistTabs();
     }
@@ -244,12 +241,8 @@ export function useEditorTabs(): UseEditorTabsReturn {
             }
             return false;
         });
-        if (activeIndex.value >= tabs.value.length) {
-            activeIndex.value = tabs.value.length - 1;
-        }
-        if (tabs.value.length !== before) {
-            persistTabs();
-        }
+        if (activeIndex.value >= tabs.value.length) activeIndex.value = tabs.value.length - 1;
+        if (tabs.value.length !== before) persistTabs();
     }
 
     /** Called when a file is renamed — update the matching tab. */

@@ -41,9 +41,7 @@ export function useAudioPlayer(): UseAudioPlayerReturn {
     }
 
     function onAudioLoaded(): void {
-        if (audioRef.value !== null) {
-            audioDuration.value = audioRef.value.duration;
-        }
+        if (audioRef.value !== null) audioDuration.value = audioRef.value.duration;
     }
 
     function onAudioEnded(): void {
@@ -55,12 +53,8 @@ export function useAudioPlayer(): UseAudioPlayerReturn {
     }
 
     function updateAudioProgress(): void {
-        if (audioRef.value !== null) {
-            audioCurrentTime.value = audioRef.value.currentTime;
-        }
-        if (audioPlaying.value) {
-            audioRafId = requestAnimationFrame(updateAudioProgress);
-        }
+        if (audioRef.value !== null) audioCurrentTime.value = audioRef.value.currentTime;
+        if (audioPlaying.value) audioRafId = requestAnimationFrame(updateAudioProgress);
     }
 
     function toggleAudioPlayback(): void {
@@ -98,20 +92,13 @@ export function useAudioPlayer(): UseAudioPlayerReturn {
         if (!(event.target instanceof HTMLInputElement)) return;
         const value = parseFloat(event.target.value);
         audioVolume.value = value;
-        if (audioRef.value !== null) {
-            audioRef.value.volume = value;
-        }
+        if (audioRef.value !== null) audioRef.value.volume = value;
     }
 
     function toggleMute(): void {
-        if (audioVolume.value > 0) {
-            audioVolume.value = 0;
-        } else {
-            audioVolume.value = 1;
-        }
-        if (audioRef.value !== null) {
-            audioRef.value.volume = audioVolume.value;
-        }
+        if (audioVolume.value > 0) audioVolume.value = 0;
+        else audioVolume.value = 1;
+        if (audioRef.value !== null) audioRef.value.volume = audioVolume.value;
     }
 
     async function loadAudio(filePath: string): Promise<void> {

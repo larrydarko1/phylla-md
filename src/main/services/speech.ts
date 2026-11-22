@@ -104,12 +104,8 @@ async function getTransformers(): Promise<typeof PipelineFn> {
 }
 
 async function initModel(): Promise<SpeechInitResult> {
-    if (transcriber !== null) {
-        return { success: true, message: 'Model already loaded' };
-    }
-    if (isModelLoading) {
-        return { success: false, error: 'BUSY' };
-    }
+    if (transcriber !== null) return { success: true, message: 'Model already loaded' };
+    if (isModelLoading) return { success: false, error: 'BUSY' };
 
     isModelLoading = true;
 
@@ -157,9 +153,7 @@ function readSupportedLanguages(): Set<string> | null {
 
 async function resolveLanguage(float32Audio: Float32Array): Promise<string | null> {
     const declared = (await findActiveDictationLanguage())?.toLowerCase() ?? null;
-    if (declared !== null && supportedLanguages?.has(declared) === true) {
-        return declared;
-    }
+    if (declared !== null && supportedLanguages?.has(declared) === true) return declared;
     if (sessionLanguage !== null) return sessionLanguage;
     // A guess made on silence would poison the whole session — wait for a chunk with speech in it
     if (!hasSpeechSignal(float32Audio)) return null;
@@ -222,9 +216,7 @@ async function detectLanguage(float32Audio: Float32Array): Promise<string | null
 }
 
 async function transcribe(audioData: number[]): Promise<SpeechTranscribeResult> {
-    if (transcriber === null || !isModelReady) {
-        return { success: false, error: 'MODEL_NOT_LOADED' };
-    }
+    if (transcriber === null || !isModelReady) return { success: false, error: 'MODEL_NOT_LOADED' };
 
     try {
         const float32Audio = new Float32Array(audioData);

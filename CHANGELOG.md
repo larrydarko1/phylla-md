@@ -64,7 +64,7 @@ Leaf is now Phylla. Your notes, models, conversations and settings move over aut
 
 - Pruned unused llama backend packages from the build.
 
-## 3.0.0 - 2026-08-13
+## [3.0.0] - 2026-08-13
 
 Never published as a release; its changes shipped in 3.0.1.
 
@@ -307,9 +307,10 @@ Never published as a release; its changes shipped in 3.0.1.
 
 - Security update.
 
-## 1.4.0 – 1.4.9 - 2026-02-23 to 2026-03-03
+## [1.4.9] - 2026-03-03
 
-Before 1.5.0, the version was bumped on almost every commit, so earlier versions are grouped by minor version.
+1.4.0 to 1.4.9, released from 2026-02-23 to 2026-03-03. Before 1.5.0, the version was bumped on almost every
+commit, so these releases are written as one, and each line names the version it came in.
 
 ### Added
 
@@ -335,7 +336,9 @@ Before 1.5.0, the version was bumped on almost every commit, so earlier versions
 - Window sizing on small screens (1.4.6).
 - Corrupted DMG and AppImage failing to load the speech-to-text model (1.4.8).
 
-## 1.3.0 – 1.3.9 - 2026-02-12 to 2026-02-21
+## [1.3.9] - 2026-02-21
+
+1.3.0 to 1.3.9, released from 2026-02-12 to 2026-02-21, written as one in the same way.
 
 ### Added
 
@@ -355,7 +358,9 @@ Before 1.5.0, the version was bumped on almost every commit, so earlier versions
 - Approved agent edits now refresh the file (1.3.8).
 - Markdown issues (1.3.9).
 
-## 1.2.0 – 1.2.9 - 2026-02-01 to 2026-02-12
+## [1.2.9] - 2026-02-12
+
+1.2.0 to 1.2.9, released from 2026-02-01 to 2026-02-12, written as one in the same way.
 
 ### Added
 
@@ -373,7 +378,9 @@ Before 1.5.0, the version was bumped on almost every commit, so earlier versions
 
 - Color theme issue (1.2.3).
 
-## 1.1.0 – 1.1.9 - 2026-01-31 to 2026-02-01
+## [1.1.9] - 2026-02-01
+
+1.1.0 to 1.1.9, released from 2026-01-31 to 2026-02-01, written as one in the same way.
 
 ### Added
 
@@ -383,7 +390,9 @@ Before 1.5.0, the version was bumped on almost every commit, so earlier versions
 - Multi-file selection (1.1.8).
 - Markdown preview button (1.1.9).
 
-## 1.0.0 – 1.0.9 - 2026-01-29 to 2026-01-31
+## [1.0.9] - 2026-01-31
+
+1.0.0 to 1.0.9, released from 2026-01-29 to 2026-01-31, written as one in the same way.
 
 ### Added
 
@@ -417,3 +426,4 @@ Before 1.5.0, the version was bumped on almost every commit, so earlier versions
 [1.5.2]: https://github.com/larrydarko1/phylla-md/compare/v1.5.1...v1.5.2
 [1.5.1]: https://github.com/larrydarko1/phylla-md/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/larrydarko1/phylla-md/compare/v1.4.9...v1.5.0
+[1.4.9]: https://github.com/larrydarko1/phylla-md/compare/v1.3.5...v1.4.9

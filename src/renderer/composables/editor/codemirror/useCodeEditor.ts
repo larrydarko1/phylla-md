@@ -156,9 +156,7 @@ export function useCodeEditor(
     );
 
     onUnmounted((): void => {
-        if (view.value !== null) {
-            view.value.destroy();
-        }
+        if (view.value !== null) view.value.destroy();
         view.value = null;
     });
 
