@@ -16,6 +16,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Opening the app or a vault no longer auto-selects the first note when no note was previously selected.
 - Two release runs can no longer overlap, so a release's installers always come from the commit its tag points at.
 - A failed release can only be finished by re-running it. A later commit with the same version now stops with an error instead of shipping its own installers under the earlier commit's tag.
+- Bookmarks no longer disappear when the vault folder is moved or renamed, or when a folder inside it is renamed in Finder or another app. Phylla finds each bookmarked note again the next time it opens the vault, unless two notes could be the one you bookmarked.
+
+### Security
+
+- A symlink inside your vault can no longer lead Phylla to read, write, move or delete files outside it, for example in a vault someone shared with you. Symlinks that stay inside the vault still work.
 
 ## [4.0.0] - 2026-10-23
 

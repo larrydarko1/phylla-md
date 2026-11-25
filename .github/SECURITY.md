@@ -44,7 +44,7 @@ be.
 ## Scope
 
 In scope: anything reachable in the Electron app or its IPC surface — preload bridge escapes, path
-traversal out of the vault, renderer code execution through note content, and tampering with the
+traversal out of the vault (through `..` or a symlink inside it), renderer code execution through note content, and tampering with the
 model download path.
 
 Out of scope: findings that require an attacker to already have the user's filesystem or OS account.

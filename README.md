@@ -70,7 +70,7 @@ Phylla is built with privacy and security as core principles:
 ### Security Architecture
 
 - **Sandboxed renderer** - Context isolation prevents unauthorized system access
-- **Local file system only** - File operations are limited to your selected vault folder
+- **Local file system only** - File operations are limited to your selected vault folder, and a symlink inside it can't lead them out
 - **No remote code execution** - All code runs locally on your device
 - **Open source** - Full transparency - audit the code yourself
 
@@ -88,6 +88,8 @@ Your notes are stored exactly where you choose - simply select any folder on you
 - **Linux:** `~/Documents/Notes/`, `~/notes/`
 
 > **Note:** Your vault folder can be anywhere on your system. Use it with other apps, back it up to external drives, sync with git - it's just plain text files!
+
+**Symlinks** don't appear in the file list, and Phylla won't read, write or delete anything through a symlink that leads out of your vault. One that points somewhere else inside the vault still works in an embed.
 
 ### AI Models
 

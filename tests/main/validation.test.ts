@@ -1,88 +1,92 @@
+import fs from 'fs';
+import os from 'os';
 import path from 'path';
 
-import { describe, it, expect } from 'vitest';
+import { afterEach, beforeEach, describe, it, expect } from 'vitest';
 
-import { resolveInsideBoundary, assertSafeFileName, isInsideBoundary } from '@/main/lib/validation';
+import { resolveInsideBoundary, assertSafeFileName } from '@/main/lib/validation';
 
 describe('validation', () => {
-    describe('isInsideBoundary', () => {
-        const root = '/home/user/vault';
-
-        it('accepts the root itself', () => {
-            expect(isInsideBoundary('/home/user/vault', root)).toBe(true);
-        });
-
-        it('accepts a nested file', () => {
-            expect(isInsideBoundary('/home/user/vault/sub/note.md', root)).toBe(true);
-        });
-
-        it('rejects a sibling directory sharing the root prefix', () => {
-            expect(isInsideBoundary('/home/user/vault-backup/note.md', root)).toBe(false);
-        });
-
-        it('rejects traversal that escapes the root', () => {
-            expect(isInsideBoundary('/home/user/vault/../../etc/passwd', root)).toBe(false);
-        });
-
-        it('accepts traversal that stays within the root', () => {
-            expect(isInsideBoundary('/home/user/vault/sub/../note.md', root)).toBe(true);
-        });
-
-        it('rejects an unrelated absolute path', () => {
-            expect(isInsideBoundary('/etc/passwd', root)).toBe(false);
-        });
-    });
-
     describe('resolveInsideBoundary', () => {
-        const root = '/home/user/vault';
+        let base: string;
+        let root: string;
+        let outside: string;
 
-        it('allows a file directly inside the root', () => {
-            const result = resolveInsideBoundary('/home/user/vault/note.md', root);
-            expect(result).toBe(path.resolve('/home/user/vault/note.md'));
+        beforeEach(() => {
+            base = fs.mkdtempSync(path.join(os.tmpdir(), 'phylla-boundary-'));
+            root = path.join(base, 'vault');
+            outside = path.join(base, 'outside');
+            fs.mkdirSync(path.join(root, 'sub'), { recursive: true });
+            fs.mkdirSync(outside);
+            fs.writeFileSync(path.join(root, 'note.md'), 'inside');
+            fs.writeFileSync(path.join(outside, 'secret.md'), 'secret');
         });
 
-        it('allows a file in a nested subdirectory', () => {
-            const result = resolveInsideBoundary('/home/user/vault/sub/deep/note.md', root);
-            expect(result).toBe(path.resolve('/home/user/vault/sub/deep/note.md'));
+        afterEach(() => {
+            fs.rmSync(base, { recursive: true, force: true });
         });
 
-        it('allows the root directory itself', () => {
-            const result = resolveInsideBoundary('/home/user/vault', root);
-            expect(result).toBe(path.resolve('/home/user/vault'));
+        it('returns the resolved path of a file inside the root', async () => {
+            await expect(resolveInsideBoundary(`${root}/sub/../note.md`, root)).resolves.toBe(
+                path.join(root, 'note.md'),
+            );
         });
 
-        it('blocks path traversal with ../', () => {
-            expect(() => resolveInsideBoundary('/home/user/vault/../secret.txt', root)).toThrow('Access denied');
+        it('allows the root itself, with or without a trailing slash', async () => {
+            await expect(resolveInsideBoundary(root, root)).resolves.toBe(root);
+            await expect(resolveInsideBoundary(path.join(root, 'note.md'), `${root}/`)).resolves.toBe(
+                path.join(root, 'note.md'),
+            );
         });
 
-        it('blocks path traversal escaping multiple levels', () => {
-            expect(() => resolveInsideBoundary('/home/user/vault/../../etc/passwd', root)).toThrow('Access denied');
+        it('allows a path that does not exist yet, so create and rename work', async () => {
+            const target = path.join(root, 'sub', 'new', 'draft.md');
+            await expect(resolveInsideBoundary(target, root)).resolves.toBe(target);
         });
 
-        it('blocks absolute path outside root', () => {
-            expect(() => resolveInsideBoundary('/etc/passwd', root)).toThrow('Access denied');
+        it('refuses ../ that escapes the root', async () => {
+            await expect(resolveInsideBoundary(`${root}/../outside/secret.md`, root)).rejects.toThrow('Access denied');
         });
 
-        it('blocks sibling directory with same prefix', () => {
-            expect(() => resolveInsideBoundary('/home/user/vault-backup/file.txt', root)).toThrow('Access denied');
+        it('refuses a sibling folder that shares the root as a prefix', async () => {
+            fs.mkdirSync(`${root}-backup`);
+            await expect(resolveInsideBoundary(`${root}-backup/note.md`, root)).rejects.toThrow('Access denied');
         });
 
-        it('blocks root path with trailing characters', () => {
-            expect(() => resolveInsideBoundary('/home/user/vaultx/file.txt', root)).toThrow('Access denied');
+        it('refuses an unrelated absolute path', async () => {
+            await expect(resolveInsideBoundary(path.join(outside, 'secret.md'), root)).rejects.toThrow('Access denied');
         });
 
-        it('handles relative target paths (resolved against cwd)', () => {
-            expect(() => resolveInsideBoundary('../../etc/passwd', root)).toThrow('Access denied');
+        it('refuses a file symlink inside the root that points outside it', async () => {
+            fs.symlinkSync(path.join(outside, 'secret.md'), path.join(root, 'innocent.md'));
+            await expect(resolveInsideBoundary(path.join(root, 'innocent.md'), root)).rejects.toThrow('Access denied');
         });
 
-        it('returns the resolved absolute path', () => {
-            const result = resolveInsideBoundary('/home/user/vault/./sub/../note.md', root);
-            expect(result).toBe(path.resolve('/home/user/vault/note.md'));
+        it('refuses a new file under a folder symlink that points outside', async () => {
+            fs.symlinkSync(outside, path.join(root, 'attachments'));
+            await expect(resolveInsideBoundary(path.join(root, 'attachments', 'new.md'), root)).rejects.toThrow(
+                'Access denied',
+            );
         });
 
-        it('handles root with trailing separator', () => {
-            const result = resolveInsideBoundary('/home/user/vault/note.md', '/home/user/vault/');
-            expect(result).toBe(path.resolve('/home/user/vault/note.md'));
+        it('refuses a dangling symlink, which a write would follow out of the root', async () => {
+            fs.symlinkSync(path.join(outside, 'not-yet.md'), path.join(root, 'dangling.md'));
+            await expect(resolveInsideBoundary(path.join(root, 'dangling.md'), root)).rejects.toThrow('Access denied');
+        });
+
+        it('allows a symlink that stays inside the root', async () => {
+            fs.symlinkSync(path.join(root, 'note.md'), path.join(root, 'sub', 'alias.md'));
+            await expect(resolveInsideBoundary(path.join(root, 'sub', 'alias.md'), root)).resolves.toBe(
+                path.join(root, 'sub', 'alias.md'),
+            );
+        });
+
+        it('allows the same files when the root is reached through a symlink', async () => {
+            const linkedRoot = path.join(base, 'vault-link');
+            fs.symlinkSync(root, linkedRoot);
+            await expect(resolveInsideBoundary(path.join(linkedRoot, 'note.md'), linkedRoot)).resolves.toBe(
+                path.join(linkedRoot, 'note.md'),
+            );
         });
     });
 

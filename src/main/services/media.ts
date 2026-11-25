@@ -7,7 +7,7 @@ import path from 'path';
 
 import { ipcFailure } from '@/main/lib/errors';
 import type { IpcMain } from '@/main/lib/ipc';
-import { assertSafeFileName } from '@/main/lib/validation';
+import { assertSafeFileName, resolveInsideBoundary } from '@/main/lib/validation';
 import type { AudioSaveResult } from '@/schemas/vault';
 
 // The vault root is passed in from the register call so media-service
@@ -31,13 +31,7 @@ export function register(ipc: IpcMain, vaultRootFn: () => string | null): void {
                 // Validate target folder is inside the active vault
                 const vaultRoot = findVaultRoot?.();
                 if (vaultRoot === undefined || vaultRoot === null) return { success: false, error: 'NO_VAULT' };
-                const resolvedFolder = path.resolve(folderPath);
-                const resolvedRoot = path.resolve(vaultRoot);
-                if (resolvedFolder !== resolvedRoot && !resolvedFolder.startsWith(resolvedRoot + path.sep)) {
-                    return { success: false, error: 'ACCESS_DENIED' };
-                }
-
-                const filePath = path.join(folderPath, fileName);
+                const filePath = await resolveInsideBoundary(path.join(folderPath, fileName), vaultRoot);
                 await fs.writeFile(filePath, Buffer.from(base64Data, 'base64'));
                 return { success: true, path: filePath };
             } catch (error) {

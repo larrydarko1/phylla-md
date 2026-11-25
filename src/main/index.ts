@@ -29,7 +29,7 @@ import { app, BrowserWindow, ipcMain, shell, Menu, screen, protocol, net, sessio
 import { config } from '@/main/lib/config';
 import { log } from '@/main/lib/logger';
 import { migrateLegacyPaths, migrateLegacyUserData } from '@/main/lib/paths';
-import { isInsideBoundary } from '@/main/lib/validation';
+import { resolveInsideBoundary } from '@/main/lib/validation';
 import * as aiService from '@/main/services/ai';
 import * as conversationService from '@/main/services/conversation';
 import * as fsService from '@/main/services/fs';
@@ -149,17 +149,16 @@ function registerPhyllaProtocol(ses: Electron.Session): void {
             log.warn('[phylla://] Denied — no vault is open:', filePath);
             return new Response('No vault is open', { status: 403 });
         }
-        if (!isInsideBoundary(filePath, root)) {
-            log.warn('[phylla://] Denied — path is outside the vault:', filePath);
-            return new Response('Forbidden', { status: 403 });
-        }
-
-        // Forward the original request headers (including Range for video seeking)
-        // to net.fetch so that streaming/range responses work correctly.
-        return net.fetch(pathToFileURL(path.resolve(filePath)).toString(), {
-            method: request.method,
-            headers: request.headers,
-        });
+        return resolveInsideBoundary(filePath, root).then(
+            // Forward the original request headers (including Range for video seeking)
+            // to net.fetch so that streaming/range responses work correctly.
+            (resolved): Promise<Response> =>
+                net.fetch(pathToFileURL(resolved).toString(), { method: request.method, headers: request.headers }),
+            (): Response => {
+                log.warn('[phylla://] Denied — path is outside the vault:', filePath);
+                return new Response('Forbidden', { status: 403 });
+            },
+        );
     });
 }
 

@@ -14,12 +14,13 @@ import { app, dialog, shell } from 'electron';
 import { z } from 'zod';
 
 import { readState, updateState } from '@/main/lib/appState';
+import { readBookmarks, saveBookmarks } from '@/main/lib/bookmarks';
 import { IpcError, ipcFailure } from '@/main/lib/errors';
 import { ALLOWED_EXTENSIONS } from '@/main/lib/extensions';
 import type { IpcMain } from '@/main/lib/ipc';
 import { log } from '@/main/lib/logger';
 import { IMAGE_MIMETYPES, AUDIO_MIMETYPES } from '@/main/lib/mime';
-import { VAULT_META_DIRS, vaultMetaDir } from '@/main/lib/paths';
+import { VAULT_META_DIRS } from '@/main/lib/paths';
 import { resolveInsideBoundary } from '@/main/lib/validation';
 import type { AiSimpleResult } from '@/schemas/ai';
 import type { IpcErrorCode } from '@/schemas/errors';
@@ -222,30 +223,15 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
             try {
                 const root = getVaultRoot();
                 // Both noteDir and embedVaultRoot must be inside the active vault
-                resolveInsideBoundary(noteDir, root);
-                resolveInsideBoundary(embedVaultRoot, root);
+                await resolveInsideBoundary(noteDir, root);
+                await resolveInsideBoundary(embedVaultRoot, root);
 
-                const relToNote = path.resolve(noteDir, fileName);
-                if (relToNote.startsWith(root + path.sep) || relToNote === root) {
-                    try {
-                        await fs.access(relToNote);
-                        return { success: true, path: relToNote };
-                    } catch {
-                        /* not found here */
-                    }
-                }
-                const relToVault = path.resolve(embedVaultRoot, fileName);
-                if (relToVault.startsWith(root + path.sep) || relToVault === root) {
-                    try {
-                        await fs.access(relToVault);
-                        return { success: true, path: relToVault };
-                    } catch {
-                        /* not found here */
-                    }
+                for (const candidate of [path.resolve(noteDir, fileName), path.resolve(embedVaultRoot, fileName)]) {
+                    if (await existsInside(candidate, root)) return { success: true, path: candidate };
                 }
                 const found = await findFileRecursive(embedVaultRoot, path.basename(fileName));
                 if (found !== null) {
-                    resolveInsideBoundary(found, root);
+                    await resolveInsideBoundary(found, root);
                     return { success: true, path: found };
                 }
                 return { success: false, error: 'NOT_FOUND' };
@@ -261,7 +247,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
         if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
         const filePath = parsed.data;
         try {
-            resolveInsideVault(filePath);
+            await resolveInsideVault(filePath);
             const content = await fs.readFile(filePath, 'utf-8');
             return { success: true, content };
         } catch (error) {
@@ -275,7 +261,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
         if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
         const filePath = parsed.data;
         try {
-            resolveInsideVault(filePath);
+            await resolveInsideVault(filePath);
             const ext = path.extname(filePath).toLowerCase();
             const mimeType = IMAGE_MIMETYPES[ext] ?? 'image/png';
             const buf = await fs.readFile(filePath);
@@ -291,7 +277,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
         if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
         const filePath = parsed.data;
         try {
-            resolveInsideVault(filePath);
+            await resolveInsideVault(filePath);
             const ext = path.extname(filePath).toLowerCase();
             const mimeType = AUDIO_MIMETYPES[ext] ?? 'audio/mpeg';
             const buf = await fs.readFile(filePath);
@@ -307,7 +293,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
         if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
         const { filePath, content } = parsed.data;
         try {
-            resolveInsideVault(filePath);
+            await resolveInsideVault(filePath);
             const tmp = `${filePath}.tmp`;
             await fs.writeFile(tmp, content, 'utf-8');
             await fs.rename(tmp, filePath);
@@ -325,9 +311,9 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
             if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
             const { folderPath, fileName } = parsed.data;
             try {
-                resolveInsideVault(folderPath);
+                await resolveInsideVault(folderPath);
                 const filePath = path.join(folderPath, fileName);
-                resolveInsideVault(filePath);
+                await resolveInsideVault(filePath);
                 await fs.writeFile(filePath, '', 'utf-8');
                 return { success: true, path: filePath };
             } catch (error) {
@@ -344,9 +330,9 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
             if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
             const { parentPath, folderName } = parsed.data;
             try {
-                resolveInsideVault(parentPath);
+                await resolveInsideVault(parentPath);
                 const folderPath = path.join(parentPath, folderName);
-                resolveInsideVault(folderPath);
+                await resolveInsideVault(folderPath);
                 try {
                     await fs.access(folderPath);
                     return { success: false, error: 'ALREADY_EXISTS' };
@@ -367,7 +353,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
         if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
         const filePath = parsed.data;
         try {
-            resolveInsideVault(filePath);
+            await resolveInsideVault(filePath);
             await shell.trashItem(filePath);
             return { success: true };
         } catch (error) {
@@ -383,9 +369,9 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
             if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
             const { oldPath, newFileName } = parsed.data;
             try {
-                resolveInsideVault(oldPath);
+                await resolveInsideVault(oldPath);
                 const newPath = path.join(path.dirname(oldPath), newFileName);
-                resolveInsideVault(newPath);
+                await resolveInsideVault(newPath);
                 if (oldPath.toLowerCase() !== newPath.toLowerCase()) {
                     try {
                         await fs.access(newPath);
@@ -456,9 +442,9 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
             if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
             const { oldPath, newFolderName } = parsed.data;
             try {
-                resolveInsideVault(oldPath);
+                await resolveInsideVault(oldPath);
                 const newPath = path.join(path.dirname(oldPath), newFolderName);
-                resolveInsideVault(newPath);
+                await resolveInsideVault(newPath);
                 if (oldPath.toLowerCase() !== newPath.toLowerCase()) {
                     try {
                         await fs.access(newPath);
@@ -481,7 +467,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
         if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
         const folderPath = parsed.data;
         try {
-            resolveInsideVault(folderPath);
+            await resolveInsideVault(folderPath);
             await shell.trashItem(folderPath);
             return { success: true };
         } catch (error) {
@@ -500,8 +486,8 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
             if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
             const { filePath, targetFolderPath } = parsed.data;
             try {
-                resolveInsideVault(filePath);
-                resolveInsideVault(targetFolderPath);
+                await resolveInsideVault(filePath);
+                await resolveInsideVault(targetFolderPath);
                 const newPath = path.join(targetFolderPath, path.basename(filePath));
                 if (filePath === newPath) return { success: true, newPath };
                 try {
@@ -529,8 +515,8 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
             if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
             const { folderPath, targetFolderPath } = parsed.data;
             try {
-                resolveInsideVault(folderPath);
-                resolveInsideVault(targetFolderPath);
+                await resolveInsideVault(folderPath);
+                await resolveInsideVault(targetFolderPath);
                 const newPath = path.join(targetFolderPath, path.basename(folderPath));
                 if (folderPath === newPath) return { success: true, newPath };
                 if (targetFolderPath.startsWith(folderPath + path.sep) || targetFolderPath === folderPath) {
@@ -550,7 +536,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
         },
     );
 
-    // Bookmarks — persisted in <vault>/.phylla/bookmarks.json
+    // Bookmarks — persisted vault-relative in <vault>/.phylla/bookmarks.json
     ipc.handle(
         'bookmarks:load',
         async (): Promise<
@@ -559,19 +545,11 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
         > => {
             try {
                 const root = getVaultRoot();
-                const bookmarksPath = path.join(vaultMetaDir(root), 'bookmarks.json');
-                try {
-                    const raw = await fs.readFile(bookmarksPath, 'utf-8');
-                    const parsed: unknown = JSON.parse(raw);
-                    if (!Array.isArray(parsed)) return { success: true, bookmarks: [] };
-                    // Only return paths that are still inside the vault
-                    const valid = parsed.filter(
-                        (p): p is string => typeof p === 'string' && p.startsWith(root + path.sep),
-                    );
-                    return { success: true, bookmarks: valid };
-                } catch {
-                    return { success: true, bookmarks: [] };
-                }
+                const bookmarks = await readBookmarks(root, async (): Promise<string[]> => {
+                    const { files } = await scanFolder(root);
+                    return files.map((file): string => file.relativePath.split(path.sep).join('/'));
+                });
+                return { success: true, bookmarks };
             } catch (error) {
                 return ipcFailure('fs-service bookmarks:load', error);
             }
@@ -587,12 +565,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
             const parsed = z.array(z.string()).safeParse(rawBookmarks);
             if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
             try {
-                const root = getVaultRoot();
-                const bookmarksPath = path.join(vaultMetaDir(root), 'bookmarks.json');
-                await fs.mkdir(path.dirname(bookmarksPath), { recursive: true });
-                // Validate every path is inside the vault before persisting
-                for (const bookmarkPath of parsed.data) resolveInsideBoundary(bookmarkPath, root);
-                await fs.writeFile(bookmarksPath, JSON.stringify(parsed.data, null, 2), 'utf-8');
+                await saveBookmarks(getVaultRoot(), parsed.data);
                 return { success: true };
             } catch (error) {
                 return ipcFailure('fs-service bookmarks:save', error);
@@ -607,8 +580,19 @@ function getVaultRoot(): string {
 }
 
 /** Resolve `p` and assert it lives inside the active vault. */
-function resolveInsideVault(p: string): string {
+async function resolveInsideVault(p: string): Promise<string> {
     return resolveInsideBoundary(p, getVaultRoot());
+}
+
+/** An embed candidate counts only if it exists and really lies inside the vault. */
+async function existsInside(candidate: string, root: string): Promise<boolean> {
+    try {
+        await resolveInsideBoundary(candidate, root);
+        await fs.access(candidate);
+        return true;
+    } catch {
+        return false;
+    }
 }
 
 /** Describe one scanned file, or `null` when its extension is not one Phylla opens. */

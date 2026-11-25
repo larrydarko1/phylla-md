@@ -1,11 +1,16 @@
 {
-    /* The Vue preset supplies the DOM environment (target, lib, jsx); the base
+    /* The Vue preset supplies the module settings and jsx; the base
        config supplies the strictness rules. Later entries win, so the base has
        the final say on any checking flag the preset also sets. */
     "extends": ["@vue/tsconfig/tsconfig.dom.json", "./tsconfig.base.json"],
     "compilerOptions": {
         /* Output & Build */
         "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+
+        /* Target & Environment */
+        // Set here: the preset types ES2022, and its year moves when it is upgraded.
+        "target": "ES2025",
+        "lib": ["ES2025", "DOM", "DOM.Iterable"],
 
         /* Paths & Types */
         "paths": {

@@ -623,15 +623,15 @@ describe('bookmarks:load', () => {
 });
 
 describe('bookmarks:save', () => {
-    it('saves bookmarks inside the vault', async () => {
-        const bookmarks = [path.join(tmpVault, 'note.md')];
+    it('saves bookmarks relative to the vault, so moving the vault keeps them', async () => {
+        const bookmarks = [path.join(tmpVault, 'note.md'), path.join(tmpVault, 'Personal', 'The Day.md')];
         const result = readReply(await ipc.invoke('bookmarks:save', bookmarks));
         expect(result.success).toBe(true);
 
         const saved = z
             .array(z.string())
             .parse(JSON.parse(fs.readFileSync(path.join(tmpVault, '.phylla', 'bookmarks.json'), 'utf-8')));
-        expect(saved).toEqual(bookmarks);
+        expect(saved).toEqual(['note.md', 'Personal/The Day.md']);
     });
 
     it('returns failure for non-array bookmarks', async () => {
@@ -683,6 +683,72 @@ describe('file:resolveEmbedPath', () => {
     it('returns failure when noteDir is outside vault', async () => {
         const result = readReply(await ipc.invoke('file:resolveEmbedPath', 'img.png', '/tmp', '/tmp'));
         expect(result.success).toBe(false);
+    });
+});
+
+describe('symlinks that lead out of the vault', () => {
+    let outside: string;
+
+    beforeEach(() => {
+        outside = fs.mkdtempSync(path.join(os.tmpdir(), 'phylla-outside-'));
+        fs.writeFileSync(path.join(outside, 'secret.md'), 'secret');
+        fs.symlinkSync(path.join(outside, 'secret.md'), path.join(tmpVault, 'innocent.md'));
+        fs.symlinkSync(outside, path.join(tmpVault, 'attachments'));
+    });
+
+    afterEach(() => {
+        fs.rmSync(outside, { recursive: true, force: true });
+    });
+
+    it('file:read refuses a file link that points outside', async () => {
+        const result = readReply(await ipc.invoke('file:read', path.join(tmpVault, 'innocent.md')));
+        expect(result).toEqual({ success: false, error: 'ACCESS_DENIED' });
+    });
+
+    it('file:write refuses a folder link that points outside, and writes nothing there', async () => {
+        const target = path.join(tmpVault, 'attachments', 'planted.md');
+        const result = readReply(await ipc.invoke('file:write', target, 'x'));
+        expect(result).toEqual({ success: false, error: 'ACCESS_DENIED' });
+        expect(fs.readdirSync(outside)).toEqual(['secret.md']);
+    });
+
+    it('file:create refuses a folder link that points outside', async () => {
+        const result = readReply(await ipc.invoke('file:create', path.join(tmpVault, 'attachments'), 'new.md'));
+        expect(result).toEqual({ success: false, error: 'ACCESS_DENIED' });
+        expect(fs.readdirSync(outside)).toEqual(['secret.md']);
+    });
+
+    it('file:delete refuses a file reached through a folder link', async () => {
+        const result = readReply(await ipc.invoke('file:delete', path.join(tmpVault, 'attachments', 'secret.md')));
+        expect(result).toEqual({ success: false, error: 'ACCESS_DENIED' });
+        expect(mockTrashItem).not.toHaveBeenCalled();
+    });
+
+    it('file:move refuses a target folder link that points outside', async () => {
+        const note = path.join(tmpVault, 'note.md');
+        fs.writeFileSync(note, 'mine');
+        const result = readReply(await ipc.invoke('file:move', note, path.join(tmpVault, 'attachments')));
+        expect(result).toEqual({ success: false, error: 'ACCESS_DENIED' });
+        expect(fs.existsSync(note)).toBe(true);
+    });
+
+    it('file:resolveEmbedPath does not resolve an embed through a folder link', async () => {
+        const result = readReply(
+            await ipc.invoke('file:resolveEmbedPath', 'attachments/secret.md', tmpVault, tmpVault),
+        );
+        expect(result).toEqual({ success: false, error: 'NOT_FOUND' });
+    });
+
+    it('bookmarks:save refuses a path reached through a link', async () => {
+        const result = readReply(await ipc.invoke('bookmarks:save', [path.join(tmpVault, 'innocent.md')]));
+        expect(result).toEqual({ success: false, error: 'ACCESS_DENIED' });
+    });
+
+    it('still reads a link that stays inside the vault', async () => {
+        fs.writeFileSync(path.join(tmpVault, 'real.md'), 'inside');
+        fs.symlinkSync(path.join(tmpVault, 'real.md'), path.join(tmpVault, 'alias.md'));
+        const result = readReply(await ipc.invoke('file:read', path.join(tmpVault, 'alias.md')));
+        expect(result).toEqual({ success: true, content: 'inside' });
     });
 });
 
