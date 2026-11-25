@@ -54,17 +54,11 @@ export function useListKeyboardNavigation<T>(
         const current = getCurrentIndex();
         let next: number;
         if (wrap) {
-            if (direction === 1) {
-                next = current === -1 || current === list.length - 1 ? 0 : current + 1;
-            } else {
-                next = current === -1 || current === 0 ? list.length - 1 : current - 1;
-            }
+            if (direction === 1) next = current === -1 || current === list.length - 1 ? 0 : current + 1;
+            else next = current === -1 || current === 0 ? list.length - 1 : current - 1;
         } else {
-            if (direction === 1) {
-                next = current < 0 ? 0 : Math.min(current + 1, list.length - 1);
-            } else {
-                next = current < 0 ? 0 : Math.max(current - 1, 0);
-            }
+            if (direction === 1) next = current < 0 ? 0 : Math.min(current + 1, list.length - 1);
+            else next = current < 0 ? 0 : Math.max(current - 1, 0);
         }
         const item = list[next];
         if (item === undefined) return;

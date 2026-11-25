@@ -57,9 +57,7 @@ function onDragOver(e: DragEvent, index: number): void {
 
 function onDrop(e: DragEvent, index: number): void {
     e.preventDefault();
-    if (dragStartIndex.value !== -1 && dragStartIndex.value !== index) {
-        emit('reorder', dragStartIndex.value, index);
-    }
+    if (dragStartIndex.value !== -1 && dragStartIndex.value !== index) emit('reorder', dragStartIndex.value, index);
     dragStartIndex.value = -1;
     dragOverIndex.value = -1;
 }

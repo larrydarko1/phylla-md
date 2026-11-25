@@ -66,9 +66,7 @@ export function useAIModel(): UseAIModelReturn {
     const previousModelMatch = computed(
         (): { name: string; path: string; size: number; sizeFormatted: string; modified: string } | null => {
             const modelName = lastUsedModelName.value;
-            if (modelName === null || modelName === '' || status.value.isModelLoaded) {
-                return null;
-            }
+            if (modelName === null || modelName === '' || status.value.isModelLoaded) return null;
             return (
                 availableModels.value.find((m): boolean => m.name === modelName || m.path.endsWith(modelName)) ?? null
             );
@@ -78,9 +76,7 @@ export function useAIModel(): UseAIModelReturn {
     const isAnyGenerating = computed((): boolean => status.value.isGenerating);
 
     const selectedModelLabel = computed((): string => {
-        if (selectedModelPath.value === '') {
-            return t('ai.select_model');
-        }
+        if (selectedModelPath.value === '') return t('ai.select_model');
         const model = availableModels.value.find((m): boolean => m.path === selectedModelPath.value);
         return model !== undefined ? truncate(model.name, 30) : t('ai.select_model');
     });
@@ -138,9 +134,7 @@ export function useAIModel(): UseAIModelReturn {
     async function loadModel(
         path: string = selectedModelPath.value,
     ): Promise<{ success: boolean; error?: IpcErrorCode }> {
-        if (path === '') {
-            return { success: false, error: 'INVALID_ARGUMENTS' };
-        }
+        if (path === '') return { success: false, error: 'INVALID_ARGUMENTS' };
         isLoading.value = true;
         try {
             const result = await window.electronAPI.aiLoadModel(path);
@@ -165,9 +159,7 @@ export function useAIModel(): UseAIModelReturn {
             }
             await window.electronAPI.aiUnloadModel();
             await refreshStatus();
-            if (previousModelMatch.value !== null) {
-                selectedModelPath.value = previousModelMatch.value.path;
-            }
+            if (previousModelMatch.value !== null) selectedModelPath.value = previousModelMatch.value.path;
         } catch (error) {
             window.electronAPI.log.error('Failed to unload model:', error);
         }

@@ -151,9 +151,7 @@ export function register(ipc: IpcMain, findMainWindow: () => BrowserWindow | nul
             if (!parsed.success) return { success: false, error: 'INVALID_ARGUMENTS' };
             const { filePath, base64Data } = parsed.data;
             const resolved = path.resolve(filePath);
-            if (!authorizedWritePaths.delete(resolved)) {
-                return { success: false, error: 'ACCESS_DENIED' };
-            }
+            if (!authorizedWritePaths.delete(resolved)) return { success: false, error: 'ACCESS_DENIED' };
             try {
                 await fs.writeFile(resolved, Buffer.from(base64Data, 'base64'));
                 return { success: true };

@@ -75,9 +75,7 @@ function extractCodeBlocks(content: string): { code: string; lang: string }[] {
     const blocks: { code: string; lang: string }[] = [];
     const regex = /```([^\n]*)\n([\s\S]*?)```/g;
     let match: RegExpExecArray | null;
-    while ((match = regex.exec(content)) !== null) {
-        blocks.push({ lang: (match[1] ?? '').trim(), code: match[2] ?? '' });
-    }
+    while ((match = regex.exec(content)) !== null) blocks.push({ lang: (match[1] ?? '').trim(), code: match[2] ?? '' });
     return blocks;
 }
 

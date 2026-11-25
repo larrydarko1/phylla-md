@@ -120,9 +120,7 @@ onMounted(() => {
     const saved = localStorage.getItem('ai-input-max-height');
     if (saved !== null && saved !== '') {
         const value = parseInt(saved, 10);
-        if (!isNaN(value) && value >= minHeight && value <= maxHeight) {
-            maxHeightPx.value = value;
-        }
+        if (!isNaN(value) && value >= minHeight && value <= maxHeight) maxHeightPx.value = value;
     }
 });
 </script>

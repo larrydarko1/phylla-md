@@ -44,11 +44,8 @@ export function useDrawingElements(): UseDrawingElementsReturn {
             return first.done === true ? null : first.value;
         },
         set: (id: string | null): void => {
-            if (id !== null && id.length > 0) {
-                selectedIds.value = new Set([id]);
-            } else {
-                selectedIds.value = new Set();
-            }
+            if (id !== null && id.length > 0) selectedIds.value = new Set([id]);
+            else selectedIds.value = new Set();
         },
     });
 

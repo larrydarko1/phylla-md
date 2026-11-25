@@ -83,23 +83,17 @@ const isExpanded = computed(() => {
 });
 
 const isRenaming = computed(() => {
-    if (props.node.type === 'file') {
-        return props.renamingFile?.path === props.node.file?.path;
-    }
+    if (props.node.type === 'file') return props.renamingFile?.path === props.node.file?.path;
     return props.renamingFolder === props.node.path;
 });
 
 const isSelected = computed(() => {
-    if (props.node.type === 'file') {
-        return props.selectedFiles.some((file) => file.path === props.node.file?.path);
-    }
+    if (props.node.type === 'file') return props.selectedFiles.some((file) => file.path === props.node.file?.path);
     return props.selectedFolder === props.node.path;
 });
 
 const isActive = computed(() => {
-    if (props.node.type === 'file') {
-        return props.activeFile?.path === props.node.file?.path;
-    }
+    if (props.node.type === 'file') return props.activeFile?.path === props.node.file?.path;
     return false;
 });
 
@@ -108,9 +102,7 @@ function handleFolderClick(): void {
 }
 
 function handleFileClick(event: MouseEvent): void {
-    if (props.node.file !== undefined) {
-        emit('selectFile', props.node.file, event, undefined);
-    }
+    if (props.node.file !== undefined) emit('selectFile', props.node.file, event, undefined);
 }
 
 function scrollStyle(distance: number): Record<string, string> {

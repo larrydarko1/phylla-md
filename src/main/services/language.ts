@@ -140,9 +140,7 @@ async function setActiveLanguage(id: string): Promise<{
     success: boolean;
     error?: IpcErrorCode;
 }> {
-    if (typeof id !== 'string' || !isValidLanguageId(id)) {
-        return { success: false, error: 'INVALID_ARGUMENTS' };
-    }
+    if (typeof id !== 'string' || !isValidLanguageId(id)) return { success: false, error: 'INVALID_ARGUMENTS' };
     const file = path.join(LOCALES_DIR, `${id}.json`);
     if (!existsSync(file)) return { success: false, error: 'NOT_FOUND' };
     try {
@@ -158,13 +156,9 @@ async function loadLanguageContent(id: string): Promise<{
     content?: Record<string, unknown>;
     error?: IpcErrorCode;
 }> {
-    if (typeof id !== 'string' || !isValidLanguageId(id)) {
-        return { success: false, error: 'INVALID_ARGUMENTS' };
-    }
+    if (typeof id !== 'string' || !isValidLanguageId(id)) return { success: false, error: 'INVALID_ARGUMENTS' };
     const file = path.join(LOCALES_DIR, `${id}.json`);
-    if (!existsSync(file)) {
-        return { success: false, error: 'NOT_FOUND' };
-    }
+    if (!existsSync(file)) return { success: false, error: 'NOT_FOUND' };
     try {
         const data = await fs.readFile(file, 'utf-8');
         const content = JsonObjectSchema.safeParse(JSON.parse(data));

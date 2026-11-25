@@ -91,7 +91,5 @@ export function useTheme(): UseThemeReturn {
 /** Apply a theme to <html> by setting every color as a CSS custom property. */
 function applyTheme(theme: ThemeInfo): void {
     const root = document.documentElement;
-    for (const [key, value] of Object.entries(theme.colors)) {
-        root.style.setProperty(`--${key}`, value);
-    }
+    for (const [key, value] of Object.entries(theme.colors)) root.style.setProperty(`--${key}`, value);
 }

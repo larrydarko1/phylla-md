@@ -14,8 +14,6 @@ describe('logger', () => {
     it('exposes the standard log levels used across the main process', async () => {
         const { log } = await import('@/main/lib/logger');
 
-        for (const level of ['info', 'warn', 'error', 'debug'] as const) {
-            expect(typeof log[level]).toBe('function');
-        }
+        for (const level of ['info', 'warn', 'error', 'debug'] as const) expect(typeof log[level]).toBe('function');
     });
 });

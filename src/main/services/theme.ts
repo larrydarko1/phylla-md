@@ -73,9 +73,7 @@ export function register(ipc: IpcMain): void {
     );
 
     ipc.handle('theme:setActive', async (_event, id: unknown): Promise<AiSimpleResult> => {
-        if (typeof id !== 'string' || !isValidThemeId(id)) {
-            return { success: false, error: 'INVALID_ARGUMENTS' };
-        }
+        if (typeof id !== 'string' || !isValidThemeId(id)) return { success: false, error: 'INVALID_ARGUMENTS' };
         const file = path.join(THEMES_DIR, `${id}.json`);
         if (!existsSync(file)) return { success: false, error: 'NOT_FOUND' };
         try {

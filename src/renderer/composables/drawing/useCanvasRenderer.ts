@@ -128,13 +128,9 @@ export function useCanvasRenderer({
         ctx.translate(scrollX.value, scrollY.value);
         ctx.scale(zoom.value, zoom.value);
 
-        for (const el of elements.value) {
-            drawElement(el);
-        }
+        for (const el of elements.value) drawElement(el);
 
-        if (creatingElement.value !== null) {
-            drawElement(creatingElement.value);
-        }
+        if (creatingElement.value !== null) drawElement(creatingElement.value);
 
         // Draw selection outlines for all selected elements
         for (const el of elements.value) {
@@ -145,9 +141,7 @@ export function useCanvasRenderer({
         }
 
         // Draw marquee selection rectangle
-        if (marqueeRect.value !== null) {
-            drawMarquee(marqueeRect.value);
-        }
+        if (marqueeRect.value !== null) drawMarquee(marqueeRect.value);
 
         ctx.restore();
     }
@@ -331,9 +325,7 @@ export function useCanvasRenderer({
                 ctx.textBaseline = 'top';
                 const lines = el.text.split('\n');
                 const lh = fsNum * 1.3;
-                for (const [i, line] of lines.entries()) {
-                    ctx.fillText(line, el.x, el.y + i * lh);
-                }
+                for (const [i, line] of lines.entries()) ctx.fillText(line, el.x, el.y + i * lh);
                 break;
             }
 
@@ -501,9 +493,7 @@ export function useCanvasRenderer({
             }
         }
 
-        if (el.type !== 'text' && el.text !== undefined && el.text !== '') {
-            drawEmbeddedText(el);
-        }
+        if (el.type !== 'text' && el.text !== undefined && el.text !== '') drawEmbeddedText(el);
 
         ctx.globalAlpha = 1;
         ctx.setLineDash([]);
@@ -525,11 +515,8 @@ export function useCanvasRenderer({
             const startY = curr.y + (toPrev.y / distPrev) * cornerRadius;
             const endX = curr.x + (toNext.x / distNext) * cornerRadius;
             const endY = curr.y + (toNext.y / distNext) * cornerRadius;
-            if (i === 0) {
-                ctx.moveTo(startX, startY);
-            } else {
-                ctx.lineTo(startX, startY);
-            }
+            if (i === 0) ctx.moveTo(startX, startY);
+            else ctx.lineTo(startX, startY);
             ctx.quadraticCurveTo(curr.x, curr.y, endX, endY);
         }
         ctx.closePath();
@@ -552,9 +539,7 @@ export function useCanvasRenderer({
         const cx = bounds.x + bounds.width / 2;
         const cy = bounds.y + bounds.height / 2;
         const startY = cy - totalH / 2 + lh / 2;
-        for (const [i, line] of lines.entries()) {
-            ctx.fillText(line, cx, startY + i * lh);
-        }
+        for (const [i, line] of lines.entries()) ctx.fillText(line, cx, startY + i * lh);
         ctx.restore();
     }
 
@@ -650,9 +635,7 @@ export function useCanvasRenderer({
         const savedCtx = ctx;
         ctx = offCtx;
 
-        for (const el of exportElements) {
-            drawElement(el);
-        }
+        for (const el of exportElements) drawElement(el);
 
         // Restore original context
         ctx = savedCtx;
